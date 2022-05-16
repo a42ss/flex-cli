@@ -1,0 +1,9 @@
+fire==0.4.0
+pinject==0.14.1
+prompt-toolkit==3.0.29
+PyYAML==6.0
+jsonschema==4.5.1
+# text
+pyfiglet==0.8.post1
+# colorful terminal
+blessings==1.7

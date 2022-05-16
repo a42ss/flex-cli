@@ -1,0 +1,19 @@
+# dev deps
+mock
+pytest
+pytest-cov
+semver
+
+# prod deps
+six>=1.14.0
+decorator>=4.3.0
+
+# docs
+sphinx
+sphinxcontrib-httpdomain
+m2r
+
+build
+twine
+invoke
+pipreqs

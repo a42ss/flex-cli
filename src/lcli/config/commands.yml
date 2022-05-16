@@ -1,0 +1,56 @@
+app_code: lcli
+app_welcome_message: |
+  Welcome to Local CLI interactive mode. 
+  Type ? to show the help&shortcut menu
+app_doc_header: "Local CLI - interactive commands (type help <topic>):"
+app_help_message: |
+  ===========================================================
+  Interactive Commands shortcuts
+  z   - clear screen
+  /   - choose a subcommand for interactive mode
+  <   - remove one level in the current path of commands
+  //  - reset the current command path of interactive mode
+  /// - reset and change the current command
+  q   - quit the interactive mode Crl+c/Cmd+c
+  ?   - show this help message
+  ===========================================================
+app_space_separator: "\n\n"
+
+app_description: |  
+  The main purpose of this cli tool is to allow easy access and documentation to existing or new scripts for day to day work. 
+
+figlet_font:  bubble
+
+commands:
+  interactive:
+    type: function
+    cli_code: -i
+    args:
+      command: lcli.app_mode.interactive.run
+
+  verbose:
+    type: function
+    cli_code: -v
+    args:
+      command: lcli.tools.helper.verbose
+
+  version:
+    type: function
+    cli_code: --version
+    args:
+      command: lcli.tools.helper.version
+
+  groups:
+    type: group
+    commands:
+      list_type: list
+      helper:
+        type: lcli
+        args:
+          command: lcli.tools.helper.Helper
+
+commands_wrappers:
+  base_wrapper:
+    handler: lcli.command.wrappers.BashCommandWrapper
+    builder: lcli.command.wrappers.BashCommandWrapper._Builder
+    args_config: lcli.command.wrappers.ArgsConfig

@@ -1,0 +1,107 @@
+commands:
+  groups:
+    type: group
+    commands:
+      list_type: list
+      gitw:
+        type: wrapper
+        description: "Git vcs management - wrapped commands"
+        args:
+          wrapper: base_wrapper
+          command: git
+          params:
+            author:
+              name: ""
+              type: config
+              required: true
+              config_path: author
+              output_format: "--$name=\"$value\""
+        commands:
+          list_type: list
+          save:
+            type: cli
+            description: Save current state
+            args:
+              command: 'git commit -am "${autocommit_message}" && git push origin '
+          diff:
+            type: cli
+            description: File changes
+            args:
+              command: git diff
+          status:
+            type: cli
+            description: Git status
+            args:
+              command: git status
+          add:
+            type: cli
+            description: Git add changes
+            args:
+              command: git add .
+          commit:
+            type: cli
+            description: Git commit added changes
+            args:
+              command: git commit
+              params:
+                author:
+                  type: env
+                message:
+                  message: 'Enter a commit message: '
+                  type: input
+                  name: -m
+                  output_format: "$name=\"$value\""
+          switch:
+            type: cli
+            description: Switch branches
+            args:
+              command: git checkout
+              params:
+                branch:
+                  type: autocomplete
+                  name: ""
+                  message: "Choose branch: "
+                  choices_cmd:
+                    cmd: git branch -a
+                    filter:
+                      strip: "* "
+                  output_format: $name $value
+                  choices:
+                    - name: master
+                      value: master
+                    - name: develop
+                      value: develop
+          branch:
+            type: cli
+            description: Switch branches and create branch
+            args:
+              command: git checkout -b
+              params:
+                branch:
+                  message: 'Enter the new branch name: '
+                  type: input
+                  name: ""
+                  output_format: "$value"
+          push:
+            type: cli
+            description: Git push changes
+            args:
+              command: git push
+          log:
+            type: cli
+            description: Show commit history
+            args:
+              command: git log
+          cli_info:
+            type: cli
+            description: Show cli info
+            args:
+              command: 'echo "$$(pwd)" && git name-rev --name-only HEAD'
+              config:
+                output: list
+                verbose: False
+
+commands_defaults:
+  gitw:
+    autocommit_message: Autocommit from config $(date)
+    author: George Babarus<george.babarus@gmail.com>

@@ -1,0 +1,294 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "description": "Schema for Lcli commands config",
+  "type": "object",
+  "properties": {
+    "commands": {
+      "description": "A list of commands.",
+      "additionalProperties": {
+        "$ref": "#/definitions/command"
+      }
+    },
+    "commands_wrappers": {
+      "description": "A list of commands wrapper objects",
+      "additionalProperties": {
+        "$ref": "#/definitions/wrapper"
+      }
+    },
+    "commands_defaults": {
+      "description": "A list of commands defaults configuration",
+      "additionalProperties": {
+        "$ref": "#/definitions/command/defaults"
+      }
+    },
+    "available_groups": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "A list of commands defaults configuration"
+    },
+    "available_commands": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "A list of commands defaults configuration"
+    }
+  },
+  "definitions": {
+    "command": {
+      "type": "object",
+      "description": "The friendly name of the command.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of the command will be used to identify the handler",
+          "enum": [
+            "function",
+            "group",
+            "wrapper",
+            "lcli",
+            "bash-script",
+            "cli"
+          ]
+        },
+        "cli_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The command code in cli"
+        },
+        "args": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/arguments/properties/base"
+            }
+          ]
+        },
+        "commands": {
+          "description": "A list of commands.",
+          "type": "object",
+          "required": [
+            "list_type"
+          ],
+          "properties": {
+            "list_type": {
+              "type": "string",
+              "description": "type of commands list",
+              "enum": [
+                "list"
+              ]
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/definitions/command"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "wrapper"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "$ref": "#/definitions/arguments/properties/wrapper"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "cli"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "$ref": "#/definitions/arguments/properties/cli"
+              }
+            }
+          }
+        }
+      ],
+      "param": {
+        "type": "object",
+        "description": "The command parameter used for interactive actions",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Describe the type of parameter input",
+            "enum": [
+              "config",
+              "input",
+              "autocomplete",
+              "list",
+              "env"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Name of the parameter in command line"
+          },
+          "required": {
+            "type": [
+              "boolean"
+            ],
+            "description": "Is a required parameter"
+          },
+          "config_path": {
+            "type": [
+              "string"
+            ],
+            "description": "Path of configuration"
+          },
+          "output_format": {
+            "type": [
+              "string"
+            ],
+            "description": "Path of configuration",
+            "default": "$name $value"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "env"
+                }
+              }
+            },
+            "else": {
+              "required": [
+                "name",
+                "output_format"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "config"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "name",
+                "output_format",
+                "config_path"
+              ]
+            }
+          }
+        ]
+      },
+      "defaults": {
+      }
+    },
+    "arguments": {
+      "properties": {
+        "base": {
+          "type": "object",
+          "description": "Arguments of the commands",
+          "required": [
+            "command"
+          ],
+          "properties": {
+            "command": {
+              "type": "string",
+              "description": ""
+            },
+            "config": {
+              "type": "object",
+              "description": "Configuration passed in constructor",
+              "properties": {
+                "output": {
+                  "type": "string",
+                  "description": "",
+                  "enum": [
+                    "list"
+                  ]
+                },
+                "verbose": {
+                  "type": "boolean",
+                  "description": "Print command debug messages"
+                }
+              }
+            },
+            "params": {
+              "type": "object",
+              "description": "A list of param objects",
+              "additionalProperties": {
+                "$ref": "#/definitions/command/param"
+              }
+            }
+          }
+        },
+        "cli": {
+          "properties": {
+          }
+        },
+        "wrapper": {
+          "type": "object",
+          "description": "Arguments of the commands",
+          "required": [
+            "wrapper"
+          ],
+          "properties": {
+            "wrapper": {
+              "type": "string",
+              "description": ""
+            }
+          }
+        }
+      }
+    },
+    "wrapper": {
+      "type": "object",
+      "description": "Arguments of the commands",
+      "required": [
+        "handler",
+        "builder",
+        "args_config"
+      ],
+      "properties": {
+        "handler": {
+          "type": "string",
+          "description": "Wrapper class responsible to execute command configuration"
+        },
+        "builder": {
+          "type": "string",
+          "description": "Wrapper object builder for current type"
+        },
+        "args_config": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Configuration class wrapper to allow new custom api"
+        }
+      }
+    }
+  }
+}

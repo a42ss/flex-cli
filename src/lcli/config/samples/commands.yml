@@ -1,0 +1,93 @@
+cli_executable_path: '/Users/george.babarus/utils/lcli'
+
+available_groups:
+#    - groups
+#    - helper
+#    - git
+
+#available_commands:
+#  - all
+
+commands:
+  groups:
+    type: group
+    commands:
+      opdocker:
+        type: wrapper
+        args:
+          wrapper: base_wrapper
+          command: opdocker
+        description: "Manage docker environment in current directory"
+        commands:
+          up:
+            type: cli
+            description: Start docker stack
+            args:
+              command: ./m2-cluster -d up
+          halt:
+            type: cli
+            description: Stop docker stack
+            args:
+              command: ./m2-cluster halt
+          magento:
+            type: cli
+            description: shell magento tools
+            args:
+              wrapper: base_wrapper
+              command: ./m2-cluster magento
+              params:
+                subcommand:
+                  type: list
+                  name: ""
+                  message: "Choose a sub-command: "
+                  choices:
+                    - name: cache:flush
+                      value: cache:flush
+                    - name: setup:upgrade
+                      value: setup:upgrade
+                message:
+                  message: 'Enter a commit message: '
+                  type: input
+                  name: -m
+                  validate: PhoneNumberValidator
+                  output_format: "\"$value\""
+
+          cli_info:
+            type: cli
+            description: Show cli info
+            args:
+              command: 'git name-rev --name-only HEAD && echo "Docker: running"'
+              config:
+                output: list
+                verbose: False
+
+      ldocker:
+        type: wrapper
+        args:
+          wrapper: base_wrapper
+          command: ldocker
+        description: "Manage local environment for docker projects"
+        commands:
+          init:
+            type: cli
+            description: Initialize docker project
+            args:
+              command: /home/g/utils/ldocker/init/ansible-run
+              params:
+                message:
+                  message: 'Enter a commit message: '
+                  type: input
+                  name: -m
+                  validate: PhoneNumberValidator
+
+commands_defaults:
+  gitw:
+    autocommit_message: Autocommit from config $(date)
+
+  git:
+    autocommit_message: Autocommit from config
+
+  ldocker:
+
+  opdocker:
+    start_message: Starting docker stack

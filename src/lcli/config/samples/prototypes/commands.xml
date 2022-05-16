@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="commands.xsd">
+    <commands>
+        <command id="gitw">
+            <type>wrapper</type>
+            <description>Git vcs management - wrapped commands</description>
+            <args>
+                <wrapper>base_wrapper</wrapper>
+                <command>git</command>
+            </args>
+            <commands>
+                <command id="save">
+                    <type>cli</type>
+                    <description>Save current state</description>
+                    <args>
+                        <command>
+                            <![CDATA[git commit -am "${autocommit_message}" && git push origin]]>
+                        </command>
+                        <params>
+                            <param id="author">
+                                <type>cli</type>
+                                <required>true</required>
+                                <config_path>author</config_path>
+                                <output_format>[<![CDATA["--$name=\"$value\"]]></output_format>
+                            </param>
+                        </params>
+                    </args>
+                </command>
+            </commands>
+        </command>
+    </commands>
+</config>

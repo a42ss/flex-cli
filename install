@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+PYTHON_EXEC='python3'
+
+${PYTHON_EXEC} -m pip install -r requirements.txt
+
+if [[ $1 == '-u' ]]; then
+  echo "Install module for local user"
+  ${PYTHON_EXEC} -m pip install . --user
+else
+  echo "Install module for globaly"
+  read -r -p "Are you sure? [y/N] " response
+  case "$response" in
+      [yY][eE][sS]|[yY])
+          ;;
+      *)
+          echo "Run install script with -u parameter instead for installing only for local user..."
+          exit
+          ;;
+  esac
+  ${PYTHON_EXEC} -m pip install .
+fi

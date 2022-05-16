@@ -1,0 +1,18 @@
+commands:
+  groups:
+    type: group
+    commands:
+      list_type: list
+      calculator:
+        description: "Calculator functionality"
+        type: group
+        commands:
+          list_type: list
+          calc:
+            type: function
+            args:
+              command: lcli.tools.sample_tool.Calculator
+          calc2:
+            type: function
+            args:
+              command: lcli.tools.sample_tool.Calculator.Calculator2

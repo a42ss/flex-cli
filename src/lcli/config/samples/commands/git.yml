@@ -1,0 +1,9 @@
+commands:
+  groups:
+    type: group
+    commands:
+      list_type: list
+      git:
+        type: lcli
+        args:
+          command: lcli.tools.git.Git

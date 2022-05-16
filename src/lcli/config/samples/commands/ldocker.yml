@@ -1,0 +1,24 @@
+commands:
+  groups:
+    commands:
+      ldocker:
+        type: wrapper
+        args:
+          wrapper: base_wrapper
+          command: ldocker
+        description: "Manage local environment for docker projects"
+        commands:
+          init:
+            type: cli
+            description: Initialize docker project
+            args:
+              command: /home/g/utils/ldocker/init/ansible-run
+              params:
+                message:
+                  message: 'Enter a commit message: '
+                  type: input
+                  name: -m
+                  validate: PhoneNumberValidator
+
+commands_defaults:
+  ldocker:
