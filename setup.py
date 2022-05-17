@@ -1,5 +1,7 @@
 import codecs
+
 from setuptools import find_packages, setup
+
 from src.lcli import __version__, EXECUTABLE_NAME
 
 setup(
@@ -11,7 +13,7 @@ setup(
     description='Local environment CLI tool',
     long_description=codecs.open('README.md', 'rb', 'utf8').read(),
     long_description_content_type='text/markdown',
-    url='https://georgebabarus@dev.azure.com/georgebabarus/workstation/_git/lcli',
+    url='https://github.com/a42ss/lcli/',
     license='MIT',
 
     # Packages and dependencies
@@ -21,7 +23,7 @@ setup(
         'wheel',
     ],
     install_requires=[
-        'fire>=0.3.0',
+        'fire>=0.4.0',
         'pinject>=0.14.1',
         'prompt_toolkit>=3.0',
         'PyYAML',
