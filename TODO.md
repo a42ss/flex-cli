@@ -1,3 +1,3 @@
-# V-0.2.2 - MVP
-* Add commands folder and load all files from all configuration directories
-* 
+# V-0.1.0 - MVP
+* MVP product
+* todo: unit tests

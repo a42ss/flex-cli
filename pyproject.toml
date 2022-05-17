@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "ltest"
+name = "lcli"
 version = "0.1.0"
-description = "The description of the package"
+description = "Local CLI is an extendable interactive command line tool built in mind with the objective to make the interaction with day to day scripts more user friendly. The scripts you use daily should be easy to maintain, develop and document so you don't need to worry to write long documents on how to use them."
 
 license = "MIT"
 
@@ -11,27 +11,45 @@ authors = [
 
 readme = 'README.md'  # Markdown files are supported
 
-repository = "https://dev.azure.com/georgebabarus/local-environment/_git/lproject"
-homepage = "https://dev.azure.com/georgebabarus/local-environment/_git/lproject"
+repository = "https://github.com/a42ss/lcli"
+homepage = "https://github.com/a42ss/lcli"
 
-keywords = ['packaging', 'poetry']
+keywords = ['cli', 'documentation', 'automation', 'local', 'command', 'command-line', 'script', 'scripts', 'command-line-tool', 'automation-framework']
 
 [tool.poetry.dependencies]
-python = "~2.7 || ^3.2"  # Compatible python versions must be declared here
-toml = "^0.9"
-# Dependencies with extras
-requests = { version = "^2.13", extras = [ "security" ] }
-# Python specific dependencies with prereleases allowed
-pathlib2 = { version = "^2.2", python = "~2.7", allow-prereleases = true }
-# Git dependencies
-lproject = { git = "git@ssh.dev.azure.com:v3/georgebabarus/local-environment/lproject", branch = "master" }
+python = "^3.7"
 
-# Optional dependencies (extras)
-pendulum = { version = "^1.4", optional = true }
+fire = { version = "^0.4" }
+pinject = { version = "^0.14" }
+prompt-toolkit = { version = "^3.0" }
+PyYAML = { version = "^6.0" }
+jsonschema = { version = "^4.5" }
+pyfiglet = { version = "^0.8" }
+blessings = { version = "^1.7" }
 
 [tool.poetry.dev-dependencies]
-pytest = "^3.0"
-pytest-cov = "^2.4"
+toml = "^0.10.2"
+
+# dev deps
+mock = "*"
+pytest = "*"
+pytest-cov = "*"
+semver = "*"
+
+# prod deps
+six = "^1.14.0"
+decorator = "^4.3.0"
+
+# docs
+sphinx = "*"
+sphinxcontrib-httpdomain = "*"
+#m2r = "*"
+
+# Build
+build = "*"
+twine = "*"
+invoke = "*"
+pipreqs = "*"
 
 [tool.poetry.scripts]
-ltest = 'ltest.__main__:main'
+ltest = 'lcli.__main__:main'

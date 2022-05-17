@@ -24,9 +24,17 @@ upload: $(VENV)
 	$(VENV)/bin/python3 -m twine upload dist/* --verbose
 	$(RM) -rf dist/*
 
+poetry_update:
+	$(VENV)/bin/$(PYTHON) -m poetry update
+
 # python -m pip freeze -r requirements_list.txt -l  | sed '/freeze/,$ d' > requirements.txt
-freeze:
-	$(shell $(VENV)/bin/$(PYTHON) -m pip freeze -r requirements_list.txt -l | sed '/freeze/,$$ d' > requirements.txt)
+# $(shell $(VENV)/bin/$(PYTHON) -m pip freeze -r requirements.txt -l | sed '/freeze/,$$ d' > requirements.txt)
+poetry_freeze:
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes > requirements.txt)
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --dev > requirements_dev.txt)
+
+poetry_dependency:
+	$(VENV)/bin/$(PYTHON) -m poetry show --no-dev --tree
 
 clean:
 	$(RM) -rf $(VENV)
