@@ -6,7 +6,7 @@ description = "Local CLI is an extendable interactive command line tool built in
 license = "MIT"
 
 authors = [
-    "George Babarus <george.babarus@gmail.com"
+    "George Babarus <george.babarus@gmail.com>"
 ]
 
 readme = 'README.md'  # Markdown files are supported
@@ -28,13 +28,21 @@ pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
 
 [tool.poetry.dev-dependencies]
-toml = "^0.10.2"
+toml = "*"
+poetry = "*"
+poetry2setup = "*"
 
 # dev deps
 mock = "*"
 pytest = "*"
 pytest-cov = "*"
 semver = "*"
+
+# Build tools
+build = "*"
+twine = "*"
+invoke = "*"
+pipreqs = "*"
 
 # prod deps
 six = "^1.14.0"
@@ -43,13 +51,12 @@ decorator = "^4.3.0"
 # docs
 sphinx = "*"
 sphinxcontrib-httpdomain = "*"
-#m2r = "*"
-
-# Build
-build = "*"
-twine = "*"
-invoke = "*"
-pipreqs = "*"
+sphinx_rtd_theme = "*"
+recommonmark = "*"
+m2r = "*"
 
 [tool.poetry.scripts]
 ltest = 'lcli.__main__:main'
+
+[tool.poetry.plugins]
+
