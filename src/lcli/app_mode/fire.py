@@ -68,8 +68,11 @@ class Fire(AppModeBase):
 
         result_commands = self.get_available_commands(path)
         if self._command_alias_performed:
-            if len(result_commands) == 1 and type(result_commands) is dict and executable_name in result_commands:
-                if type(result_commands[executable_name]) is dict:
+            if len(result_commands) == 1 and \
+                    (type(result_commands) is dict or type(result_commands) is ManualWrapper) and \
+                    executable_name in result_commands:
+                if type(result_commands[executable_name]) is dict or \
+                        type(result_commands[executable_name]) is ManualWrapper:
                     temp_result = ManualWrapper()
                     temp_result.__doc__ = self._app.get_app_description()
 
@@ -96,7 +99,8 @@ class Fire(AppModeBase):
             else:
                 try:
                     command_collection = CommandCollection({})
-                    command_found = self._app.get_commands().get_command_by_path(path=path[:1], return_first_executable=True)
+                    command_found = self._app.get_commands().get_command_by_path(path=path[:1],
+                                                                                 return_first_executable=True)
                     command_collection.add_command(command_found)
                 except Exception as e:
                     command_collection = self._app.get_commands()
@@ -117,7 +121,7 @@ class Fire(AppModeBase):
         config_object = self._app.get_config_object()
 
         command_builder_factory = self._app.get_command_builder_factory()
-        result_commands = {}
+        result_commands = ManualWrapper()
         for key in commands_list:
             try:
                 command = commands_list.get_command(key)
@@ -125,8 +129,11 @@ class Fire(AppModeBase):
                     if not config_object.is_command_group_available(key):
                         continue
                     group_objects = self.build_commands_object_recursively(command.commands)
+                    if type(group_objects) is ManualWrapper:
+                        group_objects.__doc__ = command.description
+
                     if key == 'groups':
-                        result_commands.update(group_objects)
+                        result_commands.__update__(group_objects)
                     else:
                         result_commands[key] = group_objects
                 else:

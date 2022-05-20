@@ -53,5 +53,25 @@ class BashCommandWrapper(BaseTool, BashCommandWrapperInterface):
             return BashCommandWrapper(self._app, command)
 
 
-class ManualWrapper(dict):
-    pass
+class ManualWrapper:
+    def __init__(self):
+        self._dict = {}
+
+    def __iter__(self):
+        return self._dict.__iter__()
+
+    def __setitem__(self, name, value):
+        setattr(self, name, value)
+        self._dict[name] = value
+
+    def __getitem__(self, name):
+        return self._dict[name]
+
+    def __contains__(self, key):
+        return key in self._dict
+
+    def __update__(self, value):
+        self._dict = value
+
+    def __len__(self):
+        return len(self._dict)

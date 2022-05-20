@@ -30,7 +30,7 @@ poetry_update:
 # python -m pip freeze -r requirements_list.txt -l  | sed '/freeze/,$ d' > requirements.txt
 # $(shell $(VENV)/bin/$(PYTHON) -m pip freeze -r requirements.txt -l | sed '/freeze/,$$ d' > requirements.txt)
 poetry_freeze:
-	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes > requirements.txt)
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes -f requirements.txt -o requirements.txt)
 	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --dev > requirements_dev.txt)
 
 poetry_dependency:
