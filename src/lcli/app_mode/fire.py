@@ -82,7 +82,7 @@ class Fire(AppModeBase):
 
         fire.Fire(result_commands, None, executable_name)
 
-    def get_available_commands(self, path: list) -> dict:
+    def get_available_commands(self, path: list) -> ManualWrapper:
         """
         Return the available commands in a given path in order to load just a potion of configs in Fire mode
         :param path:
@@ -110,7 +110,7 @@ class Fire(AppModeBase):
 
         return self.build_commands_object_recursively(command_collection)
 
-    def build_commands_object_recursively(self, commands_list: CommandCollection) -> dict:
+    def build_commands_object_recursively(self, commands_list: CommandCollection) -> ManualWrapper:
         """
         Build command objects or references prepared to Fire from a CommandCollection object recursively
         It is needed because for now it rely on Fire documentation and the object should be prepared and ready to execute
