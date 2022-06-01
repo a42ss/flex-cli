@@ -25,7 +25,10 @@ class BaseBuilder:
 
     @classmethod
     def locate(cls, path: str):
-        return locate(path)
+        try:
+            return locate(path)
+        except Exception as e:
+            raise BuilderException("Invalid configuration provided for command. Path " + path + ' could not be loaded.')
 
 
 class CommandBuilderFactory(object):

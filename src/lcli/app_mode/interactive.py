@@ -88,7 +88,7 @@ class LcliPrompt(Cmd, AppModeBase):
         for part in info_parts:
             command_state += " (" + self._app.__.yellow(part) + ")"
         self.prompt += command_state
-        self.prompt += '> '
+        self.prompt += '\n> '
 
     def do_clear_screen(self, command=''):
         """Clear the screen and move the cursor to the top"""
