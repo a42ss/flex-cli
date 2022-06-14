@@ -76,12 +76,12 @@ class App:
             self.get_working_directory(),
             self._config_folder_working_directory
         )
-        self._cache_directory_path = os.path.join(
-            self._working_directory_conf_path,
-            'cache'
-        )
         self._config_folder_defaults_path = os.path.join(os.path.dirname(__file__), self._config_folder_defaults)
         self._user_home_directory_path = os.path.join(self._user_home_directory, self._config_folder_home_directory)
+        self._cache_directory_path = os.path.join(
+            self._user_home_directory_path,
+            'cache'
+        )
         self._config_folders = [
             self._config_folder_defaults_path,
             self._user_home_directory_path,
@@ -169,7 +169,9 @@ class App:
                                 first_file_mandatory: bool = False) -> Config:
         cache_keys = config_files.copy()
         cache_keys.append(namespace)
+        cache_keys.append(self._working_directory_conf_path)
         cache = Cache(self._cache_directory_path, cache_keys, App.CACHE_LIFETIME)
+
         if not self.is_debug_enabled():
             try:
                 return Config(cache.get())
@@ -273,7 +275,7 @@ class App:
         return os.path.join(self.get_executable_path(), self.get_executable_name())
 
     def get_log_file(self, log_file: str):
-        log_path = os.path.join(self._working_directory_conf_path, 'log')
+        log_path = os.path.join(self._user_home_directory_path, 'log')
         try:
             os.makedirs(log_path)
         except OSError as e:
