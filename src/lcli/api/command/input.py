@@ -1,0 +1,2 @@
+class ParametersReaderInterface:
+    pass

@@ -1,0 +1,3 @@
+
+class LcliException(Exception):
+    pass

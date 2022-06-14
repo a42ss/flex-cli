@@ -1,17 +1,20 @@
 attrs==21.4.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.7"
 blessings==1.7; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
+cmd2==2.4.1; python_version >= "3.6"
 decorator==4.4.2; (python_version >= "2.6" and python_full_version < "3.0.0") or (python_full_version >= "3.2.0")
 fire==0.4.0
 importlib-metadata==1.7.0; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "3.8" or python_version < "3.8" and python_version >= "3.7" and python_full_version >= "3.5.0"
 importlib-resources==5.7.1; python_version < "3.9" and python_version >= "3.7"
-jsonschema==4.5.1; python_version >= "3.7"
+jsonschema==4.6.0; python_version >= "3.7"
 pinject==0.14.1
 prompt-toolkit==3.0.29; python_full_version >= "3.6.2"
 pyfiglet==0.8.post1
+pyperclip==1.8.2; python_version >= "3.6"
+pyreadline3==3.4.1; sys_platform == "win32" and python_version >= "3.6"
 pyrsistent==0.18.1; python_version >= "3.7"
 pyyaml==6.0; python_version >= "3.6"
 six==1.16.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.3.0")
 termcolor==1.1.0
 typing-extensions==4.2.0; python_version < "3.8" and python_version >= "3.7"
-wcwidth==0.2.5; python_full_version >= "3.6.2"
+wcwidth==0.2.5; python_full_version >= "3.6.2" and python_version >= "3.6"
 zipp==3.8.0; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "3.8" or python_version < "3.8" and python_version >= "3.7" and python_full_version >= "3.5.0"

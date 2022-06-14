@@ -9,14 +9,14 @@ from lcli.input import InterruptedInputException
 from lcli.input.prompt import AskQuestions
 from lcli.command.input import ParametersReader
 from lcli.tools.base import ToolsException
-
+from lcli.api import ControllerInterface
 
 def run():
     """Run application in interactive mode for best productivity"""
     raise AppModeException("App mode unavailable for the moment")
 
 
-class LcliPrompt(Cmd, AppModeBase):
+class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
     from lcli.app import App
 
     current_command = ''
@@ -41,7 +41,7 @@ class LcliPrompt(Cmd, AppModeBase):
     }
 
     def __init__(self, app: App, command_prefix='', completekey='tab', stdin=None, stdout=None):
-        Cmd.__init__(self, completekey, stdin, stdout)
+        super().__init__(completekey, stdin, stdout)
         AppModeBase.__init__(self, app)
         self.do_clear_screen()
         figlet = Figlet(width=1000, font=app.get_config_object().get("figlet_font", "digital"))
@@ -280,7 +280,7 @@ class LcliPrompt(Cmd, AppModeBase):
         else:
             if parts[0] in self._COMMAND_MAPPING:
                 line = self._COMMAND_MAPPING[parts[0]] + ' ' + ' '.join(parts[1:])
-        return Cmd.parseline(self, line)
+        return super().parseline(line)
 
     do_EOF = do_exit
     help_EOF = help_exit
