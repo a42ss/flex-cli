@@ -37,7 +37,7 @@ keyring==22.3.0; python_version >= "3.6" and python_version < "4.0" and (python_
 lockfile==0.12.2; python_version >= "3.6" and python_version < "4.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0")
 m2r==0.2.1
 markupsafe==2.1.1; python_version >= "3.7"
-mistune==2.0.2
+mistune==2.0.3
 mock==4.0.3; python_version >= "3.6"
 msgpack==1.0.4; python_version >= "3.6" and python_version < "4.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0")
 packaging==20.9; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.7"
