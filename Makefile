@@ -7,6 +7,12 @@ VENV ?= $(PRJ_DIR)venv
 install: $(VENV) setup.py
 	$(VENV)/bin/pip install -U .
 
+install_reqs: $(VENV) setup.py
+	$(VENV)/bin/pip install --system --deploy --ignore-pipfile
+
+test: $(PYTHON)
+	$(PYTHON) -m pytest
+
 $(VENV):
 	$(PYTHON) -m venv $(VENV)
 

@@ -60,3 +60,6 @@ ltest = 'lcli.__main__:main'
 
 [tool.poetry.plugins]
 
+[virtualenvs]
+create = true
+in-project = true

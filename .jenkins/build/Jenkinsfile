@@ -18,6 +18,13 @@ pipeline {
             }
         }
         stage ('Test pytest') {
+            steps {
+                sh '''
+                    docker build -t lcli .
+                '''
+            }
+        }
+        stage ('Other stage') {
             agent {
                 docker {
                     image "${env.DOCKER_AGENT_PYTHON_IMAGE}"
@@ -26,7 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    pytest
+                    python --version
                 '''
             }
         }
