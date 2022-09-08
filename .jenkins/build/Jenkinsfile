@@ -28,6 +28,7 @@ pipeline {
             agent {
                 docker {
                     image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.FullSemVer.replaceAll('\\+', '.')}"
+                    args "${env.DOCKER_AGENT_OPTIONS}"
                 }
             }
             steps {
