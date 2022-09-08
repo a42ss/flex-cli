@@ -1,6 +1,10 @@
 @Library('a42-jenkins-general-library') _
 
 pipeline {
+    environment {
+        DOCKER_AGENT_PYTHON_IMAGE="python:3.10-alpine"
+    }
+
     agent  any
 
     stages {
@@ -14,6 +18,12 @@ pipeline {
             }
         }
         stage ('Test pytest') {
+            agent {
+                docker {
+                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}"
+                    args "${env.DOCKER_AGENT_PYTHON_OPTIONS}"
+                }
+            }
             steps {
                 sh '''
                     pytest
