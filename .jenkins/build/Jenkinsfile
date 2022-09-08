@@ -19,9 +19,9 @@ pipeline {
         }
         stage ('Test pytest') {
             steps {
-                sh '''
+                sh """
                     docker build -t lcli:${env.FullSemVer} .
-                '''
+                """
             }
         }
         stage ('Check build version') {
