@@ -20,14 +20,14 @@ pipeline {
         stage ('Test pytest') {
             steps {
                 sh """
-                    docker build -t lcli:${env.FullSemVer} .
+                    docker build -t "lcli:${env.SemVer}" .
                 """
             }
         }
         stage ('Check build version') {
             agent {
                 docker {
-                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.FullSemVer}"
+                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.SemVer}"
                 }
             }
             steps {
