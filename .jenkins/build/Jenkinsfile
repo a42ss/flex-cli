@@ -28,7 +28,6 @@ pipeline {
             agent {
                 docker {
                     image "${env.DOCKER_AGENT_PYTHON_IMAGE}"
-                    args "${env.DOCKER_AGENT_PYTHON_OPTIONS}"
                 }
             }
             steps {
