@@ -2,7 +2,7 @@
 
 pipeline {
     environment {
-        DOCKER_AGENT_PYTHON_IMAGE="python:3.10-alpine"
+        DOCKER_AGENT_PYTHON_IMAGE="python:3.8-slim-buster"
     }
 
     agent  any
