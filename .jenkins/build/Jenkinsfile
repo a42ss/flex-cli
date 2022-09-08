@@ -2,7 +2,7 @@
 
 pipeline {
     environment {
-        DOCKER_AGENT_PYTHON_IMAGE="python:3.8-slim-buster"
+        DOCKER_AGENT_PYTHON_IMAGE="lcli"
     }
 
     agent  any
@@ -20,19 +20,20 @@ pipeline {
         stage ('Test pytest') {
             steps {
                 sh '''
-                    docker build -t lcli .
+                    docker build -t lcli:${env.FullSemVer} .
                 '''
             }
         }
-        stage ('Other stage') {
+        stage ('Check build version') {
             agent {
                 docker {
-                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}"
+                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.FullSemVer}"
                 }
             }
             steps {
                 sh '''
                     python --version
+                    lcli --version
                 '''
             }
         }
