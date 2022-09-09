@@ -2,7 +2,8 @@ PYTHON = python3
 RM = rm
 
 PRJ_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-VERSION = $(cat src/lcli/__init__.py  | grep __version__ |  sed 's/__version__ = //' | sed s/\'// | sed s/\'//)
+VERSION = $(FullSemVer)
+VERSION ?= $(cat src/lcli/__init__.py  | grep __version__ |  sed 's/__version__ = //' | sed s/\'// | sed s/\'//)
 VENV ?= $(PRJ_DIR)venv
 
 install: $(VENV) setup.py
