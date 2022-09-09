@@ -17,7 +17,7 @@ pipeline {
                 buildName "${env.FullSemVer}"
             }
         }
-        stage ('Test pytest') {
+        stage ('Build docker image') {
             steps {
                 sh """
                     docker build -t "lcli:${env.FullSemVer.replaceAll('\\+', '.')}" .

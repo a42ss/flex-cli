@@ -1,6 +1,7 @@
 import unittest
 from ... import lcli
 
+
 class TestStringMethods(unittest.TestCase):
 
     def test_module_variables(self):

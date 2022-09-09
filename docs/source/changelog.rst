@@ -2,8 +2,18 @@
 Changelog
 *********
 
-master
+main
 ======
+
+Removed dependencies
+
+# prod deps
+
+six = "^1.14.0"
+
+decorator = "^4.3.0"
+
+semver = "*"
 
 New Features
 -------------
@@ -14,7 +24,7 @@ Fixes
 Other Changes
 --------------
 
-v0.2.2
+v0.1.1
 ======
 
 New Features
