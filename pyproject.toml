@@ -23,7 +23,7 @@ fire = { version = "^0.4" }
 pinject = { version = "^0.14" }
 prompt-toolkit = { version = "^3.0" }
 PyYAML = { version = "^6.0" }
-jsonschema = { version = "^4.5" }
+jsonschema = { version = "^4.16" }
 pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
 
