@@ -2,6 +2,8 @@ PYTHON = python3
 RM = rm
 
 PRJ_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+VERSION = $(FullSemVer)
+VERSION ?= $(cat src/lcli/__init__.py  | grep __version__ |  sed 's/__version__ = //' | sed s/\'// | sed s/\'//)
 VENV ?= $(PRJ_DIR)venv
 
 install: $(VENV) setup.py
@@ -30,14 +32,24 @@ upload: $(VENV)
 	$(VENV)/bin/python3 -m twine upload dist/* --verbose
 	$(RM) -rf dist/*
 
+poetry_install:
+	$(VENV)/bin/$(PYTHON) -m poetry install
+
 poetry_update:
 	$(VENV)/bin/$(PYTHON) -m poetry update
+
+poetry_build:
+	$(VENV)/bin/$(PYTHON) -m poetry version $(VERSION)
+	$(VENV)/bin/$(PYTHON) -m poetry build
 
 # python -m pip freeze -r requirements_list.txt -l  | sed '/freeze/,$ d' > requirements.txt
 # $(shell $(VENV)/bin/$(PYTHON) -m pip freeze -r requirements.txt -l | sed '/freeze/,$$ d' > requirements.txt)
 poetry_freeze:
 	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes -f requirements.txt -o requirements.txt)
-	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --with dev > requirements_dev.txt)
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --only dev > requirements_dev.txt)
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --only docs > requirements_docs.txt)
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --only build > requirements_build.txt)
+	$(shell $(VENV)/bin/$(PYTHON) -m poetry export --without-hashes --only test > requirements_test.txt)
 
 poetry_dependency:
 	$(VENV)/bin/$(PYTHON) -m poetry show --no-dev --tree

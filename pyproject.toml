@@ -28,32 +28,30 @@ pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
 
 [tool.poetry.dev-dependencies]
-toml = "*"
-poetry = "*"
-poetry2setup = "*"
 
-# dev deps
-mock = "*"
-pytest = "*"
-pytest-cov = "*"
-semver = "*"
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+sphinxcontrib-httpdomain = "*"
+sphinx_rtd_theme = "*"
+recommonmark = "*"
+m2r = "*"
+
+[tool.poetry.group.build.dependencies]
+poetry = "^1.2"
+poetry2setup = "^1.0.0"
+toml = "*"
 
 # Build tools
 build = "*"
 twine = "*"
 invoke = "*"
 pipreqs = "*"
+flake8 = "*"
 
-# prod deps
-six = "^1.14.0"
-decorator = "^4.3.0"
-
-# docs
-sphinx = "*"
-sphinxcontrib-httpdomain = "*"
-sphinx_rtd_theme = "*"
-recommonmark = "*"
-m2r = "*"
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+mock = "*"
 
 [tool.poetry.scripts]
 ltest = 'lcli.__main__:main'

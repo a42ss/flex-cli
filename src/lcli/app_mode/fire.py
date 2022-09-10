@@ -102,7 +102,7 @@ class Fire(AppModeBase):
                     command_found = self._app.get_commands().get_command_by_path(path=path[:1],
                                                                                  return_first_executable=True)
                     command_collection.add_command(command_found)
-                except Exception as e:
+                except Exception:
                     command_collection = self._app.get_commands()
         except ConfigException as e:
             command_collection = CommandCollection({})
