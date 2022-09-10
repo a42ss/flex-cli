@@ -1,6 +1,6 @@
 import unittest
-from ... import lcli
-from lcli import *
+from ... import lcli as lcli
+
 
 class TestStringMethods(unittest.TestCase):
 
