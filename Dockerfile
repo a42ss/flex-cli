@@ -30,7 +30,7 @@ RUN poetry env use python \
 
 FROM BuildStage as TestStage
 
-RUN pytest --cov=lcli
+RUN pytest --cov=src/lcli
 
 FROM $PYTHON_IMAGE AS BinaryStage
 LABEL MAINTAINER="George Babarus <george.babarus@gmail.com>"
