@@ -46,6 +46,7 @@ build = "*"
 twine = "*"
 invoke = "*"
 pipreqs = "*"
+flake8 = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"

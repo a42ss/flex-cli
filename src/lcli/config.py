@@ -454,7 +454,7 @@ class CommandCollection(Config):
 
     def get_command(self, command_key: str) -> Command:
         """
-        
+
         :param command_key:
         :return: CommandConfig
         """
@@ -486,7 +486,7 @@ class CommandCollection(Config):
         try:
             commands_list = self._get_command_collection_by_path(self, path)
             return self.get_first_level_commands(commands_list, ignored_commands, available_groups=available_groups)
-        except ConfigException as e:
+        except ConfigException:
             return {}
 
     def get_first_level_commands(
