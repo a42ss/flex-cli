@@ -46,7 +46,7 @@ pipreqs = "*"
 
 # prod deps
 six = "^1.14.0"
-decorator = "^4.3.0"
+decorator = "^5.1.1"
 
 # docs
 sphinx = "*"
