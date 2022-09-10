@@ -33,8 +33,9 @@ pipeline {
             }
             steps {
                 sh '''
-                    pip3 install pipenv poetry
-                    make poetry_build
+                    ls -la
+                    # pip3 install pipenv poetry
+                    # make poetry_build
                 '''
             }
         }
