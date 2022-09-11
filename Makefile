@@ -1,4 +1,6 @@
 NAME := lcli
+COVERAGE_PERCENTAGE := 0
+
 SYSTEM_PYTHON = $(shell command -v python3 2> /dev/null)
 
 RM = rm
@@ -54,7 +56,7 @@ update: $(VENV) $(POETRY) pyproject.toml
 .PHONY: test
 test: $(VENV) $(POETRY)
 	@echo POETRY: test
-	$(POETRY) run pytest --cov-report html --cov-report xml --cov-report term-missing --cov-fail-under 60 --cov $(NAME)
+	$(POETRY) run pytest --cov-report html --cov-report xml --cov-report term-missing --cov-fail-under $(COVERAGE_PERCENTAGE) --cov $(NAME)
 
 uninstall: $(VENV)
 	$(VENV)/bin/pip uninstall -y $(NAME)
