@@ -51,10 +51,9 @@ pytest = "*"
 pytest-cov = "*"
 mock = "*"
 
-[tool.poetry.group.build_with_poetry.dependencies]
+[tool.poetry.group.poetry.dependencies]
 poetry = "^1.2"
 poetry2setup = "^1.0.0"
-flake8 = "*"
 
 [tool.poetry.scripts]
 ltest = 'lcli.__main__:main'
