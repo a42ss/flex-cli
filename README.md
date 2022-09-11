@@ -1,5 +1,9 @@
 # Introduction
 
+[![Main branch build](https://github.com/a42ss/lcli/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/python-package.yml)
+[![CodeQL](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml)
+
+
 Local development productivity tools meant to smooth and ease developers day to day work. 
 It is meant to be cross-platform but for now is tested using MacOs and Ubuntu
 

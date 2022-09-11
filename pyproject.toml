@@ -37,6 +37,8 @@ recommonmark = "*"
 m2r = "*"
 
 [tool.poetry.group.build.dependencies]
+poetry = "^1.2"
+poetry2setup = "^1.0.0"
 toml = "*"
 
 # Build tools
