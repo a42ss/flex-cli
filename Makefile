@@ -106,5 +106,5 @@ clean:
 	@echo Clean all
 	$(POETRY) env remove --all
 	$(PYTHON) -m pip uninstall -y poetry
-	$(RM) -rf $(VENV) .coverage .mypy_cache
+	$(RM) -rf $(VENV) .coverage .mypy_cache build/* dist/* .pytest_cache htmlcov coverage.xml
 	find . -type d -name "__pycache__" | xargs rm -rf {};
