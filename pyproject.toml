@@ -52,10 +52,14 @@ flake8 = "*"
 pytest = "*"
 pytest-cov = "*"
 mock = "*"
+coverage = {extras = ["toml"], version = "^6.4.4"}
 
 [tool.poetry.group.poetry.dependencies]
 poetry = "^1.2"
 poetry2setup = "^1.0.0"
+
+[tool.coverage.run]
+relative_files = true
 
 [tool.poetry.scripts]
 ltest = 'lcli.__main__:main'
