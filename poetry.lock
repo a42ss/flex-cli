@@ -1266,6 +1266,7 @@ python-versions = ">=3.6"
 importlib-metadata = {version = ">=1.7.0", markers = "python_version < \"3.8\""}
 pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
+
 [[package]]
 name = "termcolor"
 version = "2.0.0"
