@@ -1,8 +1,9 @@
 # Introduction
 
 [![Build](https://github.com/a42ss/lcli/actions/workflows/python-package.yml/badge.svg)](https://github.com/a42ss/lcli/actions/workflows/python-package.yml)
-[![CodeQL](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml)
 [![Coverage badge](https://raw.githubusercontent.com/a42ss/lcli/python-coverage-comment-action-data/badge.svg)](https://github.com/a42ss/lcli/tree/python-coverage-comment-action-data)
+[![CodeQL](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6480/badge)](https://bestpractices.coreinfrastructure.org/projects/6480)
 
 
 Local development productivity tools meant to smooth and ease developers day to day work. 
