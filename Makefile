@@ -10,8 +10,8 @@ POETRY ?= $(VENV)/bin/poetry
 PYTHON ?= $(VENV)/bin/python
 INSTALL_FLAG := $(VENV)/.install.$(NAME)
 
-VERSION = $(FullSemVer)
-VERSION ?= $(python bin/print_version.py)
+VERSION := $(FullSemVer)
+VERSION := $(if $(VERSION),$(VERSION),$(shell $(POETRY) run python bin/print_version.py))
 
 .DEFAULT_GOAL := help
 
@@ -63,7 +63,7 @@ uninstall: $(VENV)
 
 .PHONY: build
 build: $(VENV) $(POETRY)
-	@echo POETRY: Build
+	@echo POETRY: Build $(VERSION)
 	$(POETRY) version $(VERSION)
 	$(POETRY) build
 
