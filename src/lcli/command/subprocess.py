@@ -4,11 +4,11 @@ from string import Template
 
 import pinject
 
-from lcli.command import RequiredParameterException
+from lcli.command.exceptions import RequiredParameterException
 from lcli.command.input import ParametersReader
 from lcli.config import Command as ConfigCommand
 from lcli.config import Config
-from lcli.input import InterruptedInputException
+from lcli.input.exctptions import InterruptedInputException
 
 
 class CommandRunner:

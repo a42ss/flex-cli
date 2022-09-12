@@ -1,6 +1,6 @@
 import subprocess
 
-from lcli.command import RequiredParameterException
+from lcli.command.exceptions import RequiredParameterException
 from lcli.config import CommandArgsParams, Config, ConfigException
 from lcli.input.prompt import AskQuestions
 

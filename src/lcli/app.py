@@ -1,8 +1,8 @@
+import copy
 import errno
 import logging
 import os
 import sys
-from copy import copy
 
 import pinject
 from blessings import Terminal as Translator

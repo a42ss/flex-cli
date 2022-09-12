@@ -3,7 +3,7 @@ import os
 
 from lcli import __version__
 from lcli.app import App
-from lcli.tools import BaseTool
+from lcli.tools.base import BaseTool
 
 
 class Helper(BaseTool):

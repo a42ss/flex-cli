@@ -3,7 +3,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
-from lcli.input import InterruptedInputException
+from lcli.input.exctptions import InterruptedInputException
 from lcli.input.prompt_toolkit import input_dialog, radiolist_dialog
 
 

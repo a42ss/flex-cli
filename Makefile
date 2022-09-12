@@ -105,6 +105,21 @@ lint: $(INSTALL_STAMP)
 	$(POETRY) run bandit -r ./src -c pyproject.toml
 	@echo POETRY: Done the lint check
 
+.PHONY: lint_fix
+lint_fix: $(INSTALL_STAMP)
+	@echo POETRY: Start lint check
+	@echo POETRY: isort
+	$(POETRY) run isort --profile=black --lines-after-imports=2 ./src $(NAME) --virtual-env=$(VENV)
+	@echo POETRY: black
+	$(POETRY) run black ./src $(NAME)
+	@echo POETRY: flake8
+	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src $(NAME)
+	@echo POETRY: mypy
+	$(POETRY) run mypy ./src $(NAME) --ignore-missing-imports
+	@echo POETRY: bandit
+	$(POETRY) run bandit -r ./src -c pyproject.toml
+	@echo POETRY: Done the lint check
+
 .PHONY: format
 format: $(INSTALL_STAMP)
 	$(VENV)/bin/isort --profile=black --lines-after-imports=2 ./tests/ $(NAME) --virtual-env=$(VENV)
