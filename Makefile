@@ -107,7 +107,7 @@ lint: $(INSTALL_STAMP)
 
 .PHONY: lint_fix
 lint_fix: $(INSTALL_STAMP)
-	@echo POETRY: Start lint check
+	@echo POETRY: Start lint fix
 	@echo POETRY: isort
 	$(POETRY) run isort --profile=black --lines-after-imports=2 ./src $(NAME) --virtual-env=$(VENV)
 	@echo POETRY: black
