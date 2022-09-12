@@ -83,7 +83,7 @@ class Config(object):
                 if default is None:
                     raise ConfigException(
                         'Requested config path not found "' + current_path + '". '
-                                                                             'The full path was: "' + path + '".'
+                        'The full path was: "' + path + '".'
                     )
                 else:
                     return default
@@ -131,10 +131,10 @@ class CommandsConfig(Config):
     def is_command_group_available(self, group_name: str) -> bool:
         available_groups = self.get_available_groups()
         if group_name != "" and (
-                len(available_groups) == 0
-                or available_groups == "all"
-                or "all" in available_groups
-                or group_name in available_groups
+            len(available_groups) == 0
+            or available_groups == "all"
+            or "all" in available_groups
+            or group_name in available_groups
         ):
             return True
         return False
@@ -142,10 +142,10 @@ class CommandsConfig(Config):
     def is_command_available(self, command_name: str) -> bool:
         available_commands = self.get_available_commands()
         if (
-                len(available_commands) == 0
-                or available_commands == "all"
-                or "all" in available_commands
-                or command_name in available_commands
+            len(available_commands) == 0
+            or available_commands == "all"
+            or "all" in available_commands
+            or command_name in available_commands
         ):
             return True
         return False
@@ -492,7 +492,7 @@ class CommandCollection(Config):
         return self
 
     def get_commands_names_in_path(
-            self, path: list = None, ignored_commands=None, available_groups: list = []
+        self, path: list = None, ignored_commands=None, available_groups: list = []
     ) -> dict:
         """
         Get commands names available in a given path
@@ -515,10 +515,10 @@ class CommandCollection(Config):
             return {}
 
     def get_first_level_commands(
-            self,
-            commands_list: "CommandCollection",
-            ignored_commands: list,
-            available_groups: list = [],
+        self,
+        commands_list: "CommandCollection",
+        ignored_commands: list,
+        available_groups: list = [],
     ) -> dict:
         """
         Returns the directly/first accessible commands for a command list
@@ -550,7 +550,7 @@ class CommandCollection(Config):
         return result
 
     def get_command_collection_by_path(
-            self, path: list = None, return_deepest=False
+        self, path: list = None, return_deepest=False
     ) -> "CommandCollection":
         """
         Return the list of commands accessed by a given path for invocation
@@ -567,10 +567,10 @@ class CommandCollection(Config):
         )
 
     def _get_command_collection_by_path(
-            self,
-            commands_list: "CommandCollection",
-            path: list = None,
-            return_deepest=False,
+        self,
+        commands_list: "CommandCollection",
+        path: list = None,
+        return_deepest=False,
     ) -> "CommandCollection":
         """
         Return the list of commands accessed by a given path for invocation
@@ -622,10 +622,10 @@ class CommandCollection(Config):
         )
 
     def _get_command_by_path(
-            self,
-            commands_list: "CommandCollection",
-            path: list = None,
-            return_first_executable=False,
+        self,
+        commands_list: "CommandCollection",
+        path: list = None,
+        return_first_executable=False,
     ):
         """
         Return the command accessed by a given path

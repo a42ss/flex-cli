@@ -8,16 +8,16 @@ import pinject
 from blessings import Terminal as Translator
 
 from lcli.cache import Cache, CacheNotFoundException
-from lcli.config import *
 from lcli.config import (
     CommandCollection,
     CommandsConfig,
     CommandWrapperCollection,
     Config,
+    ConfigNamespaces,
     ConfigValidationError,
     YamlConfigReader,
 )
-from lcli.utils import *
+from lcli.utils import setup_logger
 
 
 class AppException(Exception):

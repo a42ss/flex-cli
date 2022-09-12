@@ -98,7 +98,7 @@ class CommandRunner:
                 out, err = p.communicate()
                 if p.returncode == 0:
                     return json.loads(str(out.rstrip().decode()))
-        except InterruptedInputException as e:
+        except InterruptedInputException:
             return []
         except RequiredParameterException as e:
             print("Parameter " + e.parameter.name + "is required")

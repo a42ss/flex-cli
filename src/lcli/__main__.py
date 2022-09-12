@@ -35,7 +35,7 @@ def main(init_params: dict = None):
     except Exception as error:
         print("Unexpected error: " + str(error))
         print(traceback.format_exc())
-    except KeyboardInterrupt as error:
+    except KeyboardInterrupt:
         print("\n")
         print("Execution stopped by keyboard interrupt signal.")
         print("\n")

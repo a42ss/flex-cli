@@ -28,7 +28,7 @@ class BaseBuilder:
     def locate(cls, path: str):
         try:
             return locate(path)
-        except Exception as e:
+        except Exception:
             raise BuilderException(
                 "Invalid configuration provided for command. Path "
                 + path

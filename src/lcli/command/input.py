@@ -33,7 +33,7 @@ class ParametersReader(object):
                         answers[param] = self._defaults.get(
                             param_object.get("config_path")
                         )
-                    except ConfigException as e:
+                    except ConfigException:
                         if param_object.get("required", False):
                             raise RequiredParameterException(param_object)
                         continue

@@ -84,7 +84,7 @@ class Git(BaseTool):
 
     def branch(self):
         """Push changes to remote repo"""
-        cmd = "git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\1/'"
+        cmd = "git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* (.*)/\\1/'"
         process = _shell_execute(cmd, True)
         out, err = process.communicate()
         if process.returncode == 0:

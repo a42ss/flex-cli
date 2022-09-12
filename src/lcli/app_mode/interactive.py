@@ -158,7 +158,7 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
             try:
                 questions = AskQuestions({"command": question})
                 answers = questions.ask()
-            except InterruptedInputException as e:
+            except InterruptedInputException:
                 return
 
             if "command" in answers:
@@ -326,12 +326,12 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
                 print("Command: " + command_path + " " + command)
 
             return self._invoke_by_command_object(command_object, command, default)
-        except (AppModeException, ToolsException) as e:
+        except (AppModeException, ToolsException):
             # todo: implement verbose version print(e)
             if command in ["h", "cli_info"]:
                 return default
             return self._invoke_shell(command_path + " " + command, output)
-        except Exception as e:
+        except Exception:
             # todo: implement verbose version print(e)
             return self._invoke_shell(command_path + " " + command, output)
 

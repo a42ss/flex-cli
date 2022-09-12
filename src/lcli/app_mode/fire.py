@@ -4,9 +4,7 @@ import fire
 
 from lcli.app_mode import AppModeBase, AppModeException
 from lcli.command.wrappers import ManualWrapper
-from lcli.config import *
 from lcli.config import CommandCollection, ConfigException
-from lcli.exceptions import *
 from lcli.exceptions import BuilderException
 
 

@@ -2,7 +2,6 @@ from lcli.app import App
 from lcli.command.builders import BaseBuilder
 from lcli.command.input import ParametersReader
 from lcli.command.subprocess import CommandRunner
-from lcli.config import *
 from lcli.config import Command
 from lcli.tools.base import BaseTool
 

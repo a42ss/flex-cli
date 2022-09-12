@@ -5,8 +5,6 @@ from lcli.command.builders import (
     WrappersBuilder,
 )
 
-from .exceptions import *
-
 
 CommandBuilderFactory.register_builder(LcliBuilder)
 CommandBuilderFactory.register_builder(SimpleBuilder)
