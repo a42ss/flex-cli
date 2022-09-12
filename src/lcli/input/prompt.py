@@ -1,11 +1,10 @@
-from prompt_toolkit import prompt, Application
+from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit.key_binding import KeyBindings, merge_key_bindings
-from prompt_toolkit.key_binding.defaults import load_key_bindings
+from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
-from lcli.input import InterruptedInputException
-from lcli.input.prompt_toolkit import radiolist_dialog, input_dialog
+from lcli.input.exctptions import InterruptedInputException
+from lcli.input.prompt_toolkit import input_dialog, radiolist_dialog
 
 
 class AskQuestions(object):
@@ -21,26 +20,28 @@ class AskQuestions(object):
             answer = None
             try:
                 question = self._questions[key]
-                if question['type'] == 'list':
+                if question["type"] == "list":
                     answer = self.ask_radio(question)
 
-                if question['type'] == 'autocomplete':
+                if question["type"] == "autocomplete":
                     answer = self.ask_autocompleter(question)
 
-                if question['type'] == 'input':
+                if question["type"] == "input":
                     answer = self.ask_text(question)
             except Exception as e:
                 errors.append(e)
 
             if answer is None:
-                raise InterruptedInputException("Input process was stopped", result, errors)
+                raise InterruptedInputException(
+                    "Input process was stopped", result, errors
+                )
 
             result[key] = answer
         return result
 
     @classmethod
     def ask_radio(cls, question):
-        choices = question['choices']
+        choices = question["choices"]
         asked_choices = []
         if type(choices) == list:
             for choice in choices:
@@ -50,25 +51,23 @@ class AskQuestions(object):
                 asked_choices.append((choice, choices[choice]))
 
         if len(asked_choices) == 0:
-            asked_choices = [('N/A', 'N/A')]
+            asked_choices = [("N/A", "N/A")]
         buttons = {}
-        if 'buttons' in question:
-            buttons = question['buttons']
+        if "buttons" in question:
+            buttons = question["buttons"]
 
         result = radiolist_dialog(
             values=asked_choices,
-            title=question['message'],
-            text=question['message'],
-            buttons=buttons
+            title=question["message"],
+            text=question["message"],
+            buttons=buttons,
         ).run()
         return result
 
     @classmethod
     def ask_autocompleter(cls, question):
         choices_completer = WordCompleter(
-            question['choices'],
-            ignore_case=True,
-            sentence=True
+            question["choices"], ignore_case=True, sentence=True
         )
         # Key bindings.
         bindings = KeyBindings()
@@ -77,20 +76,18 @@ class AskQuestions(object):
         @bindings.add("c-c")
         @bindings.add("c-q")
         def _(event):
-            """ Pressing Ctrl-Q or Ctrl-C will exit the user interface. """
+            """Pressing Ctrl-Q or Ctrl-C will exit the user interface."""
             event.app.exit()
 
         return prompt(
-            question['message'],
+            question["message"],
             completer=choices_completer,
             complete_while_typing=False,
             key_bindings=bindings,
         )
 
     def ask_text(self, question):
-        app = input_dialog(
-            title=question['message'], text=question['message']
-        )
+        app = input_dialog(title=question["message"], text=question["message"])
         result = app.run()
 
         return result

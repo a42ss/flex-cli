@@ -1,5 +1,5 @@
-import os
 import sys
+import os
 
 
 def load_local_packages_from_src():

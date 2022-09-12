@@ -1,9 +1,0 @@
-fire
-pinject
-prompt_toolkit
-PyYAML
-jsonschema
-# text
-pyfiglet
-# colorful terminal
-blessings

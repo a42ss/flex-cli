@@ -1,5 +1,5 @@
 from pydoc import locate
-from typing import List, Dict
+from typing import Dict, List
 
 from lcli.app import App
 from lcli.config import Command
@@ -11,8 +11,9 @@ class BaseBuilder:
     Build various type of objects to use them in Fire application mode
     Mandatory to define the command_type for each builder
     """
+
     _app: App
-    command_type: str = 'n/a'
+    command_type: str = "n/a"
 
     def __init__(self, app: App) -> None:
         self._app = app
@@ -27,8 +28,12 @@ class BaseBuilder:
     def locate(cls, path: str):
         try:
             return locate(path)
-        except Exception as e:
-            raise BuilderException("Invalid configuration provided for command. Path " + path + ' could not be loaded.')
+        except Exception:
+            raise BuilderException(
+                "Invalid configuration provided for command. Path "
+                + path
+                + " could not be loaded."
+            )
 
 
 class CommandBuilderFactory(object):
@@ -65,7 +70,9 @@ class CommandBuilderFactory(object):
             builder_object = self.get_builder(builder)
             if builder_object.can_build(command):
                 return builder_object
-        raise BuilderException("Unable to find a proper command builder for command: " + command.name)
+        raise BuilderException(
+            "Unable to find a proper command builder for command: " + command.name
+        )
 
     def get_builder(self, builder) -> BaseBuilder:
         """
@@ -84,16 +91,20 @@ class LcliBuilder(BaseBuilder):
     This builder is responsible to construct objects located in lcli.tools namespace
     Usually extended form lcli.tools.Base.BaseTool
     """
+
     command_type: str = Command.Constants.TYPES.LCLI
 
     def build(self, command: Command):
-        return locate(command.args.command)(self._app)
+        located_object = locate(command.args.command)
+        if callable(located_object):
+            return located_object(self._app)
 
 
 class SimpleBuilder(BaseBuilder):
     """
     A simple command object, without other dependencies
     """
+
     command_type: str = Command.Constants.TYPES.FUNCTION
 
     def canBuild(self, command: Command) -> bool:
@@ -109,19 +120,29 @@ class WrappersBuilder(BaseBuilder):
     """
     This will build a "virtual" command object capable to execute commands form configuration
     """
+
     command_type: str = Command.Constants.TYPES.WRAPPER
 
     def build(self, command: Command):
         try:
             wrappers = self._app.get_commands_wrappers()
-            wrapper_object = wrappers.get(command.args.get('wrapper'))
-            builder_name = wrapper_object.get('builder')
-            if builder_name is not None and type(builder_name) == str and len(builder_name):
+            wrapper_object = wrappers.get(command.args.get("wrapper"))
+            builder_name = wrapper_object.get("builder")
+            if (
+                builder_name is not None
+                and type(builder_name) == str
+                and len(builder_name)
+            ):
                 builder = locate(builder_name)
-                return builder(self._app).build(command)
+                if callable(builder):
+                    builder_object = builder(self._app)
+                    if callable(builder_object):
+                        return builder_object.build(command)
 
-            handler = locate(wrapper_object.get('handler'))
-            return handler(self._app, command)
+            handler = locate(wrapper_object.get("handler"))
+            if callable(handler):
+                return handler(self._app, command)
+
         except Exception as e:
             self._app.logger.warning(e)
-            raise BuilderException('Unable to build command: ' + command.name)
+            raise BuilderException("Unable to build command: " + command.name)

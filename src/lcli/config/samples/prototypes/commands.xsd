@@ -70,9 +70,9 @@
 
 
     <xs:simpleType name="paramType">
-      <xs:restriction base="xs:string">
-        <xs:enumeration value="cli"/>
-        <xs:enumeration value="config"/>
-      </xs:restriction>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="cli"/>
+            <xs:enumeration value="config"/>
+        </xs:restriction>
     </xs:simpleType>
 </xs:schema>

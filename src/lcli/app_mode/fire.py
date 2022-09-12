@@ -2,10 +2,10 @@ import sys
 
 import fire
 
-from lcli.app_mode import AppModeException, AppModeBase
+from lcli.app_mode.base import AppModeBase, AppModeException
 from lcli.command.wrappers import ManualWrapper
-from lcli.config import *
-from lcli.exceptions import *
+from lcli.config import CommandCollection, ConfigException
+from lcli.exceptions import BuilderException
 
 
 class FireException(AppModeException):
@@ -28,14 +28,14 @@ class Fire(AppModeBase):
         args = self._app.get_args()
         command_path_index = 0
         for part in args:
-            if part == '-':
+            if part == "-":
                 break
             command_path_index += 1
-        remaining_args = args[command_path_index + 1:]
+        remaining_args = args[command_path_index + 1 :]
         path = args[1:command_path_index]
         new_args = args[:command_path_index]
         if len(remaining_args):
-            new_args.append("--args=\"" + " ".join(remaining_args) + "\"")
+            new_args.append('--args="' + " ".join(remaining_args) + '"')
 
         if len(new_args) >= 2:
             if self._app.get_app_code() == new_args[1]:
@@ -63,16 +63,23 @@ class Fire(AppModeBase):
         executable_name = ""
         if len(path) > 0:
             executable_name = path[:1].pop()
-        if executable_name == '--' or executable_name == "":
+        if executable_name == "--" or executable_name == "":
             executable_name = self._app.get_app_code()
 
         result_commands = self.get_available_commands(path)
         if self._command_alias_performed:
-            if len(result_commands) == 1 and \
-                    (type(result_commands) is dict or type(result_commands) is ManualWrapper) and \
-                    executable_name in result_commands:
-                if type(result_commands[executable_name]) is dict or \
-                        type(result_commands[executable_name]) is ManualWrapper:
+            if (
+                len(result_commands) == 1
+                and (
+                    type(result_commands) is dict
+                    or type(result_commands) is ManualWrapper
+                )
+                and executable_name in result_commands
+            ):
+                if (
+                    type(result_commands[executable_name]) is dict
+                    or type(result_commands[executable_name]) is ManualWrapper
+                ):
                     temp_result = ManualWrapper()
                     temp_result.__doc__ = self._app.get_app_description()
 
@@ -91,7 +98,7 @@ class Fire(AppModeBase):
         try:
             if len(path) > 0:
                 command = path[:1].pop()
-                if command == '--':
+                if command == "--":
                     path = []
 
             if not len(path):
@@ -99,10 +106,11 @@ class Fire(AppModeBase):
             else:
                 try:
                     command_collection = CommandCollection({})
-                    command_found = self._app.get_commands().get_command_by_path(path=path[:1],
-                                                                                 return_first_executable=True)
+                    command_found = self._app.get_commands().get_command_by_path(
+                        path=path[:1], return_first_executable=True
+                    )
                     command_collection.add_command(command_found)
-                except Exception as e:
+                except Exception:
                     command_collection = self._app.get_commands()
         except ConfigException as e:
             command_collection = CommandCollection({})
@@ -110,7 +118,9 @@ class Fire(AppModeBase):
 
         return self.build_commands_object_recursively(command_collection)
 
-    def build_commands_object_recursively(self, commands_list: CommandCollection) -> ManualWrapper:
+    def build_commands_object_recursively(
+        self, commands_list: CommandCollection
+    ) -> ManualWrapper:
         """
         Build command objects or references prepared to Fire from a CommandCollection object recursively
         It is needed because for now it rely on Fire documentation and the object should be prepared and ready to execute
@@ -128,18 +138,22 @@ class Fire(AppModeBase):
                 if command.is_group():
                     if not config_object.is_command_group_available(key):
                         continue
-                    group_objects = self.build_commands_object_recursively(command.commands)
+                    group_objects = self.build_commands_object_recursively(
+                        command.commands
+                    )
                     if type(group_objects) is ManualWrapper:
                         group_objects.__doc__ = command.description
 
-                    if key == 'groups':
+                    if key == "groups":
                         result_commands.__update__(group_objects)
                     else:
                         result_commands[key] = group_objects
                 else:
                     if not config_object.is_command_available(key):
                         continue
-                    result_commands[key] = command_builder_factory.create(command).build(command)
+                    result_commands[key] = command_builder_factory.create(
+                        command
+                    ).build(command)
             except BuilderException as e:
                 self._app.logger.warning(e)
 

@@ -23,42 +23,57 @@ fire = { version = "^0.4" }
 pinject = { version = "^0.14" }
 prompt-toolkit = { version = "^3.0" }
 PyYAML = { version = "^6.0" }
+types-PyYAML = "*"
 jsonschema = { version = "^4.5" }
 pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
 
 [tool.poetry.dev-dependencies]
-toml = "*"
-poetry = "*"
-poetry2setup = "*"
 
-# dev deps
-mock = "*"
-pytest = "*"
-pytest-cov = "*"
-semver = "*"
-
-# Build tools
-build = "*"
-twine = "*"
-invoke = "*"
-pipreqs = "*"
-
-# prod deps
-six = "^1.14.0"
-decorator = "^4.3.0"
-
-# docs
+[tool.poetry.group.docs.dependencies]
 sphinx = "*"
 sphinxcontrib-httpdomain = "*"
 sphinx_rtd_theme = "*"
 recommonmark = "*"
 m2r = "*"
 
+[tool.poetry.group.build.dependencies]
+poetry = "^1.2"
+poetry2setup = "^1.0.0"
+toml = "*"
+
+# Build tools
+build = "*"
+twine = "*"
+invoke = "*"
+pipreqs = "*"
+flake8 = "*"
+isort = "*"
+black = "*"
+mypy = "*"
+bandit = "*"
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+mock = "*"
+coverage = {extras = ["toml"], version = "^6.4.4"}
+
+[tool.poetry.group.poetry.dependencies]
+poetry = "^1.2"
+poetry2setup = "^1.0.0"
+
+[tool.coverage.run]
+relative_files = true
+
 [tool.poetry.scripts]
 ltest = 'lcli.__main__:main'
 
 [tool.poetry.plugins]
+
+[tool.bandit]
+exclude = "src/test"
+skips = ["B602", "B605", "B603", "B301", "B403", "B404"]
 
 [virtualenvs]
 create = true

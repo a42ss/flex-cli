@@ -17,11 +17,26 @@ pipeline {
                 buildName "${env.FullSemVer}"
             }
         }
-        stage ('Test pytest') {
+        stage ('Build using docker image') {
             steps {
                 sh """
                     docker build -t "lcli:${env.FullSemVer.replaceAll('\\+', '.')}" .
                 """
+            }
+        }
+        stage ('Build using poetry') {
+            agent {
+                docker {
+                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.FullSemVer.replaceAll('\\+', '.')}"
+                    args "${env.DOCKER_AGENT_OPTIONS}"
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    # pip3 install pipenv poetry
+                    # make poetry_build
+                '''
             }
         }
         stage ('Check build version') {
@@ -33,6 +48,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    ls -la
                     id
                     pwd
                     python --version
