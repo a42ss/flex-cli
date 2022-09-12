@@ -48,6 +48,14 @@ $(INSTALL_FLAG): $(VENV) $(PYTHON) poetry.lock $(POETRY)
 	$(POETRY) install
 	touch $(INSTALL_FLAG)
 
+.PHONY: install_for_user
+install_for_user:
+	./install -u
+
+.PHONY: install_for_system
+install_for_system:
+	./install
+
 .PHONY: update
 update: $(VENV) $(POETRY) pyproject.toml
 	@echo Poetry install all requirements in $(VENV)

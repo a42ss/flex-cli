@@ -69,3 +69,8 @@ ltest = 'lcli.__main__:main'
 [virtualenvs]
 create = true
 in-project = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
