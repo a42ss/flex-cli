@@ -1,10 +1,15 @@
 # Introduction
 
-[![Build](https://github.com/a42ss/lcli/actions/workflows/python-package.yml/badge.svg)](https://github.com/a42ss/lcli/actions/workflows/python-package.yml)
+[![PyPI version](https://img.shields.io/pypi/v/lcli.svg)](https://pypi.org/project/lcli)
+[![Build Status](https://github.com/a42ss/lcli/actions/workflows/python-package.yml/badge.svg)](https://github.com/a42ss/lcli/actions/workflows/python-package.yml)
 [![Coverage badge](https://raw.githubusercontent.com/a42ss/lcli/python-coverage-comment-action-data/badge.svg)](https://github.com/a42ss/lcli/tree/python-coverage-comment-action-data)
 [![CodeQL](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6480/badge)](https://bestpractices.coreinfrastructure.org/projects/6480)
+[![Docs badge](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://lcli-docs.readthedocs.io/en/latest/)
+[![Chat badge](https://img.shields.io/badge/chat-IRC-brightgreen.svg)](https://github.com/a42ss/lcli/discussions)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://lcli-docs.readthedocs.io/en/latest/)
 
+   
 
 Local development productivity tools meant to smooth and ease developers day to day work. 
 It is meant to be cross-platform but for now is tested using MacOs and Ubuntu
@@ -123,3 +128,4 @@ Feel free to contribute to this project and make developer life essayer:
 * https://github.com/oclif/oclif#-cli-types
 * https://medium.com/the-z/getting-started-with-oclif-by-creating-a-todo-cli-app-b3a2649adbcf
 * https://opensource.com/article/17/5/4-practical-python-libraries
+
