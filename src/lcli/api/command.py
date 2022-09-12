@@ -1,16 +1,15 @@
 from abc import abstractmethod
+
 from lcli.config import CommandParam
 
 
 class CommandInterface:
-
     @abstractmethod
     def do_something(self):
         pass
 
 
 class CommandRunnerInterface:
-
     @abstractmethod
     def do_something(self):
         pass

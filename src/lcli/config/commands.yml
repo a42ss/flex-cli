@@ -16,10 +16,10 @@ app_help_message: |
   ===========================================================
 app_space_separator: "\n\n"
 
-app_description: |  
+app_description: |
   The main purpose of this cli tool is to allow easy access and documentation to existing or new scripts for day to day work. 
 
-figlet_font:  bubble
+figlet_font: bubble
 
 commands:
   interactive:

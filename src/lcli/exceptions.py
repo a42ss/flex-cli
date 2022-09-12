@@ -1,5 +1,3 @@
-
-
 class LcliException(Exception):
     pass
 

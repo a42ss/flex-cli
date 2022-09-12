@@ -1,7 +1,8 @@
 import os
-from lcli.__init__ import EXECUTABLE_NAME
 import sys
 import traceback
+
+from .__init__ import EXECUTABLE_NAME
 
 
 def main(init_params: dict = None):
@@ -12,20 +13,27 @@ def main(init_params: dict = None):
         from lcli.app import App
 
         project_root_path = os.path.realpath(os.path.dirname(__file__))
-        app = App(app_path=project_root_path, executable_name=EXECUTABLE_NAME, init_params=init_params, cwd=cwd)
+        app = App(
+            app_path=project_root_path,
+            executable_name=EXECUTABLE_NAME,
+            init_params=init_params,
+            cwd=cwd,
+        )
         app.logger.info("start")
         app.run()
         app.logger.info("end")
     except ModuleNotFoundError as error:
         print("\n")
         print("Module dependencies are not met: " + str(error))
-        print("Please install all requirements defined in requirements.txt of "
-              + EXECUTABLE_NAME +
-              " before running the application.")
+        print(
+            "Please install all requirements defined in requirements.txt of "
+            + EXECUTABLE_NAME
+            + " before running the application."
+        )
         print("\n")
 
     except Exception as error:
-        print('Unexpected error: ' + str(error))
+        print("Unexpected error: " + str(error))
         print(traceback.format_exc())
     except KeyboardInterrupt as error:
         print("\n")
@@ -44,7 +52,7 @@ def process_working_directory():
             to_remove_args.append(param)
             cwd = param
             break
-        if param == '--cwd':
+        if param == "--cwd":
             to_remove_args.append(param)
             found_cwd = True
 
@@ -55,5 +63,5 @@ def process_working_directory():
     return cwd
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main({})

@@ -11,4 +11,6 @@ class AppModeBase:
 
     def run(self) -> None:
         """Run application in current mode"""
-        raise AppModeException("Application mode not implemented or is wrong configured.")
+        raise AppModeException(
+            "Application mode not implemented or is wrong configured."
+        )

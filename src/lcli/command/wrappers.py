@@ -1,9 +1,10 @@
 from lcli.app import App
-from lcli.command.subprocess import CommandRunner
-from lcli.command.input import ParametersReader
-from lcli.tools.base import BaseTool
-from lcli.config import *
 from lcli.command.builders import BaseBuilder
+from lcli.command.input import ParametersReader
+from lcli.command.subprocess import CommandRunner
+from lcli.config import *
+from lcli.config import Command
+from lcli.tools.base import BaseTool
 
 
 class BaseCommandWrapperInterface(object):
@@ -20,6 +21,7 @@ class BashCommandWrapper(BaseTool, BashCommandWrapperInterface):
     This will consist of executing shell commands on a given directory using configuration, parameters completion and
     interactive selections of parameters
     """
+
     _command_name: str
     _command: Command
 
@@ -37,11 +39,15 @@ class BashCommandWrapper(BaseTool, BashCommandWrapperInterface):
             current_command = sub_commands[command_code]
             current_command_obj = CommandRunner(
                 current_command,
-                self._app.get_config_object().get(['commands_defaults', self._command_name], default={}),
+                self._app.get_config_object().get(
+                    ["commands_defaults", self._command_name], default={}
+                ),
                 self._app.get_object_manager().provide(ParametersReader.Factory),
-                self._command
+                self._command,
             )
-            current_command_obj.__doc__ = current_command.description + " (" + current_command.args.command + ")"
+            current_command_obj.__doc__ = (
+                current_command.description + " (" + current_command.args.command + ")"
+            )
             setattr(self, command_code, current_command_obj)
 
     class _Builder(BaseBuilder):
@@ -49,7 +55,7 @@ class BashCommandWrapper(BaseTool, BashCommandWrapperInterface):
         This will be a custom builder for current wrapper, custom ones may be implemented
         """
 
-        def build(self, command: Command) -> 'BashCommandWrapper':
+        def build(self, command: Command) -> "BashCommandWrapper":
             return BashCommandWrapper(self._app, command)
 
 

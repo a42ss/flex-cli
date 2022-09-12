@@ -20,7 +20,7 @@ class Helper(BaseTool):
             result.append("All")
         else:
             for group in available_groups:
-                if group == '-g':
+                if group == "-g":
                     continue
                 result.append(group)
         return result
@@ -36,7 +36,9 @@ class Helper(BaseTool):
         return result
 
     def cache_clear(self):
-        files = glob.glob(os.path.join(self._app.cache_directory_path, '*'), recursive=True)
+        files = glob.glob(
+            os.path.join(self._app.cache_directory_path, "*"), recursive=True
+        )
         for f in files:
             try:
                 os.remove(f)

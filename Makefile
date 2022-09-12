@@ -92,11 +92,11 @@ dependency:
 
 .PHONY: lint
 lint: $(INSTALL_STAMP)
-	$(VENV)/bin/isort --profile=black --lines-after-imports=2 --check-only ./tests/ $(NAME) --virtual-env=$(VENV)
-	$(VENV)/bin/black --check ./tests/ $(NAME) --diff
-	$(VENV)/bin/flake8 --ignore=W503,E501 ./tests/ $(NAME)
-	$(VENV)/bin/mypy ./tests/ $(NAME) --ignore-missing-imports
-	$(VENV)/bin/bandit -r $(NAME) -s B608
+	$(POETRY) run isort --profile=black --lines-after-imports=2 --check-only ./src $(NAME) --virtual-env=$(VENV)
+	$(POETRY) run black --check ./src/tests/ $(NAME) --diff
+	$(POETRY) run flake8 --ignore=W503,E501 ./src/tests/ $(NAME)
+	$(POETRY) run mypy ./src $(NAME) --ignore-missing-imports
+	$(POETRY) run bandit -r ./src -c pyproject.toml
 
 .PHONY: format
 format: $(INSTALL_STAMP)

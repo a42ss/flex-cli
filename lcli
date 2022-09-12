@@ -2,16 +2,20 @@
 import os
 import sys
 
-CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-BASE_PATH = os.path.join(CURRENT_DIRECTORY, 'src')
-sys.path.insert(0, BASE_PATH)
-
 from src.lcli.__main__ import main
 
-if __name__ == '__main__':
-    main({
-        'flags': [
-            '-d',
-            '-v',
-        ]
-    })
+
+CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+BASE_PATH = os.path.join(CURRENT_DIRECTORY, "src")
+sys.path.insert(0, BASE_PATH)
+
+
+if __name__ == "__main__":
+    main(
+        {
+            "flags": [
+                "-d",
+                "-v",
+            ]
+        }
+    )
