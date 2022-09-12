@@ -1266,10 +1266,9 @@ python-versions = ">=3.6"
 importlib-metadata = {version = ">=1.7.0", markers = "python_version < \"3.8\""}
 pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
-
 [[package]]
 name = "termcolor"
-version = "2.0.0"
+version = "2.0.1"
 description = "ANSI color formatting for output in terminal"
 category = "main"
 optional = false
@@ -2194,8 +2193,8 @@ stevedore = [
     {file = "stevedore-3.5.0.tar.gz", hash = "sha256:f40253887d8712eaa2bb0ea3830374416736dc8ec0e22f5a65092c1174c44335"},
 ]
 termcolor = [
-    {file = "termcolor-2.0.0-py3-none-any.whl", hash = "sha256:6e1a4b8e9c064ad8f9dfe2f9b35a7871d6ea5b6bb4f9da55bc0fd494b2302204"},
-    {file = "termcolor-2.0.0.tar.gz", hash = "sha256:4889f2243b1da3934fc6cf4b57ee50a0ce98065ec06bfddac3fa6db24a9fcde2"},
+    {file = "termcolor-2.0.1-py3-none-any.whl", hash = "sha256:7e597f9de8e001a3208c4132938597413b9da45382b6f1d150cff8d062b7aaa3"},
+    {file = "termcolor-2.0.1.tar.gz", hash = "sha256:6b2cf769e93364a2676e1de56a7c0cff2cf5bd07f37e9cc80b0dd6320ebfe388"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
