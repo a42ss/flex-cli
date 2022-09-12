@@ -16,11 +16,11 @@ class Cache(object):
     cache_key: str
 
     class Constants:
-        EXPIRE_ON = 'expire_on'
-        LIFETIME = 'lifetime'
-        DATA = 'data'
+        EXPIRE_ON = "expire_on"
+        LIFETIME = "lifetime"
+        DATA = "data"
 
-    def __init__(self, cache_directory: str,  cache_keys: list, lifetime: int = 0):
+    def __init__(self, cache_directory: str, cache_keys: list, lifetime: int = 0):
         """
 
         :type cache_keys: list
@@ -40,18 +40,19 @@ class Cache(object):
         cache[self.cache_key] = {
             self.Constants.DATA: data,
             self.Constants.LIFETIME: self.lifetime,
-            self.Constants.EXPIRE_ON: datetime.datetime.now() + datetime.timedelta(self.lifetime)
+            self.Constants.EXPIRE_ON: datetime.datetime.now()
+            + datetime.timedelta(self.lifetime),
         }
         cache.close()
 
     @classmethod
     def generate_cache_key(cls, cache_keys: list) -> str:
-        md5 = hashlib.md5()
+        md5 = hashlib.md5(usedforsecurity=False)
 
         if len(cache_keys) == 1:
-            md5.update(cache_keys[0].encode('utf-8'))
+            md5.update(cache_keys[0].encode("utf-8"))
         else:
-            md5.update(''.join(cache_keys).encode('utf-8'))
+            md5.update("".join(cache_keys).encode("utf-8"))
         return md5.hexdigest()
 
     def get(self):
@@ -60,8 +61,10 @@ class Cache(object):
         if self.cache_key in cache:
             cache_data = cache[self.cache_key]
 
-            if cache_data[self.Constants.LIFETIME] == 0 or \
-                    cache_data[self.Constants.EXPIRE_ON] > datetime.datetime.now():
+            if (
+                cache_data[self.Constants.LIFETIME] == 0
+                or cache_data[self.Constants.EXPIRE_ON] > datetime.datetime.now()
+            ):
                 result = cache_data[self.Constants.DATA]
             else:
                 del cache[self.cache_key]
@@ -72,4 +75,3 @@ class Cache(object):
             return result
 
         raise CacheNotFoundException("Cache not found")
-

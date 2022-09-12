@@ -1,3 +1,2 @@
-
 class AppModeException(Exception):
     pass

@@ -10,8 +10,8 @@ POETRY ?= $(VENV)/bin/poetry
 PYTHON ?= $(VENV)/bin/python
 INSTALL_FLAG := $(VENV)/.install.$(NAME)
 
-VERSION = $(FullSemVer)
-VERSION ?= $(python bin/print_version.py)
+VERSION := $(FullSemVer)
+VERSION := $(if $(VERSION),$(VERSION),$(shell $(POETRY) run python bin/print_version.py))
 
 .DEFAULT_GOAL := help
 
@@ -63,7 +63,7 @@ uninstall: $(VENV)
 
 .PHONY: build
 build: $(VENV) $(POETRY)
-	@echo POETRY: Build
+	@echo POETRY: Build $(VERSION)
 	$(POETRY) version $(VERSION)
 	$(POETRY) build
 
@@ -92,11 +92,33 @@ dependency:
 
 .PHONY: lint
 lint: $(INSTALL_STAMP)
-	$(VENV)/bin/isort --profile=black --lines-after-imports=2 --check-only ./tests/ $(NAME) --virtual-env=$(VENV)
-	$(VENV)/bin/black --check ./tests/ $(NAME) --diff
-	$(VENV)/bin/flake8 --ignore=W503,E501 ./tests/ $(NAME)
-	$(VENV)/bin/mypy ./tests/ $(NAME) --ignore-missing-imports
-	$(VENV)/bin/bandit -r $(NAME) -s B608
+	@echo POETRY: Start lint check
+	@echo POETRY: isort
+	$(POETRY) run isort --profile=black --lines-after-imports=2 --check-only ./src $(NAME) --virtual-env=$(VENV)
+	@echo POETRY: black
+	$(POETRY) run black --check ./src $(NAME) --diff
+	@echo POETRY: flake8
+	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src $(NAME)
+	@echo POETRY: mypy
+	$(POETRY) run mypy ./src $(NAME) --ignore-missing-imports
+	@echo POETRY: bandit
+	$(POETRY) run bandit -r ./src -c pyproject.toml
+	@echo POETRY: Done the lint check
+
+.PHONY: lint_fix
+lint_fix: $(INSTALL_STAMP)
+	@echo POETRY: Start lint fix
+	@echo POETRY: isort
+	$(POETRY) run isort --profile=black --lines-after-imports=2 ./src $(NAME) --virtual-env=$(VENV)
+	@echo POETRY: black
+	$(POETRY) run black ./src $(NAME)
+	@echo POETRY: flake8
+	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src $(NAME)
+	@echo POETRY: mypy
+	$(POETRY) run mypy ./src $(NAME) --ignore-missing-imports
+	@echo POETRY: bandit
+	$(POETRY) run bandit -r ./src -c pyproject.toml
+	@echo POETRY: Done the lint check
 
 .PHONY: format
 format: $(INSTALL_STAMP)

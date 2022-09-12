@@ -1,13 +1,23 @@
+import copy
 import errno
+import logging
+import os
 import sys
-from copy import copy
 
 import pinject
 from blessings import Terminal as Translator
 
 from lcli.cache import Cache, CacheNotFoundException
-from lcli.config import *
-from lcli.utils import *
+from lcli.config import (
+    CommandCollection,
+    CommandsConfig,
+    CommandWrapperCollection,
+    Config,
+    ConfigNamespaces,
+    ConfigValidationError,
+    YamlConfigReader,
+)
+from lcli.utils import setup_logger
 
 
 class AppException(Exception):
@@ -27,71 +37,77 @@ class Output(object):
 class App:
     CACHE_LIFETIME = 86400
     _app_path: str
-    _current_command = []
+    _current_command: list[str] = []
 
     _object_manager: pinject.object_graph.ObjectGraph
     translator = __ = Translator()
     output = Output()
     logger: logging.Logger
 
-    FLAG_INTERACTIVE = '-i'
-    FLAG_VERBOSE = '-v'
-    FLAG_DEBUG = '-d'
+    FLAG_INTERACTIVE = "-i"
+    FLAG_VERBOSE = "-v"
+    FLAG_DEBUG = "-d"
 
-    _flags = {}
+    _flags: dict[str, str] = {}
     _available_flags = [FLAG_INTERACTIVE, FLAG_VERBOSE, FLAG_DEBUG]
 
     _working_directory: str = ""
     _user_home_directory: str = ""
     _user_home_directory_path: str = ""
 
-    CONF_EXECUTABLE_PATH: str = 'cli_executable_path'
-    CONF_EXECUTABLE_NAME: str = 'cli_executable_name'
+    CONF_EXECUTABLE_PATH: str = "cli_executable_path"
+    CONF_EXECUTABLE_NAME: str = "cli_executable_name"
     _executable_path: str
     _executable_name: str
 
-    _config_folder_defaults = 'config'
-    _config_folder_working_directory = '.lcli'
-    _config_folder_defaults_path = ''
+    _config_folder_defaults = "config"
+    _config_folder_working_directory = ".lcli"
+    _config_folder_defaults_path = ""
     _working_directory_conf_path: str = ""
-    _config_folder_home_directory = os.path.join('.config', '.lcli')
-    _config_namespace = 'commands'
+    _config_folder_home_directory = os.path.join(".config", ".lcli")
+    _config_namespace = "commands"
     _log_file = "lcli.log"
     _cache_directory_path: str
 
     _commands: CommandCollection
     _commands_wrappers: CommandWrapperCollection
 
-    def __init__(self, app_path: str, cwd: str, executable_name: str, init_params: dict):
+    def __init__(
+        self, app_path: str, cwd: str, executable_name: str, init_params: dict
+    ):
 
-        if 'flags' in init_params:
-            init_flags = init_params['flags']
+        if "flags" in init_params:
+            init_flags = init_params["flags"]
             if type(init_flags) == list:
                 for flag in init_flags:
                     self._flags[flag] = flag
 
         self._working_directory = cwd
-        self._user_home_directory = os.path.expanduser('~')
+        self._user_home_directory = os.path.expanduser("~")
         self._working_directory_conf_path = os.path.join(
-            self.get_working_directory(),
-            self._config_folder_working_directory
+            self.get_working_directory(), self._config_folder_working_directory
         )
-        self._config_folder_defaults_path = os.path.join(os.path.dirname(__file__), self._config_folder_defaults)
-        self._user_home_directory_path = os.path.join(self._user_home_directory, self._config_folder_home_directory)
+        self._config_folder_defaults_path = os.path.join(
+            os.path.dirname(__file__), self._config_folder_defaults
+        )
+        self._user_home_directory_path = os.path.join(
+            self._user_home_directory, self._config_folder_home_directory
+        )
         self._cache_directory_path = os.path.join(
-            self._user_home_directory_path,
-            'cache'
+            self._user_home_directory_path, "cache"
         )
         self._config_folders = [
             self._config_folder_defaults_path,
             self._user_home_directory_path,
-            self._working_directory_conf_path
+            self._working_directory_conf_path,
         ]
 
         self._config_object = CommandsConfig({})
         self._app_path = app_path
         self.init()
-        self._executable_name = self._config_object.get(App.CONF_EXECUTABLE_NAME, executable_name)
+        self._executable_name = self._config_object.get(
+            App.CONF_EXECUTABLE_NAME, executable_name
+        )
 
     # <Init section
     def init(self):
@@ -100,13 +116,13 @@ class App:
         self.init_default_flags()
         self.init_logger()
         self.init_commands_configs()
-        self._executable_path = self._config_object.get(App.CONF_EXECUTABLE_PATH, '')
+        self._executable_path = self._config_object.get(App.CONF_EXECUTABLE_PATH, "")
         self.init_object_manager()
 
     def init_default_flags(self):
         to_remove_args = []
         for flag in sys.argv:
-            if flag[0] == '-':
+            if flag[0] == "-":
                 if flag in self._available_flags:
                     self._flags[flag] = flag
                     to_remove_args.append(flag)
@@ -116,8 +132,8 @@ class App:
         command_args = copy.deepcopy(sys.argv)
         command_args.pop(0)
 
-        if len(command_args) > 0 and command_args[0] == '--':
-            self._current_command = ''
+        if len(command_args) > 0 and command_args[0] == "--":
+            self._current_command = ""
         else:
             self._current_command = command_args
 
@@ -128,13 +144,15 @@ class App:
         if self.is_verbose():
             verb = logging.INFO
 
-        self.logger = setup_logger('APP', verbosity=verb, file=self.get_log_file(self._log_file))
+        self.logger = setup_logger(
+            "APP", verbosity=verb, file=self.get_log_file(self._log_file)
+        )
 
     def init_commands_configs(self):
         config_object = self.construct_config_object(
             ConfigNamespaces.COMMANDS,
             self.get_config_files_by_namespace(ConfigNamespaces.COMMANDS),
-            os.path.join(self._config_folder_defaults_path, 'schema', 'commands.json')
+            os.path.join(self._config_folder_defaults_path, "schema", "commands.json"),
         )
         self._config_object = CommandsConfig(config_object.get_all())
         self._commands = CommandCollection(self._config_object.get_commands())
@@ -146,9 +164,13 @@ class App:
         config_files = []
         for folder in self._config_folders:
             if len(self._current_command) > 0:
-                config_files.append(os.path.join(folder, namespace, self._current_command[0] + ".yml"))
+                config_files.append(
+                    os.path.join(folder, namespace, self._current_command[0] + ".yml")
+                )
             else:
-                for other_file in self.discover_configuration_file(os.path.join(folder, namespace)):
+                for other_file in self.discover_configuration_file(
+                    os.path.join(folder, namespace)
+                ):
                     config_files.append(other_file)
 
             config_files.append(os.path.join(folder, namespace + ".yml"))
@@ -161,12 +183,17 @@ class App:
         if os.path.isdir(directory):
             for root, dirs, files in os.walk(directory):
                 for file in files:
-                    if file.endswith('.yml'):
+                    if file.endswith(".yml"):
                         result.append(os.path.join(directory, file))
         return result
 
-    def construct_config_object(self, namespace: str, config_files: list, schema_file: str = '',
-                                first_file_mandatory: bool = False) -> Config:
+    def construct_config_object(
+        self,
+        namespace: str,
+        config_files: list,
+        schema_file: str = "",
+        first_file_mandatory: bool = False,
+    ) -> Config:
         cache_keys = config_files.copy()
         cache_keys.append(namespace)
         cache_keys.append(self._working_directory_conf_path)
@@ -179,7 +206,9 @@ class App:
                 pass
 
         try:
-            config_reader = YamlConfigReader(config_files[0], required=first_file_mandatory, schema_file=schema_file)
+            config_reader = YamlConfigReader(
+                config_files[0], required=first_file_mandatory, schema_file=schema_file
+            )
             config_object = config_reader.get_config()
             for key in config_files[1:]:
                 config_reader = YamlConfigReader(key, schema_file=schema_file)
@@ -188,12 +217,12 @@ class App:
             self.logger.error(e)
             self.output.print(
                 "Configuration error: {0} at {1} in file {2}",
-                [e.message, '/'.join(e.error_path), e.file_path]
+                [e.message, "/".join(e.error_path), e.file_path],
             )
             raise AppException(
                 self.output.format(
                     "Unable to configure application. Fix errors in config file. {}",
-                    [e.file_path]
+                    [e.file_path],
                 )
             )
 
@@ -222,10 +251,12 @@ class App:
         if self.is_interactive():
             """Interactive shell for current command"""
             from lcli.app_mode.interactive import LcliPrompt
-            LcliPrompt(self, ' '.join(self._current_command)).run()
+
+            LcliPrompt(self, " ".join(self._current_command)).run()
         else:
             """Fire application expose all commands"""
             from lcli.app_mode.fire import Fire
+
             Fire(self).run()
 
     # < App Business logic section
@@ -239,15 +270,16 @@ class App:
 
     def get_command_builder_factory(self):
         from lcli.command.builders import CommandBuilderFactory
+
         return CommandBuilderFactory(self)
 
     # Commands related methods>
 
     def get_app_code(self):
-        return self._config_object.get('app_code')
+        return self._config_object.get("app_code")
 
     def get_app_description(self):
-        return self._config_object.get('app_description', '')
+        return self._config_object.get("app_description", "")
 
     # <Flags
     def is_interactive(self):
@@ -275,7 +307,7 @@ class App:
         return os.path.join(self.get_executable_path(), self.get_executable_name())
 
     def get_log_file(self, log_file: str):
-        log_path = os.path.join(self._user_home_directory_path, 'log')
+        log_path = os.path.join(self._user_home_directory_path, "log")
         try:
             os.makedirs(log_path)
         except OSError as e:

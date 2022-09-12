@@ -2,6 +2,7 @@
 
 [![Main branch build](https://github.com/a42ss/lcli/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/python-package.yml)
 [![CodeQL](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/lcli/actions/workflows/codeql-analysis.yml)
+[![Coverage badge](https://raw.githubusercontent.com/a42ss/lcli/python-coverage-comment-action-data/badge.svg)](https://github.com/a42ss/lcli/tree/python-coverage-comment-action-data)
 
 
 Local development productivity tools meant to smooth and ease developers day to day work. 

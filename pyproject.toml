@@ -23,6 +23,7 @@ fire = { version = "^0.4" }
 pinject = { version = "^0.14" }
 prompt-toolkit = { version = "^3.0" }
 PyYAML = { version = "^6.0" }
+types-PyYAML = "*"
 jsonschema = { version = "^4.5" }
 pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
@@ -47,6 +48,10 @@ twine = "*"
 invoke = "*"
 pipreqs = "*"
 flake8 = "*"
+isort = "*"
+black = "*"
+mypy = "*"
+bandit = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"
@@ -65,6 +70,10 @@ relative_files = true
 ltest = 'lcli.__main__:main'
 
 [tool.poetry.plugins]
+
+[tool.bandit]
+exclude = "src/test"
+skips = ["B602", "B605", "B603", "B301", "B403", "B404"]
 
 [virtualenvs]
 create = true

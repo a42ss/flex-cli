@@ -10,19 +10,20 @@ class ConfigException(LcliException):
 
 
 class ConfigNamespaces(object):
-    COMMANDS: str = 'commands'
+    COMMANDS: str = "commands"
 
 
 class Config(object):
     """
     Base config command for projects, extend to achieve the needed flexible, extensible data object
     """
+
     _config: dict
 
     def __init__(self, config_data: dict = {}):
         self._config = config_data
 
-    def __getitem__(self, key: str) -> 'Config':
+    def __getitem__(self, key: str) -> "Config":
         return self._config[key]
 
     def __contains__(self, key: str) -> bool:
@@ -54,7 +55,7 @@ class Config(object):
         if path is None:
             path = []
         if type(path) == str:
-            path = path.split('/')
+            path = path.split("/")
         return path
 
     def get_all(self) -> dict:
@@ -73,7 +74,7 @@ class Config(object):
         """
         path_list = self._parse_path(path)
         config = self._config
-        current_path = ''
+        current_path = ""
         for key in path_list:
             current_path += key
             if config is not None and key in config:
@@ -81,18 +82,18 @@ class Config(object):
             else:
                 if default is None:
                     raise ConfigException(
-                        "Requested config path not found \"" + current_path + "\". "
-                                                                              "The full path was: \"" + path + "\"."
+                        'Requested config path not found "' + current_path + '". '
+                        'The full path was: "' + path + '".'
                     )
                 else:
                     return default
-            current_path += '/'
+            current_path += "/"
 
         if config is None:
             return default
         return config
 
-    def overwrite(self, other_config: 'Config') -> 'Config':
+    def overwrite(self, other_config: "Config") -> "Config":
         config_to_merge = other_config.get()
         for k in config_to_merge:
             config_value = config_to_merge[k]
@@ -110,10 +111,10 @@ class CommandsConfig(Config):
     """
 
     class Constants:
-        COMMANDS: str = 'commands'
-        COMMANDS_WRAPPERS: str = 'commands_wrappers'
-        AVAILABLE_GROUPS: str = 'available_groups'
-        AVAILABLE_COMMANDS: str = 'available_commands'
+        COMMANDS: str = "commands"
+        COMMANDS_WRAPPERS: str = "commands_wrappers"
+        AVAILABLE_GROUPS: str = "available_groups"
+        AVAILABLE_COMMANDS: str = "available_commands"
 
     def get_commands(self):
         return self.get(self.Constants.COMMANDS)
@@ -129,22 +130,23 @@ class CommandsConfig(Config):
 
     def is_command_group_available(self, group_name: str) -> bool:
         available_groups = self.get_available_groups()
-        if group_name != '' and \
-                (
-                        len(available_groups) == 0 or
-                        available_groups == 'all'
-                        or 'all' in available_groups
-                        or group_name in available_groups
-                ):
+        if group_name != "" and (
+            len(available_groups) == 0
+            or available_groups == "all"
+            or "all" in available_groups
+            or group_name in available_groups
+        ):
             return True
         return False
 
     def is_command_available(self, command_name: str) -> bool:
         available_commands = self.get_available_commands()
-        if len(available_commands) == 0 or \
-                available_commands == 'all' or \
-                'all' in available_commands or \
-                command_name in available_commands:
+        if (
+            len(available_commands) == 0
+            or available_commands == "all"
+            or "all" in available_commands
+            or command_name in available_commands
+        ):
             return True
         return False
 
@@ -153,6 +155,7 @@ class ConfigReader(object):
     """
     Read the configuration from the files, this is the base funcionality
     """
+
     _config_file: str
     _config_dict: dict
 
@@ -166,7 +169,9 @@ class ConfigReader(object):
         Implement read and convert to dict the config file
         :return:
         """
-        raise ConfigException("Read config method not implemented for current files type.")
+        raise ConfigException(
+            "Read config method not implemented for current files type."
+        )
 
     def get_config(self) -> Config:
         """
@@ -192,14 +197,15 @@ class ConfigValidationError(BaseException):
 class YamlConfigReader(ConfigReader):
     _schema_file: str
 
-    def __init__(self, config_path: str, required: bool = False, schema_file: str = ''):
+    def __init__(self, config_path: str, required: bool = False, schema_file: str = ""):
         self._schema_file = schema_file
         super().__init__(config_path, required)
 
     def read_config(self) -> dict:
-        import yaml
         import json
-        from jsonschema import validate, ValidationError
+
+        import yaml
+        from jsonschema import ValidationError, validate
 
         schema = {}
         if os.path.exists(self._schema_file):
@@ -208,32 +214,34 @@ class YamlConfigReader(ConfigReader):
 
         config = {}
         if os.path.exists(self._config_file):
-            with open(self._config_file, 'r') as yml_file_stream:
-                config = yaml.load(yml_file_stream, Loader=yaml.FullLoader)
+            with open(self._config_file, "r") as yml_file_stream:
+                config = yaml.safe_load(yml_file_stream)
             try:
                 validate(config, schema)
             except ValidationError as e:
                 raise ConfigValidationError(self._config_file, e.message, list(e.path))
         else:
             if self.required:
-                raise ConfigException("Invalid configuration file: " + self._config_file)
+                raise ConfigException(
+                    "Invalid configuration file: " + self._config_file
+                )
         return config
 
 
 class Command(Config):
     class Constants:
-        COMMANDS: str = 'commands'
-        NAME: str = 'name'
-        DESCRIPTION: str = 'description'
-        TYPE: str = 'type'
+        COMMANDS: str = "commands"
+        NAME: str = "name"
+        DESCRIPTION: str = "description"
+        TYPE: str = "type"
 
         class TYPES:
-            CLI = 'cli'
-            LCLI: str = 'lcli'
-            WRAPPER: str = 'wrapper'
-            FUNCTION: str = 'function'
+            CLI = "cli"
+            LCLI: str = "lcli"
+            WRAPPER: str = "wrapper"
+            FUNCTION: str = "function"
 
-        ARGS: str = 'args'
+        ARGS: str = "args"
 
         EXECUTABLE_COMMAND_TYPES: list = [TYPES.LCLI, TYPES.FUNCTION, TYPES.WRAPPER]
 
@@ -244,7 +252,9 @@ class Command(Config):
             args = config_data[self.Constants.ARGS]
         config_data[self.Constants.ARGS] = CommandArgs(args)
         if self.Constants.TYPE not in config_data:
-            raise ConfigException("Invalid config data. Command type not provided for " + command_name)
+            raise ConfigException(
+                "Invalid config data. Command type not provided for " + command_name
+            )
 
         if self.Constants.COMMANDS not in config_data:
             config_data[self.Constants.COMMANDS] = CommandCollection({})
@@ -273,26 +283,30 @@ class Command(Config):
         return self.get_property(self.Constants.DESCRIPTION)
 
     @property
-    def args(self) -> 'CommandArgs':
+    def args(self) -> "CommandArgs":
         return self.get_property(self.Constants.ARGS)
 
     def is_group(self):
-        return self.type == 'group'
+        return self.type == "group"
 
 
 class CommandArgs(Config):
     class Constants:
-        PARAMS: str = 'params'
-        EXEC_TYPE: str = 'exec_type'
-        COMMAND: str = 'command'
-        CWD: str = 'cwd'
-        COMMAND_CONFIG: str = 'config'
+        PARAMS: str = "params"
+        EXEC_TYPE: str = "exec_type"
+        COMMAND: str = "command"
+        CWD: str = "cwd"
+        COMMAND_CONFIG: str = "config"
 
     def __init__(self, config_data: dict):
         if self.Constants.PARAMS in config_data:
-            config_data[self.Constants.PARAMS] = CommandArgsParams(config_data[self.Constants.PARAMS])
+            config_data[self.Constants.PARAMS] = CommandArgsParams(
+                config_data[self.Constants.PARAMS]
+            )
         if self.Constants.COMMAND_CONFIG in config_data:
-            config_data[self.Constants.COMMAND_CONFIG] = Config(config_data[self.Constants.COMMAND_CONFIG])
+            config_data[self.Constants.COMMAND_CONFIG] = Config(
+                config_data[self.Constants.COMMAND_CONFIG]
+            )
         super().__init__(config_data)
 
     @property
@@ -308,7 +322,7 @@ class CommandArgs(Config):
         return self.get(self.Constants.COMMAND_CONFIG, Config())
 
     @property
-    def params(self) -> 'CommandArgsParams':
+    def params(self) -> "CommandArgsParams":
         return self.get_property(self.Constants.PARAMS)
 
 
@@ -322,7 +336,7 @@ class CommandArgsParams(Config):
             _params[key] = CommandParam(params[key])
         super().__init__(_params)
 
-    def get_param(self, key: str) -> 'CommandParam':
+    def get_param(self, key: str) -> "CommandParam":
         """
 
         :param key:
@@ -333,19 +347,22 @@ class CommandArgsParams(Config):
 
 class CommandParam(Config):
     class Constants:
-        TYPE: str = 'type'
-        NAME: str = 'name'
-        OUTPUT_FORMAT: str = 'output_format'
-        MESSAGE: str = 'message'
-        CHOICES: str = 'choices'
-        CHOICES_CMD: str = 'choices_cmd'
+        TYPE: str = "type"
+        NAME: str = "name"
+        OUTPUT_FORMAT: str = "output_format"
+        MESSAGE: str = "message"
+        CHOICES: str = "choices"
+        CHOICES_CMD: str = "choices_cmd"
 
     def __init__(self, config_data: dict):
         if self.Constants.CHOICES in config_data:
-            config_data[self.Constants.CHOICES] = CommandParamChoices(config_data[self.Constants.CHOICES])
+            config_data[self.Constants.CHOICES] = CommandParamChoices(
+                config_data[self.Constants.CHOICES]
+            )
         if self.Constants.CHOICES_CMD in config_data:
             config_data[self.Constants.CHOICES_CMD] = CommandParamChoicesCmd(
-                config_data[self.Constants.CHOICES_CMD])
+                config_data[self.Constants.CHOICES_CMD]
+            )
         super().__init__(config_data)
 
     @property
@@ -365,11 +382,11 @@ class CommandParam(Config):
         return self.get_property(self.Constants.MESSAGE)
 
     @property
-    def choices(self) -> 'CommandParamChoices':
+    def choices(self) -> "CommandParamChoices":
         return self.get_property(self.Constants.CHOICES)
 
     @property
-    def choices_cmd(self) -> 'CommandParamChoicesCmd':
+    def choices_cmd(self) -> "CommandParamChoicesCmd":
         return self.get_property(self.Constants.CHOICES_CMD)
 
 
@@ -380,10 +397,12 @@ class CommandParamChoices(Config):
     def __init__(self, choices: dict):
         _params = {}
         for choice in choices:
-            _params[choice[CommandParamChoice.Constants.NAME]] = CommandParamChoice(choice)
+            _params[choice[CommandParamChoice.Constants.NAME]] = CommandParamChoice(
+                choice
+            )
         super().__init__(_params)
 
-    def get_choice(self, key: str) -> 'CommandParamChoice':
+    def get_choice(self, key: str) -> "CommandParamChoice":
         """
 
         :param key:
@@ -394,8 +413,8 @@ class CommandParamChoices(Config):
 
 class CommandParamChoice(Config):
     class Constants:
-        NAME: str = 'name'
-        VALUE: str = 'value'
+        NAME: str = "name"
+        VALUE: str = "value"
 
     @property
     def name(self) -> str:
@@ -408,8 +427,8 @@ class CommandParamChoice(Config):
 
 class CommandParamChoicesCmd(Config):
     class Constants:
-        COMMAND: str = 'cmd'
-        FILTER: str = 'filter'
+        COMMAND: str = "cmd"
+        FILTER: str = "filter"
 
     def is_empty(self):
         return len(self._config) == 0
@@ -428,18 +447,20 @@ class CommandCollection(Config):
 
     def __init__(self, commands: dict):
         _commands = {}
-        if 'list_type' in commands:
-            del commands['list_type']
+        if "list_type" in commands:
+            del commands["list_type"]
         for command_key in commands:
             if Command.Constants.COMMANDS in commands[command_key]:
-                sub_commands = CommandCollection(commands[command_key][Command.Constants.COMMANDS])
+                sub_commands = CommandCollection(
+                    commands[command_key][Command.Constants.COMMANDS]
+                )
                 commands[command_key][Command.Constants.COMMANDS] = sub_commands
 
             command = commands[command_key]
 
-            if 'cli_code' in command:
-                cli_code = command['cli_code']
-                if cli_code is not None and cli_code != '':
+            if "cli_code" in command:
+                cli_code = command["cli_code"]
+                if cli_code is not None and cli_code != "":
                     command_key = cli_code
 
             _commands[command_key] = Command(command_key, command)
@@ -460,7 +481,7 @@ class CommandCollection(Config):
         """
         return self.get(command_key)
 
-    def add_command(self, command: Command) -> 'CommandCollection':
+    def add_command(self, command: Command) -> "CommandCollection":
         """
         Append a command in current list
 
@@ -470,7 +491,9 @@ class CommandCollection(Config):
         self._config[command.name] = command
         return self
 
-    def get_commands_names_in_path(self, path: list = None, ignored_commands=None, available_groups: list = []) -> dict:
+    def get_commands_names_in_path(
+        self, path: list = None, ignored_commands=None, available_groups: list = []
+    ) -> dict:
         """
         Get commands names available in a given path
 
@@ -480,20 +503,22 @@ class CommandCollection(Config):
         :return: dict containing commands names
         """
         if ignored_commands is None:
-            ignored_commands = ['-i', '-v', '-version', '--version', 'h', 'cli_info']
+            ignored_commands = ["-i", "-v", "-version", "--version", "h", "cli_info"]
         if path is None:
             path = []
         try:
             commands_list = self._get_command_collection_by_path(self, path)
-            return self.get_first_level_commands(commands_list, ignored_commands, available_groups=available_groups)
+            return self.get_first_level_commands(
+                commands_list, ignored_commands, available_groups=available_groups
+            )
         except ConfigException:
             return {}
 
     def get_first_level_commands(
-            self,
-            commands_list: 'CommandCollection',
-            ignored_commands: list,
-            available_groups: list = []
+        self,
+        commands_list: "CommandCollection",
+        ignored_commands: list,
+        available_groups: list = [],
     ) -> dict:
         """
         Returns the directly/first accessible commands for a command list
@@ -513,14 +538,20 @@ class CommandCollection(Config):
                 command = commands_list.get_command(key)
                 if command.is_group():
                     if command.name in available_groups:
-                        sub_class_commands = self.get_first_level_commands(command.commands, ignored_commands)
+                        sub_class_commands = self.get_first_level_commands(
+                            command.commands, ignored_commands
+                        )
                         for sub_command_key in sub_class_commands:
-                            result[sub_command_key] = sub_class_commands[sub_command_key]
+                            result[sub_command_key] = sub_class_commands[
+                                sub_command_key
+                            ]
                 else:
                     result[command.name] = command.name
         return result
 
-    def get_command_collection_by_path(self, path: list = None, return_deepest=False) -> 'CommandCollection':
+    def get_command_collection_by_path(
+        self, path: list = None, return_deepest=False
+    ) -> "CommandCollection":
         """
         Return the list of commands accessed by a given path for invocation
 
@@ -531,14 +562,16 @@ class CommandCollection(Config):
         """
         if path is None:
             path = []
-        return self._get_command_collection_by_path(self, path, return_deepest=return_deepest)
+        return self._get_command_collection_by_path(
+            self, path, return_deepest=return_deepest
+        )
 
     def _get_command_collection_by_path(
-            self,
-            commands_list: 'CommandCollection',
-            path: list = None,
-            return_deepest=False
-    ) -> 'CommandCollection':
+        self,
+        commands_list: "CommandCollection",
+        path: list = None,
+        return_deepest=False,
+    ) -> "CommandCollection":
         """
         Return the list of commands accessed by a given path for invocation
 
@@ -549,6 +582,9 @@ class CommandCollection(Config):
         :raise: lcli.exception.ConfigException
         """
         key_index = 0
+        if path is None:
+            path = []
+        path = list(path)
         for key in path:
             if commands_list and len(commands_list) > 0 and key in commands_list:
                 command = commands_list.get_command(key)
@@ -558,7 +594,9 @@ class CommandCollection(Config):
                 for command_key in commands_list:
                     command = commands_list.get_command(command_key)
                     if command.is_group():
-                        commands_list = self._get_command_collection_by_path(command.commands, path[key_index:])
+                        commands_list = self._get_command_collection_by_path(
+                            command.commands, path[key_index:]
+                        )
                         found_command = True
                         break
                 if not found_command:
@@ -579,13 +617,15 @@ class CommandCollection(Config):
         """
         if path is None:
             path = []
-        return self._get_command_by_path(self, path, return_first_executable=return_first_executable)
+        return self._get_command_by_path(
+            self, path, return_first_executable=return_first_executable
+        )
 
     def _get_command_by_path(
-            self,
-            commands_list: 'CommandCollection',
-            path: list = None,
-            return_first_executable=False
+        self,
+        commands_list: "CommandCollection",
+        path: list = None,
+        return_first_executable=False,
     ):
         """
         Return the command accessed by a given path
@@ -596,6 +636,9 @@ class CommandCollection(Config):
         :return:
         :raise: lcli.exception.ConfigException
         """
+        if path is None:
+            path = []
+        path = list(path)
         path_len = len(path)
         if path_len == 0:
             return None
@@ -631,9 +674,9 @@ class CommandCollection(Config):
 
 class CommandWrapper(Config):
     class Constants:
-        HANDLER: str = 'handler'
-        BUILDER: str = 'builder'
-        ARGS_CONFIG: str = 'args_config'
+        HANDLER: str = "handler"
+        BUILDER: str = "builder"
+        ARGS_CONFIG: str = "args_config"
 
     @property
     def handler(self) -> str:
@@ -650,7 +693,7 @@ class CommandWrapper(Config):
 
 class CommandWrapperCollection(Config):
     class Constants:
-        WRAPPERS = 'wrappers'
+        WRAPPERS = "wrappers"
 
     def __init__(self, wrappers: dict):
         _wrappers = {}
