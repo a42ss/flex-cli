@@ -1,6 +1,6 @@
 # Introduction
 
-[![PyPI version](https://img.shields.io/pypi/v/lcli.svg)](https://pypi.org/project/lcli)
+[![PyPI version](https://img.shields.io/pypi/v/flex-cli.svg)](https://pypi.org/project/flex-cli)
 [![Build Status](https://github.com/a42ss/flex-cli/actions/workflows/python-package.yml/badge.svg)](https://github.com/a42ss/flex-cli/actions/workflows/python-package.yml)
 [![Coverage badge](https://raw.githubusercontent.com/a42ss/flex-cli/python-coverage-comment-action-data/badge.svg)](https://github.com/a42ss/flex-cli/tree/python-coverage-comment-action-data)
 [![CodeQL](https://github.com/a42ss/flex-cli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/flex-cli/actions/workflows/codeql-analysis.yml)
