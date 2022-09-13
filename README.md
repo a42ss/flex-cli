@@ -5,9 +5,9 @@
 [![Coverage badge](https://raw.githubusercontent.com/a42ss/flex-cli/python-coverage-comment-action-data/badge.svg)](https://github.com/a42ss/flex-cli/tree/python-coverage-comment-action-data)
 [![CodeQL](https://github.com/a42ss/flex-cli/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/a42ss/flex-cli/actions/workflows/codeql-analysis.yml)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6480/badge)](https://bestpractices.coreinfrastructure.org/projects/6480)
-[![Docs badge](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://lcli-docs.readthedocs.io/en/latest/)
+[![Docs badge](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://flex-cli.readthedocs.io/en/latest)
 [![Chat badge](https://img.shields.io/badge/chat-IRC-brightgreen.svg)](https://github.com/a42ss/flex-cli/discussions)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://lcli-docs.readthedocs.io/en/latest/)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://flex-cli.readthedocs.io/en/latest)
 
    
 
