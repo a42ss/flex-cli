@@ -73,13 +73,17 @@ uninstall: $(VENV)
 build: $(VENV) $(POETRY)
 	@echo POETRY: Build $(VERSION)
 	$(POETRY) version $(VERSION)
+	sed -i 's/__version__\(.*\)/__version__: str = "$(VERSION)"/' src/lcli/__init__.py
 	$(POETRY) build
 
 .PHONY: publish
 publish: $(VENV) $(POETRY) build
 	@echo POETRY: Build $(VERSION)
-	#git tag $(VERSION)
-	#git push origin $(VERSION)
+	git add src/lcli/__init__.py pyproject.toml poetry.lock
+	git commit -m "Bump package version to $(VERSION)"
+	git push origin
+	git tag $(VERSION)
+	git push origin $(VERSION)
 	$(POETRY) publish --username="$(PYPI_USERNAME)" --password="$(PYPI_PASSWORD)" --repository=$(PYPI_REPOSITORY)
 
 upload_test: $(VENV)
