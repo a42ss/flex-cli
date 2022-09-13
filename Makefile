@@ -70,14 +70,14 @@ uninstall: $(VENV)
 	$(VENV)/bin/pip uninstall -y $(NAME)
 
 .PHONY: build
-build: $(VENV) $(POETRY)
+build: $(VENV) $(POETRY) install
 	@echo POETRY: Build $(VERSION)
 	$(POETRY) version $(VERSION)
 	sed -i 's/__version__\(.*\)/__version__: str = "$(VERSION)"/' src/lcli/__init__.py
 	$(POETRY) build
 
 .PHONY: publish
-publish: $(VENV) $(POETRY) install
+publish: $(VENV) $(POETRY) build
 	@echo POETRY: Build $(VERSION)
 	git add src/lcli/__init__.py pyproject.toml poetry.lock
 	git commit -m "Bump package version to $(VERSION)"
