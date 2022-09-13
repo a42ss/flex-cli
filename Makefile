@@ -77,7 +77,7 @@ build: $(VENV) $(POETRY)
 	$(POETRY) build
 
 .PHONY: publish
-publish: $(VENV) $(POETRY) build
+publish: $(VENV) $(POETRY) install
 	@echo POETRY: Build $(VERSION)
 	git add src/lcli/__init__.py pyproject.toml poetry.lock
 	git commit -m "Bump package version to $(VERSION)"
