@@ -1,4 +1,4 @@
-NAME := flex-cli
+NAME := lcli
 COVERAGE_PERCENTAGE := 0
 
 SYSTEM_PYTHON = $(shell command -v python3 2> /dev/null)
@@ -77,7 +77,7 @@ build: $(VENV) $(POETRY) install
 	$(POETRY) build
 
 .PHONY: publish
-publish: $(VENV) $(POETRY) build
+publish: $(VENV) $(POETRY) install test build
 	@echo POETRY: Build $(VERSION)
 	git add src/lcli/__init__.py pyproject.toml poetry.lock
 	git commit -m "Bumping version to $(VERSION)"
