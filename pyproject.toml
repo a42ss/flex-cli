@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "lcli"
-version = "0.1.0"
+name = "flex-cli"
+version = "0.1.4"
 description = "Local CLI is an extendable interactive command line tool built in mind with the objective to make the interaction with day to day scripts more user friendly. The scripts you use daily should be easy to maintain, develop and document so you don't need to worry to write long documents on how to use them."
 
 license = "MIT"
@@ -14,7 +14,12 @@ readme = 'README.md'  # Markdown files are supported
 repository = "https://github.com/a42ss/lcli"
 homepage = "https://github.com/a42ss/lcli"
 
-keywords = ['cli', 'documentation', 'automation', 'local', 'command', 'command-line', 'script', 'scripts', 'command-line-tool', 'automation-framework']
+keywords = ['cli', 'flex', 'documentation', 'automation', 'local', 'command', 'command-line', 'script', 'scripts', 'command-line-tool', 'automation-framework', 'flex cli', 'flexible']
+
+packages = [
+    { include = "lcli", from = "src"  },
+    { include = "flex_cli", from = "src"  }
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -63,11 +68,19 @@ coverage = {extras = ["toml"], version = "^6.4.4"}
 poetry = "^1.2"
 poetry2setup = "^1.0.0"
 
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/legacy/"
+default = false
+secondary = false
+
 [tool.coverage.run]
 relative_files = true
 
 [tool.poetry.scripts]
-ltest = 'lcli.__main__:main'
+lcli = 'lcli.__main__:main'
+flex-cli = 'flex_cli.__main__:main'
+fcli = 'lcli.__main__:main'
 
 [tool.poetry.plugins]
 

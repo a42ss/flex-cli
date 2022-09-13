@@ -13,7 +13,7 @@ setup(
     description='Local environment CLI tool',
     long_description=codecs.open('README.md', 'rb', 'utf8').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/a42ss/lcli/',
+    url='https://github.com/a42ss/flex-cli/',
     license='MIT',
 
     # Packages and dependencies

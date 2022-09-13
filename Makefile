@@ -1,4 +1,4 @@
-NAME := lcli
+NAME := flex-cli
 COVERAGE_PERCENTAGE := 0
 
 SYSTEM_PYTHON = $(shell command -v python3 2> /dev/null)
@@ -74,6 +74,13 @@ build: $(VENV) $(POETRY)
 	@echo POETRY: Build $(VERSION)
 	$(POETRY) version $(VERSION)
 	$(POETRY) build
+
+.PHONY: publish
+publish: $(VENV) $(POETRY) build
+	@echo POETRY: Build $(VERSION)
+	#git tag $(VERSION)
+	#git push origin $(VERSION)
+	$(POETRY) publish --username="$(PYPI_USERNAME)" --password="$(PYPI_PASSWORD)" --repository=$(PYPI_REPOSITORY)
 
 upload_test: $(VENV)
 	$(VENV)/bin/python3 -m twine upload --repository testpypi dist/* --verbose
