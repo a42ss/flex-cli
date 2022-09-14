@@ -76,15 +76,21 @@ build: $(VENV) $(POETRY) install
 	sed -i 's/__version__\(.*\)/__version__: str = "$(VERSION)"/' src/lcli/__init__.py
 	$(POETRY) build
 
-.PHONY: publish
-publish: $(VENV) $(POETRY) install test lint build
-	@echo POETRY: Build $(VERSION)
+.PHONY: create_version
+create_version: $(VENV) $(POETRY) install test lint build
+	@echo POETRY: Create version $(VERSION)
 	git add src/lcli/__init__.py pyproject.toml poetry.lock
 	git commit -m "Bumping version to $(VERSION)"
 	git push origin
 	git tag $(VERSION)
 	git push origin $(VERSION)
-	$(POETRY) publish --username="$(PYPI_USERNAME)" --password="$(PYPI_PASSWORD)" --repository=$(PYPI_REPOSITORY)
+	@echo POETRY: Create version done $(VERSION)
+
+.PHONY: publish
+publish: $(VENV) $(POETRY) install test lint build create_version
+	@echo POETRY: publish $(VERSION)
+	$(POETRY) publish --username="$(PYPI_USERNAME)" --password="$(PYPI_PASSWORD)"
+	@echo POETRY: publish done $(VERSION)
 
 upload_test: $(VENV)
 	$(VENV)/bin/python3 -m twine upload --repository testpypi dist/* --verbose
