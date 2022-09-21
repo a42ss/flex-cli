@@ -21,10 +21,8 @@ packages = [
     { include = "flex_cli", from = "src"  }
 ]
 
-[tool.poetry.extras]
-
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 
 fire = { version = "^0.4" }
 pinject = { version = "^0.14" }
@@ -34,8 +32,15 @@ types-PyYAML = "*"
 jsonschema = { version = "^4.5" }
 pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
+ansible = { version = "^6.4", optional = true}
+
+[tool.poetry.extras]
+ansible = ["ansible"]
 
 [tool.poetry.dev-dependencies]
+
+[tool.poetry.group.docs]
+optional = true
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
@@ -43,6 +48,9 @@ sphinxcontrib-httpdomain = "*"
 sphinx_rtd_theme = "*"
 recommonmark = "*"
 m2r = "*"
+
+[tool.poetry.group.build]
+optional = true
 
 [tool.poetry.group.build.dependencies]
 poetry = "^1.2"
@@ -60,11 +68,17 @@ black = "*"
 mypy = "*"
 bandit = "*"
 
+[tool.poetry.group.test]
+optional = true
+
 [tool.poetry.group.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
 mock = "*"
 coverage = {extras = ["toml"], version = "^6.4.4"}
+
+[tool.poetry.group.poetry]
+optional = true
 
 [tool.poetry.group.poetry.dependencies]
 poetry = "^1.2"
