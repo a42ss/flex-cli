@@ -22,6 +22,7 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
     from lcli.app import App
 
     current_command = ""
+    command_prefix = ""
 
     prompt_prefix = ""
     prompt = prompt_prefix + "> "
@@ -51,9 +52,8 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
         figlet = Figlet(
             width=1000, font=app.get_config_object().get("figlet_font", "digital")
         )
+        self.command_prefix = command_prefix
         command_parts = command_prefix.split(" ")
-        if command_parts[0] == self._app.get_executable_name():
-            command_parts = command_parts[1:]
         self.current_command = " ".join(command_parts)
 
         cli_code = app.get_app_code()
@@ -115,7 +115,7 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
 
     def do_reset_command(self, command=""):
         """Reset current command prefix. This will allow to run any of cli commands."""
-        self.current_command = ""
+        self.current_command = self.command_prefix
         self.refresh_prompt()
 
     def do_remove_one_level_command(self, command=""):
@@ -125,7 +125,7 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
 
     def do_force_change_command(self, command=""):
         """Force change interactive command prefix. This will allow running sub-commands from chosen group."""
-        self.current_command = ""
+        self.current_command = self.command_prefix
         self.do_change_command("")
 
     def do_change_command(self, command=""):
