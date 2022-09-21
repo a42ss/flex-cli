@@ -538,12 +538,10 @@ class CommandCollection(Config):
                 if key in ignored_commands:
                     continue
                 command = commands_list.get_command(key)
-                if command.is_group() and command.name == 'groups':
+                if command.is_group() and command.name == "groups":
                     if command.name in available_groups:
                         sub_class_commands = self.get_first_level_commands(
-                            command.commands,
-                            ignored_commands,
-                            available_groups
+                            command.commands, ignored_commands, available_groups
                         )
                         for sub_command_key in sub_class_commands:
                             result[sub_command_key] = sub_class_commands[
