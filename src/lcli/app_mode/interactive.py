@@ -93,7 +93,10 @@ class LcliPrompt(Cmd, AppModeBase, ControllerInterface):
     def refresh_prompt(self):
         self.prompt = self.prompt_prefix
         if self.current_command != "":
-            self.prompt += " " + self._app.__.green(self.current_command)
+            command_parts = self.current_command.split(" ")
+            if command_parts[0] == self._app.get_executable_name():
+                command_parts = command_parts[1:]
+            self.prompt += " " + self._app.__.green(" ".join(command_parts))
 
         ignored_cli_info = self._app.get_config_object().get("cli_info_ignore", [])
         info_parts = []
