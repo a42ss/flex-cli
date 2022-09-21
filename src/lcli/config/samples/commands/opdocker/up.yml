@@ -1,0 +1,7 @@
+commands:
+  up:
+    type: cli
+    description: Start docker stack
+    args:
+      command: ./m2-cluster -d up
+
