@@ -1,2 +1,2 @@
-__version__: str = "0.1.24"
+__version__: str = "0.1.25"
 EXECUTABLE_NAME = "lcli"
