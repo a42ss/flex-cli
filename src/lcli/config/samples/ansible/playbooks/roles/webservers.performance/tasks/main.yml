@@ -1,0 +1,7 @@
+---
+
+- name: Performance playbook
+  debug:
+    msg: Performance playbook
+
+...

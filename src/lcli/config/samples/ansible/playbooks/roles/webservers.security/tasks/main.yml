@@ -1,0 +1,7 @@
+---
+
+- name: Security playbook
+  debug:
+    msg: Security playbook
+
+...

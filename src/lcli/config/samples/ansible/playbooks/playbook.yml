@@ -1,0 +1,13 @@
+---
+
+- name: Include a play after another play
+  ansible.builtin.import_playbook: playbook.web_servers.yml
+  tags:
+    - web_servers
+
+
+- name: Include a play after another play
+  ansible.builtin.import_playbook: playbook.db_servers.yml
+  tags:
+    - db_servers
+

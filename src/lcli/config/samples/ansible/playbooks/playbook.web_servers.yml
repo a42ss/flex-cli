@@ -1,0 +1,21 @@
+---
+
+- name: Update web servers
+  hosts: web_servers
+  remote_user: root
+
+  vars:
+    lcli:
+      id: update_web_servers
+      description: Update web servers
+
+  tasks:
+  - name: Update web servers
+    debug:
+      msg: Update web servers
+
+  roles:
+    - { role: webservers.performance, tags: [ 'web', 'performance' ] }
+    - { role: webservers.security, tags: [ 'web', 'security' ] }
+
+...

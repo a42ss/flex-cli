@@ -1,0 +1,16 @@
+---
+- name: Update db servers
+  hosts: db_servers
+  remote_user: root
+
+  vars:
+    lcli:
+      id: update_db_servers
+      description: Update db servers
+
+  tasks:
+  - name: Update db servers
+    debug:
+      msg: Update db servers
+
+...
