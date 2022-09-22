@@ -1,0 +1,22 @@
+commands:
+  workspace:
+    description: test
+    type: group
+    commands:
+      list_type: list
+      ansible_wrapper:
+        type: wrapper
+        description: "Ansible ansible_wrapper test"
+        args:
+          wrapper: ansible_wrapper
+          command: install
+          playbook: /home/g/utils/lcli/src/lcli/config/samples/ansible/playbooks/playbook.yml
+          inventory: /home/g/utils/lcli/src/lcli/config/samples/ansible/inventory/all.yml
+        commands:
+          list_type: list
+          ansible:
+            type: cli
+            description: Install ansible requirements
+            args:
+              command: make install_reqs
+              cwd: ../ansible/
