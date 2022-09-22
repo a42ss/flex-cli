@@ -18,7 +18,8 @@ keywords = ['cli', 'flex', 'documentation', 'automation', 'local', 'command', 'c
 
 packages = [
     { include = "lcli", from = "src"  },
-    { include = "flex_cli", from = "src"  }
+    { include = "flex_cli", from = "src"  },
+    { include = "flex_ansible", from = "src"  }
 ]
 
 [tool.poetry.dependencies]
