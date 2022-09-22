@@ -48,6 +48,12 @@ $(INSTALL_FLAG): $(VENV) $(PYTHON) poetry.lock $(POETRY)
 	$(POETRY) install
 	touch $(INSTALL_FLAG)
 
+.PHONY: install_all
+install_all: $(VENV) $(PYTHON) poetry.lock $(POETRY)
+	@echo Poetry install all groups requirements in $(VENV)
+	$(POETRY) install --with=test --with=docs --with=build --with=poetry --all-extras
+	touch $(INSTALL_FLAG)
+
 .PHONY: install_for_user
 install_for_user:
 	./install -u
