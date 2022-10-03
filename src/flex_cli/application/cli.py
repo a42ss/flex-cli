@@ -1,13 +1,13 @@
 import os
-import sys
 import subprocess
+import sys
 
 
 class StandaloneExecutable:
     class Config:
         ENV_FLEX_CLI_EXE: str = "FLEX_CLI_EXE"
         ENV_FLEX_CLI_DEBUG: str = "FLEX_CLI_DEBUG"
-        ENV_DEFAULT_CLI_EXECUTABLE: str = 'flex-cli'
+        ENV_DEFAULT_CLI_EXECUTABLE: str = "flex-cli"
 
     def __init__(self, file_path: str):
         flex_cli_executable = os.environ.get(self.Config.ENV_FLEX_CLI_EXE)
@@ -22,7 +22,7 @@ class StandaloneExecutable:
 
         arguments = [flex_cli_executable, command_namespace]
         arguments.extend(sys.argv[1:])
-        arguments.append('--cwd')
+        arguments.append("--cwd")
         arguments.append(file_path)
 
         if flex_cli_debug is not None:
