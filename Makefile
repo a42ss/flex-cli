@@ -94,7 +94,7 @@ create_version: $(VENV) $(POETRY) install test lint build
 	git tag $(VERSION)
 	git push origin $(VERSION)
 	@echo POETRY: Publish $(VERSION) on testpypi
-	$(POETRY) publish --username="$(PYPI_USERNAME)" --password="$(PYPI_PASSWORD)" --repository="testpypi"
+	$(POETRY) publish --username="$(PYPI_TEST_USERNAME)" --password="$(PYPI_TEST_PASSWORD)" --repository="$(PYPI_TEST_REPOSITORY)"
 	@echo POETRY: Create version done $(VERSION)
 
 .PHONY: publish
