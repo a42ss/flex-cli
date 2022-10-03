@@ -89,7 +89,7 @@ build: $(VENV) $(POETRY) install
 create_version: $(VENV) $(POETRY) install test lint build
 	@echo POETRY: Create version $(VERSION)
 	git add src/lcli/__init__.py pyproject.toml poetry.lock
-	git commit -m "Bumping version to $(VERSION)"
+	git commit -m "Bumping version to $(VERSION)" && true
 	git push origin
 	git tag $(VERSION)
 	git push origin $(VERSION)
