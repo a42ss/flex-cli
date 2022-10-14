@@ -4,9 +4,8 @@ import subprocess
 
 import pinject
 
-from flex_framework.shell.proxy import SimpleShellProxy
-
 from ..environment.manager import Environment as EnvironmentManager
+from .proxy import SimpleShellProxy
 
 
 class BashEmulator(SimpleShellProxy):
