@@ -1,9 +1,12 @@
+from typing import Generic, TypeVar
+
 import pinject
-from typing import TypeVar, Generic, List
+
 from ..object_manager import ObjectManager
 
-T = TypeVar('T')
-S = TypeVar('S')
+
+T = TypeVar("T")
+S = TypeVar("S")
 
 
 class ProxyContainer(Generic[S]):
@@ -19,12 +22,14 @@ class ProxyInterface(Generic[T, S]):
     _shared: bool
 
     @pinject.annotate_arg("object_manager", "flex_framework.object_manager")
-    def __init__(self, object_manager: ObjectManager, instance_class, shared: bool = True):
+    def __init__(
+        self, object_manager: ObjectManager, instance_class, shared: bool = True
+    ):
         self._object_manager = object_manager
         self._instance_class = instance_class
         self._shared = shared
 
-    def get_proxy_instance(self) -> T:
+    def get_proxy_instance(self) -> ProxyContainer:
         return self._object_manager.provide(self._instance_class)
 
     def get_subject(self) -> S:

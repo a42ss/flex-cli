@@ -1,12 +1,14 @@
 import errno
 import logging
 import os
+from typing import Dict, Type
+
 import pinject
 
 from flex_framework.api.factory import Factory
-from flex_framework.api.proxy import ProxyInterface, ProxyContainer
+from flex_framework.api.proxy import ProxyContainer
 from flex_framework.config import Deployment
-from flex_framework.object_manager import ObjectManager
+from flex_framework.exceptions import FlexException
 
 
 class Logger(logging.Logger):
@@ -14,7 +16,6 @@ class Logger(logging.Logger):
 
 
 class ProfilerLoggerProxy(ProxyContainer[Logger]):
-
     @pinject.annotate_arg("logger", "flex_framework.logger.profiler")
     def __init__(self, logger: Logger):
         self._subject = logger
@@ -28,26 +29,26 @@ class LoggerFactory(Factory):
     def __init__(self, deployment_config: Deployment):
         super().__init__()
 
-    def create(self, class_name: Logger = Logger, data: dict = None) -> Logger:
+    def create(self, class_name: Type[Logger] = Logger, data: dict = None) -> Logger:
+        if data is None:
+            data = Dict[str, str]()
         return self.setup_logger(data)
 
-    def setup_logger(self, data: dict = None) -> Logger:
+    def setup_logger(self, data: dict) -> Logger:
         logger = logging.getLogger(data["name"])
         logger.setLevel(data["verbosity"])
         handler = logging.FileHandler(self.get_log_file(data["path"], data["file"]))
         handler.setLevel(data["verbosity"])
-        handler.setFormatter(
-            logging.Formatter(
-                data["log_format"],
-                data["date_format"]
-            )
-        )
+        handler.setFormatter(logging.Formatter(data["log_format"], data["date_format"]))
         logger.addHandler(handler)
         logger.__class__ = Logger
-        return logger
+        if isinstance(logger, Logger):
+            return logger
+        raise FlexException("Unable to configure logger")
 
     def get_log_file(self, path: str, log_file: str):
         from pathlib import Path
+
         log_path = os.path.realpath(os.path.join(Path.home(), path))
         try:
             os.makedirs(log_path)
@@ -94,8 +95,8 @@ class ObjectManagerSpec(pinject.BindingSpec):
     def bind_logger(self, bind, logger_factory, logger_id):
         application_logger_config = logger_factory.get_logger_config(logger_id)
         bind(
-            'logger',
+            "logger",
             in_scope=pinject.SINGLETON,
-            annotated_with='flex_framework.logger.' + logger_id,
-            to_instance=logger_factory.create(data=application_logger_config)
+            annotated_with="flex_framework.logger." + logger_id,
+            to_instance=logger_factory.create(data=application_logger_config),
         )

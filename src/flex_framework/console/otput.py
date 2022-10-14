@@ -4,7 +4,7 @@ from ..api.application import ApplicationResultInterface
 
 
 class CliResponse(ApplicationResultInterface):
-    _content: str = None
+    _content: str | None = None
     _exit_code: int = 0
 
     class Const:
@@ -15,7 +15,7 @@ class CliResponse(ApplicationResultInterface):
         def create(exit_code, content: str = None):
             return CliResponse(exit_code, content)
 
-    def __init__(self, exit_code: 0, content: str = None):
+    def __init__(self, exit_code: int = 0, content: str = None):
         self._content = content
         self._exit_code = exit_code
 

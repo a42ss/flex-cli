@@ -1,5 +1,6 @@
 import copy
-from .exception import ConfigException, InvalidConfigurationMergeParams
+
+from .exception import InvalidConfigurationMergeParams
 
 
 def dict_merge(dict1: dict, dict2: dict):
@@ -23,7 +24,7 @@ def dict_merge(dict1: dict, dict2: dict):
 
 
 def merge_list(list1: list, list2: list):
-    result = {}
+    result: dict = {}
     add_list_items_to_results(result, list1)
     add_list_items_to_results(result, list2)
 
@@ -33,5 +34,7 @@ def merge_list(list1: list, list2: list):
 def add_list_items_to_results(result: dict, items: list):
     for value in items:
         if type(value) in [dict, list]:
-            raise InvalidConfigurationMergeParams('Invalid configuration values to be merged')
+            raise InvalidConfigurationMergeParams(
+                "Invalid configuration values to be merged"
+            )
         result[value] = value

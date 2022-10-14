@@ -1,12 +1,13 @@
-import pinject
 import os
+
+import pinject
 
 from flex_framework.config import Deployment
 from flex_framework.console.handler import Handler
-from flex_framework.console.otput import CliResponse
-from flex_framework.shell.proxy import SimpleShellProxy
-from flex_framework.environment import EnvironmentManager
 from flex_framework.console.input import Input
+from flex_framework.console.otput import CliResponse
+from flex_framework.environment import EnvironmentManager
+from flex_framework.shell.proxy import SimpleShellProxy
 
 
 class ShellProxy(Handler):
@@ -17,10 +18,10 @@ class ShellProxy(Handler):
     @pinject.annotate_arg("deployment_config", "flex_framework.config.deployment")
     @pinject.annotate_arg("input", "flex_framework.console.input.Input")
     def __init__(
-            self,
-            deployment_config: Deployment,
-            input: Input,
-            environment: EnvironmentManager
+        self,
+        deployment_config: Deployment,
+        input: Input,
+        environment: EnvironmentManager,
     ):
         self._deployment_config = deployment_config
 

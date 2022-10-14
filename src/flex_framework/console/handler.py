@@ -45,10 +45,10 @@ class HandlerRouter:
     @pinject.copy_args_to_internal_fields
     @pinject.annotate_arg("deployment_config", "flex_framework.config.deployment")
     def __init__(
-            self,
-            deployment_config: Deployment,
-            handler_factory: HandlerFactory,
-            class_loader: ClassLoader
+        self,
+        deployment_config: Deployment,
+        handler_factory: HandlerFactory,
+        class_loader: ClassLoader,
     ):
         self._deployment_config = deployment_config
         self._handler_factory = handler_factory
@@ -56,7 +56,7 @@ class HandlerRouter:
 
     def find(self, path: HandlerPath) -> Handler:
         try:
-            if len(path) > 0 and path[0] is not "default":
+            if len(path) > 0 and path[0] != "default":
                 handler_str = self.look_for_handler_in_configuration(path)
                 return self.create_handler(handler_str)
         except HandlerNotFoundException:
@@ -67,7 +67,7 @@ class HandlerRouter:
         return self.get_default_handler()
 
     def create_handler_path(self, path: str):
-        return HandlerPath(path.split('/'))
+        return HandlerPath(path.split("/"))
 
     def create_handler(self, handler: str) -> Handler:
         if type(handler) is str:
@@ -81,21 +81,33 @@ class HandlerRouter:
             raise HandlerException("Unable to find a handler for: " + handler)
 
     def get_default_handler(self):
-        default_handler = self._deployment_config.get(HandlerInterface.Const.DEFAULT_HANDLER)
+        default_handler = self._deployment_config.get(
+            HandlerInterface.Const.DEFAULT_HANDLER
+        )
         if default_handler is not None:
             return self.create_handler(default_handler)
-        raise HandlerException("There is not handler that could execute the current command.")
+        raise HandlerException(
+            "There is not handler that could execute the current command."
+        )
 
     def look_for_handler_in_configuration(self, path: HandlerPath):
         handlers = self._deployment_config.get(HandlerInterface.Const.HANDLERS)
+        if not isinstance(handlers, dict):
+            raise HandlerException("Invalid handler configuration")
         current_handler = handlers
         for item in path:
             if item not in current_handler:
                 raise HandlerNotFoundException("Handler not found")
-            current_handler = current_handler[item]
+            handler = current_handler.get(item)
+            if not isinstance(handler, dict):
+                raise HandlerException("Invalid handler configuration")
+            current_handler = handler
+
         if type(current_handler) is str:
             return current_handler
-        raise HandlerException("Unable to find the handler path in the configuration: " + str(path))
+        raise HandlerException(
+            "Unable to find the handler path in the configuration: " + str(path)
+        )
 
 
 class HandlerRouterFactory(Factory[HandlerRouter]):

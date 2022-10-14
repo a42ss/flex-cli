@@ -1,6 +1,7 @@
-from ..api.proxy import ProxyInterface, ProxyContainer
+from ..api.proxy import ProxyContainer, ProxyInterface
 from ..logger import Logger, ProfilerLoggerProxy
-from ..object_manager import Factory as ObjectManagerFactory, ObjectManager
+from ..object_manager import Factory as ObjectManagerFactory
+from ..object_manager import ObjectManager
 
 
 class ApplicationBootstrap:
@@ -9,14 +10,25 @@ class ApplicationBootstrap:
     _arguments: dict
     _object_manager: ObjectManager
 
-    def __init__(self, object_manager_factory: ObjectManagerFactory, current_working_dir: str, arguments: dict):
+    def __init__(
+        self,
+        object_manager_factory: ObjectManagerFactory,
+        current_working_dir: str,
+        arguments: dict,
+    ):
         self._object_manager = object_manager_factory.create(arguments)
         self._current_working_dir = current_working_dir
         self._arguments = arguments
-        self._profiler = ProxyInterface[ProxyContainer[Logger], Logger](self._object_manager, ProfilerLoggerProxy)
+        self._profiler = ProxyInterface[ProxyContainer[Logger], Logger](
+            self._object_manager, ProfilerLoggerProxy
+        )
 
     @staticmethod
-    def create(current_working_dir: str, params=None, object_manager_factory: ObjectManagerFactory = None):
+    def create(
+        current_working_dir: str,
+        params=None,
+        object_manager_factory: ObjectManagerFactory = None,
+    ):
         if params is None:
             params = {}
         params["current_working_dir"] = current_working_dir

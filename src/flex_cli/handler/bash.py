@@ -1,7 +1,6 @@
 import pinject
 
 from flex_framework.console.handler import Handler
-from flex_framework.console.handler import HandlerRouterFactory
 from flex_framework.console.input import Input
 from flex_framework.console.otput import CliResponse
 from flex_framework.environment import EnvironmentManager
@@ -14,11 +13,7 @@ class BashEmulator(Handler):
 
     @pinject.copy_args_to_internal_fields
     @pinject.annotate_arg("input", "flex_framework.console.input.Input")
-    def __init__(
-            self,
-            environment: EnvironmentManager,
-            input: Input
-    ):
+    def __init__(self, environment: EnvironmentManager, input: Input):
         pass
 
     def handle(self) -> CliResponse:

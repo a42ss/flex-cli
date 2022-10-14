@@ -1,7 +1,9 @@
 import os
 import subprocess
 import sys
+
 import pinject
+
 from ..environment.manager import Environment as EnvironmentManager
 
 
@@ -14,11 +16,7 @@ class SimpleShellProxy:
         ENV_LOCAL_PATH: str = "FLEX_SHELL_PROXY_LOCAL_PATH"
 
     @pinject.copy_args_to_internal_fields
-    def __init__(
-            self,
-            environment: EnvironmentManager,
-            env_path_to_remove=None
-    ):
+    def __init__(self, environment: EnvironmentManager, env_path_to_remove=None):
         if env_path_to_remove is None:
             env_path_to_remove = SimpleShellProxy.get_local_path_items()
         self.env_path_to_remove = env_path_to_remove
@@ -52,10 +50,7 @@ class SimpleShellProxy:
 
         print("Command was: " + command)
         return subprocess.call(
-            command,
-            shell=True,
-            env=self.env,
-            executable=self.env.get("SHELL")
+            command, shell=True, env=self.env, executable=self.env.get("SHELL")
         )
 
     @staticmethod

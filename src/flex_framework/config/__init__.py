@@ -15,8 +15,8 @@ class ObjectManagerSpec(pinject.BindingSpec):
 
     def configure(self, bind):
         bind(
-            'deployment_config',
+            "deployment_config",
             in_scope=pinject.SINGLETON,
-            annotated_with='flex_framework.config.deployment',
-            to_instance=self.deployment_config
+            annotated_with="flex_framework.config.deployment",
+            to_instance=self.deployment_config,
         )

@@ -1,5 +1,8 @@
-from .merge import dict_merge
 import copy
+
+from lcli.config import ConfigException
+
+from .merge import dict_merge
 
 
 class Config(object):
@@ -74,7 +77,7 @@ class Config(object):
                 if default is None:
                     raise ConfigException(
                         'Requested config path not found "' + current_path + '". '
-                                                                             'The full path was: "' + path + '".'
+                        'The full path was: "' + path + '".'
                     )
                 else:
                     return default

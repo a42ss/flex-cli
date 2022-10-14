@@ -1,20 +1,26 @@
-from typing import Type
-from typing import TypeVar, Generic
+from typing import Generic, Type, TypeVar
+
 from pinject.object_graph import ObjectGraph
+
 from ..object_manager import Factory as ObjectManagerFactory
 
-T = TypeVar('T')
+
+T = TypeVar("T")
 
 
 class Factory(Generic[T]):
     object_manager: ObjectGraph = None
 
     def __init__(self, uses_object_manager=True):
-        if uses_object_manager and Factory.object_manager is None and ObjectManagerFactory.object_manager is not None:
+        if (
+            uses_object_manager
+            and Factory.object_manager is None
+            and ObjectManagerFactory.object_manager is not None
+        ):
             Factory.object_manager = ObjectManagerFactory.object_manager
         self.uses_object_manager = uses_object_manager
 
-    def create(self, class_name: Type[T], data: dict = None) -> Generic[T]:
+    def create(self, class_name: Type[T], data: dict = None) -> T:
         has_exception = False
         if self.uses_object_manager is True:
             try:

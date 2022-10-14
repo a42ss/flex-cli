@@ -5,4 +5,3 @@ class ConfigInterface(ABC):
     @abstractmethod
     def get(self):
         pass
-
