@@ -3,7 +3,7 @@ from cmd import Cmd
 
 from pyfiglet import Figlet
 
-from lcli.api.conroller import ControllerInterface
+from flex_framework.api.conroller import ControllerInterface
 from lcli.app_mode.base import AppModeBase, AppModeException
 from lcli.command.input import ParametersReader
 from lcli.command.subprocess import CommandRunner

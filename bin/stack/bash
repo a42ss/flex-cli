@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+# flake8: noqa
+
+from flex_cli.application import ApplicationBootstrap
+from flex_cli.application.flex_cli import FlexCli
+from etc.config import params
+
+bootstrap = ApplicationBootstrap.create_with_file_name(__file__, params)
+application = bootstrap.create_application(FlexCli)
+bootstrap.run(application)

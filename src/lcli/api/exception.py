@@ -1,2 +1,0 @@
-class LcliException(Exception):
-    pass
