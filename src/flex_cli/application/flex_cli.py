@@ -9,7 +9,7 @@ from flex_framework.console.handler import HandlerRouter, HandlerRouterFactory
 from flex_framework.console.input import Input
 from flex_framework.console.otput import CliResponse
 from flex_framework.environment import EnvironmentManager
-from flex_framework.exceptions import UnexpectedException
+from flex_framework.exceptions import GeneralException
 from flex_framework.logger import Logger
 
 
@@ -20,16 +20,19 @@ class FlexCli(ApplicationInterface[CliResponse]):
     _input: Input
 
     @pinject.copy_args_to_internal_fields
-    @pinject.annotate_arg("input", "flex_framework.console.input.Input")
+    @pinject.annotate_arg("console_input", "flex_framework.console.input.Input")
     @pinject.annotate_arg("logger", "flex_framework.logger.application")
     def __init__(
         self,
         environment: EnvironmentManager,
-        input: Input,
+        console_input: Input,
         handler_router_factory: HandlerRouterFactory,
         logger: Logger,
     ):
-        pass
+        self._environment = environment
+        self._input = console_input
+        self._handler_router_factory = handler_router_factory
+        self._logger = logger
 
     def launch(self) -> ApplicationResultInterface:
         try:
@@ -48,6 +51,6 @@ class FlexCli(ApplicationInterface[CliResponse]):
         except Exception as exception:
             self._logger.exception(exception)
             return CliResponse.Factory.create(
-                UnexpectedException.error_code,
+                GeneralException.error_code,
                 "Unexpected error, please check the application log for more details",
             )

@@ -1,6 +1,8 @@
 import os
 
+from flex_framework.api.application import ApplicationInterface, T
 from flex_framework.application import ApplicationBootstrap as BaseApplicationBootstrap
+from flex_framework.console.otput import CliResponse
 from flex_framework.object_manager import Factory as ObjectManagerFactory
 
 
@@ -22,7 +24,10 @@ class ApplicationBootstrap(BaseApplicationBootstrap):
         )
 
 
-class SimpleApplicationRuner:
+class SimpleApplicationRuner(ApplicationInterface[CliResponse]):
+    def launch(self) -> T:
+        return self.run()
+
     default_handler: object
     entry_point: str
 

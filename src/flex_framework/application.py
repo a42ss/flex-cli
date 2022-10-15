@@ -1,5 +1,4 @@
 import copy
-import errno
 import logging
 import os
 import sys
@@ -17,7 +16,6 @@ from lcli.config import (
     ConfigValidationError,
     YamlConfigReader,
 )
-from lcli.utils import setup_logger
 
 
 class AppException(Exception):
@@ -137,17 +135,6 @@ class App:
         else:
             self._current_command = command_args
 
-    def init_logger(self):
-        import logging
-
-        verb = logging.ERROR
-        if self.is_verbose():
-            verb = logging.INFO
-
-        self.logger = setup_logger(
-            "APP", verbosity=verb, file=self.get_log_file(self._log_file)
-        )
-
     def init_commands_configs(self):
         config_object = self.construct_config_object(
             ConfigNamespaces.COMMANDS,
@@ -238,14 +225,6 @@ class App:
     def get_config_object(self) -> CommandsConfig:
         return self._config_object
 
-    def init_object_manager(self):
-        self._object_manager = pinject.new_object_graph()
-
-    def get_object_manager(self) -> pinject.object_graph.ObjectGraph:
-        return self._object_manager
-
-    # Init section>
-
     # < App Business logic section
     def run(self):
         if self.is_interactive():
@@ -305,15 +284,6 @@ class App:
 
     def get_self_executable_script(self):
         return os.path.join(self.get_executable_path(), self.get_executable_name())
-
-    def get_log_file(self, log_file: str):
-        log_path = os.path.join(self._user_home_directory_path, "log")
-        try:
-            os.makedirs(log_path)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                raise
-        return os.path.join(log_path, log_file)
 
     # Directories/Paths>
     @property

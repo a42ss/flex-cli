@@ -12,9 +12,10 @@ class BashEmulator(Handler):
     _input: Input
 
     @pinject.copy_args_to_internal_fields
-    @pinject.annotate_arg("input", "flex_framework.console.input.Input")
-    def __init__(self, environment: EnvironmentManager, input: Input):
-        pass
+    @pinject.annotate_arg("console_input", "flex_framework.console.input.Input")
+    def __init__(self, environment: EnvironmentManager, console_input: Input):
+        self._environment = environment
+        self._input = console_input
 
     def handle(self) -> CliResponse:
         bash_emulator = BashEmulatorFlexAware(self._environment)
