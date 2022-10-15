@@ -9,7 +9,7 @@ from flex_framework.console.handler import HandlerRouter, HandlerRouterFactory
 from flex_framework.console.input import Input
 from flex_framework.console.otput import CliResponse
 from flex_framework.environment import EnvironmentManager
-from flex_framework.exceptions import GeneralException
+from flex_framework.exceptions import GeneralException, UnexpectedException
 from flex_framework.logger import Logger
 
 
@@ -34,6 +34,7 @@ class FlexCli(ApplicationInterface[CliResponse]):
         self._handler_router_factory = handler_router_factory
         self._logger = logger
 
+    @property
     def launch(self) -> ApplicationResultInterface:
         try:
             handler_router: HandlerRouter = self._handler_router_factory.create(
@@ -44,13 +45,18 @@ class FlexCli(ApplicationInterface[CliResponse]):
             )
             result: ApplicationResultInterface = handler.handle()
             return result
+        except UnexpectedException as exception:
+            self._logger.exception(exception)
+            return CliResponse.Factory.create(
+                exception.get_exit_code(), "Unexpected error, please check the application log for more details"
+            )
         except FlexExceptionInterface as exception:
             return CliResponse.Factory.create(
-                exception.get_code(), exception.get_message()
+                exception.get_exit_code(), exception.get_message()
             )
         except Exception as exception:
             self._logger.exception(exception)
             return CliResponse.Factory.create(
-                GeneralException.error_code,
+                GeneralException.exit_code,
                 "Unexpected error, please check the application log for more details",
             )
