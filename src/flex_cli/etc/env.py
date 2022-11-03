@@ -4,8 +4,8 @@ from pydoc import locate
 import flex_framework.config
 import flex_framework.console.handler
 import flex_framework.environment
-import flex_framework.logger
 import flex_framework.filesystem
+import flex_framework.logger
 from flex_cli.handler.bash import BashEmulator
 from flex_cli.handler.shell_proxy import ShellProxy
 from flex_cli.handler.standalone_executable import StandaloneExecutable

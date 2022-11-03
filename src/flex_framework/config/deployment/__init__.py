@@ -5,8 +5,8 @@ from typing import List
 
 from pinject import BindingSpec
 
+from ..model import Config
 from .directories import DirectoriesConfig
-from flex_framework.config.model import Config
 
 
 class Deployment(Config):

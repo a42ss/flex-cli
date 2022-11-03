@@ -21,3 +21,7 @@ class ConfigValidationError(ConfigException):
         self.error_path = error_path
         self.message = message
         self.file_path = file_path
+
+
+class FilesystemException(FlexException):
+    error_code: int = 2000
