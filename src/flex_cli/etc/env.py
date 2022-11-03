@@ -1,5 +1,11 @@
 import logging
+from pydoc import locate
 
+import flex_framework.config
+import flex_framework.console.handler
+import flex_framework.environment
+import flex_framework.logger
+import flex_framework.filesystem
 from flex_cli.handler.bash import BashEmulator
 from flex_cli.handler.shell_proxy import ShellProxy
 from flex_cli.handler.standalone_executable import StandaloneExecutable
@@ -7,6 +13,11 @@ from flex_framework.api.handler import HandlerInterface, get_handler
 
 
 params = {
+    "dirs": {"system_config": "/etc/flex-cli"},
+    "configuration": {
+        "locations": ["SYS" "HOME" "CWD"],
+        "path_namespaces": ["flex-cli", ".flex-cli"],
+    },
     HandlerInterface.Const.DEFAULT_HANDLER: get_handler(BashEmulator),
     "handlers": {
         "flex": {
@@ -24,5 +35,22 @@ params = {
         },
         "debug": {"file": "debug.log", "verbosity": logging.DEBUG},
         "profiler": {"file": "profiler.log", "verbosity": logging.DEBUG},
+    },
+    "di": {
+        "modules": [
+            flex_framework.logger,
+            flex_framework.environment,
+            flex_framework.console.input,
+            flex_framework.console.handler,
+            flex_framework.config.deployment,
+            flex_framework.filesystem,
+            locate("bin.debug"),
+        ],
+        "classes": [flex_framework.logger.Logger],
+        "binding_specs": [
+            flex_framework.config.ObjectManagerSpec,
+            flex_framework.console.ObjectManagerSpec,
+            flex_framework.logger.ObjectManagerSpec,
+        ],
     },
 }

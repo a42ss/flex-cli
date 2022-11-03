@@ -79,7 +79,7 @@ class LoggerFactory(Factory):
         return {**logger_config_defaults, **logger_config}
 
 
-class ObjectManagerSpec(pinject.BindingSpec):
+class ObjectManagerSpec(pinject.bindings.BindingSpec):
     deployment_config: Deployment
 
     def __init__(self, deployment_config: Deployment):

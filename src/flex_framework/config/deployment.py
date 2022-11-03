@@ -1,2 +1,0 @@
-class Deployment(dict):
-    pass

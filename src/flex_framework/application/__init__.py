@@ -1,3 +1,5 @@
+import os
+
 from ..api.proxy import ProxyContainer, ProxyInterface
 from ..logger import Logger, ProfilerLoggerProxy
 from ..object_manager import Factory as ObjectManagerFactory
@@ -16,6 +18,7 @@ class ApplicationBootstrap:
         current_working_dir: str,
         arguments: dict,
     ):
+        self.process_arguments(arguments)
         self._object_manager = object_manager_factory.create(arguments)
         self._current_working_dir = current_working_dir
         self._arguments = arguments
@@ -62,3 +65,19 @@ class ApplicationBootstrap:
     def terminate(self, exception: Exception):
         print("Unhandled exception: " + str(exception))
         exit(1)
+
+    def process_arguments(self, arguments: dict):
+        arguments["dirs"]["user_home"] = os.path.expanduser("~")
+        arguments["dirs"]["user_config"] = os.path.expanduser(
+            os.path.join("~", ".config", "flex-cli")
+        )
+        arguments["dirs"]["user_cache"] = os.path.expanduser(
+            os.path.join("~", ".cache", "flex-cli")
+        )
+        arguments["dirs"]["system_config"] = os.path.join(
+            os.path.realpath(arguments["dirs"]["system_config"])
+        )
+        arguments["dirs"]["cwd_config"] = os.path.join(
+            os.getcwd(), ".flex-cli", "config"
+        )
+        arguments["dirs"]["cwd_cache"] = os.path.join(os.getcwd(), ".flex-cli", "cache")

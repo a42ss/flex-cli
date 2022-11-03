@@ -2,30 +2,8 @@ from __future__ import annotations
 
 import copy
 
-import pinject
-
 from flex_framework.config.merge import dict_merge
 from lcli.config import ConfigException
-
-from .deployment import Deployment
-
-
-class ObjectManagerSpec(pinject.bindings.BindingSpec):
-    deployment_config: Deployment
-
-    def __init__(self, deployment_config: Deployment):
-        self.deployment_config = deployment_config
-
-    def provide_deployment(self):
-        return self.deployment_config
-
-    def configure(self, bind):
-        bind(
-            "deployment_config",
-            in_scope=pinject.SINGLETON,
-            annotated_with="flex_framework.config.deployment",
-            to_instance=self.deployment_config,
-        )
 
 
 class Config(dict):

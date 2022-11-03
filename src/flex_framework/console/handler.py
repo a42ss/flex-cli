@@ -52,7 +52,7 @@ class HandlerRouter:
         deployment_config: Deployment,
         handler_factory: HandlerFactory,
         class_loader: ClassLoader,
-        logger: Logger
+        logger: Logger,
     ):
         self._deployment_config = deployment_config
         self._handler_factory = handler_factory
@@ -83,8 +83,10 @@ class HandlerRouter:
 
         try:
             return self._handler_factory.create(handler_class)
-        except Exception:
-            raise HandlerException("Unable to find a handler for: " + handler)
+        except Exception as exception:
+            raise HandlerException(
+                "Unable to find a handler for: " + handler, exception
+            )
 
     def get_default_handler(self):
         default_handler = self._deployment_config.get(
@@ -109,7 +111,10 @@ class HandlerRouter:
                 raise HandlerNotFoundException("Handler not found")
             handler = current_handler.get(item)
 
-            if step < path_length and not isinstance(handler, dict):
+            if step == path_length:
+                break
+
+            if not isinstance(handler, dict):
                 raise HandlerNotFoundException("Invalid handler configuration")
 
             current_handler = handler

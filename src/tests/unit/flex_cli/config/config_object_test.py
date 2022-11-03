@@ -1,8 +1,8 @@
 import json
 import unittest
 
-from flex_cli.config import merge
-from flex_cli.config.exception import InvalidConfigurationMergeParams
+from flex_framework.config import merge
+from flex_framework.config.exception import InvalidConfigurationMergeParams
 
 
 class VerifyMergeDictTest(unittest.TestCase):

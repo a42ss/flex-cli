@@ -4,4 +4,4 @@
 from flex_cli.application import SimpleApplicationRuner
 from flex_cli.handler.shell_proxy import ShellProxy
 
-SimpleApplicationRuner(__file__, ShellProxy).launch()
+SimpleApplicationRuner(__file__, ShellProxy).run()

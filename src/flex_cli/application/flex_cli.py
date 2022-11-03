@@ -34,7 +34,6 @@ class FlexCli(ApplicationInterface[CliResponse]):
         self._handler_router_factory = handler_router_factory
         self._logger = logger
 
-    @property
     def launch(self) -> ApplicationResultInterface:
         try:
             handler_router: HandlerRouter = self._handler_router_factory.create(
@@ -48,9 +47,11 @@ class FlexCli(ApplicationInterface[CliResponse]):
         except UnexpectedException as exception:
             self._logger.exception(exception)
             return CliResponse.Factory.create(
-                exception.get_exit_code(), "Unexpected error, please check the application log for more details"
+                exception.get_exit_code(),
+                "Unexpected error, please check the application log for more details",
             )
         except FlexExceptionInterface as exception:
+            self._logger.exception(exception)
             return CliResponse.Factory.create(
                 exception.get_exit_code(), exception.get_message()
             )

@@ -26,7 +26,7 @@ class ApplicationBootstrap(BaseApplicationBootstrap):
 
 class SimpleApplicationRuner(ApplicationInterface[CliResponse]):
     def launch(self) -> T:
-        return self.run()
+        raise Exception("Launch method is disabled for this application type.")
 
     default_handler: object
     entry_point: str

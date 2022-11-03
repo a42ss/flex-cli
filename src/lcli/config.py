@@ -153,7 +153,7 @@ class CommandsConfig(Config):
 
 class ConfigReader(object):
     """
-    Read the configuration from the files, this is the base funcionality
+    Read the configuration from the files, this is the base functionality
     """
 
     _config_file: str

@@ -1,9 +1,16 @@
 import pinject
 
+from ..config import Deployment
 from .input import Input
 
 
-class ObjectManagerSpec(pinject.BindingSpec):
+class ObjectManagerSpec(pinject.bindings.BindingSpec):
+
+    deployment_config: Deployment
+
+    def __init__(self, deployment_config: Deployment):
+        self.deployment_config = deployment_config
+
     def configure(self, bind):
         bind(
             "console_input",

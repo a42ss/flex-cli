@@ -17,24 +17,10 @@ class Factory:
     def create(self, arguments: dict) -> ObjectManager:
         deployment_config = Deployment(arguments)
 
-        import flex_framework.config
-        import flex_framework.console.handler
-        import flex_framework.environment
-        import flex_framework.logger
-
         object_manager = pinject.new_object_graph(
-            modules=[
-                flex_framework.logger,
-                flex_framework.environment,
-                flex_framework.console.input,
-                flex_framework.console.handler,
-                flex_framework.config.deployment,
-            ],
-            binding_specs=[
-                flex_framework.config.ObjectManagerSpec(deployment_config),
-                flex_framework.console.ObjectManagerSpec(),
-                flex_framework.logger.ObjectManagerSpec(deployment_config),
-            ],
+            modules=deployment_config.di.modules,
+            binding_specs=deployment_config.di_binding_specs,
+            classes=deployment_config.di.classes,
         )
 
         object_manager.__class__ = ObjectManager
