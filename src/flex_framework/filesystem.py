@@ -3,8 +3,8 @@ from __future__ import annotations
 import os
 from typing import List, Optional, Type
 
-from flex_framework.api.factory import Factory
-from flex_framework.config.exception import FilesystemException
+from .api.factory import Factory
+from .config.exception import FilesystemException
 
 
 class FilePermission:

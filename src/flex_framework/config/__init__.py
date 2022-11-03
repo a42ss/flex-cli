@@ -4,10 +4,9 @@ import copy
 
 import pinject
 
-from flex_framework.config.merge import dict_merge
-from lcli.config import ConfigException
-
 from .deployment import Deployment
+from .exception import ConfigException
+from .merge import dict_merge
 
 
 class ObjectManagerSpec(pinject.bindings.BindingSpec):

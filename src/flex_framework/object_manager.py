@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pinject
 
-from flex_framework.config import Deployment
+from .config import Deployment
 
 
 class ObjectManager(pinject.object_graph.ObjectGraph):

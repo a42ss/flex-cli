@@ -1,4 +1,4 @@
-from flex_framework.config.model import Config
+from ..model import Config
 
 
 class DirectoriesConfig(Config):

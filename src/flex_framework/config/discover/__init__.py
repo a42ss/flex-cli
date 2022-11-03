@@ -2,7 +2,7 @@ import os
 
 import pinject
 
-from flex_framework.config import Deployment
+from ..deployment import Deployment
 
 
 class ConfigDirectories:

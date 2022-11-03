@@ -5,10 +5,10 @@ from typing import Dict, Type
 
 import pinject
 
-from flex_framework.api.factory import Factory
-from flex_framework.api.proxy import ProxyContainer
-from flex_framework.config import Deployment
-from flex_framework.exceptions import FlexException
+from .api.factory import Factory
+from .api.proxy import ProxyContainer
+from .config import Deployment
+from .exceptions import FlexException
 
 
 class Logger(logging.Logger):
@@ -63,7 +63,7 @@ class LoggerFactory(Factory):
         return self.setup_logger(logger_config)
 
     def get_logger_config(self, logger_id: str):
-        logger_config = {}
+        logger_config: Dict[str, str] = {}
         logger_config_defaults = {
             "application_name": "flex-cli",
             "path": os.path.join(".flex-cli", "log"),

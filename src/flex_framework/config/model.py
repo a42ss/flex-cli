@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import copy
 
-from flex_framework.config.merge import dict_merge
-from lcli.config import ConfigException
+from .exception import ConfigException
+from .merge import dict_merge
 
 
 class Config(dict):
