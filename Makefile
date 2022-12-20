@@ -1,3 +1,6 @@
+#!make
+include .env
+
 NAME := lcli
 COVERAGE_PERCENTAGE := 0
 
@@ -10,7 +13,7 @@ POETRY ?= $(VENV)/bin/poetry
 PYTHON ?= $(VENV)/bin/python
 INSTALL_FLAG := $(VENV)/.install.$(NAME)
 
-VERSION := $(FullSemVer)
+VERSION := $(VERSION_OVERWRITE)
 VERSION := $(if $(VERSION),$(VERSION),$(shell $(POETRY) run python bin/print_version.py))
 
 .DEFAULT_GOAL := help
@@ -86,12 +89,12 @@ build: $(VENV) $(POETRY) install
 create_version: $(VENV) $(POETRY) install test lint build
 	@echo POETRY: Create version $(VERSION)
 	git add src/lcli/__init__.py pyproject.toml poetry.lock
-	git commit -m "Bumping version to $(VERSION)"
+	git commit -m "Bumping version to $(VERSION)" && true
 	git push origin
 	git tag $(VERSION)
 	git push origin $(VERSION)
 	@echo POETRY: Publish $(VERSION) on testpypi
-	$(POETRY) publish --username="$(PYPI_USERNAME)" --password="$(PYPI_PASSWORD)" --repository="testpypi"
+	$(POETRY) publish --username="$(PYPI_TEST_USERNAME)" --password="$(PYPI_TEST_PASSWORD)" --repository="$(PYPI_TEST_REPOSITORY)"
 	@echo POETRY: Create version done $(VERSION)
 
 .PHONY: publish
