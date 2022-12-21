@@ -1,4 +1,5 @@
 #!make
+$(shell touch .env)
 include .env
 
 NAME := lcli
