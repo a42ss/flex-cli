@@ -1,11 +1,12 @@
 import os
 import sys
 import traceback
+from typing import Optional
 
-from .__init__ import EXECUTABLE_NAME
+from . import EXECUTABLE_NAME
 
 
-def main(init_params: dict = None):
+def main(init_params: Optional[dict] = None):
     cwd = process_working_directory()
     if init_params is None:
         init_params = {}

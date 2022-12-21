@@ -1,6 +1,6 @@
 import copy
 import os
-from typing import Dict
+from typing import Dict, Optional
 
 from lcli.exceptions import LcliException
 
@@ -153,7 +153,7 @@ class CommandsConfig(Config):
 
 class ConfigReader(object):
     """
-    Read the configuration from the files, this is the base funcionality
+    Read the configuration from the files, this is the base functionality
     """
 
     _config_file: str
@@ -492,7 +492,10 @@ class CommandCollection(Config):
         return self
 
     def get_commands_names_in_path(
-        self, path: list = None, ignored_commands=None, available_groups: list = []
+        self,
+        path: Optional[list] = None,
+        ignored_commands=None,
+        available_groups: list = [],
     ) -> dict:
         """
         Get commands names available in a given path
@@ -552,7 +555,7 @@ class CommandCollection(Config):
         return result
 
     def get_command_collection_by_path(
-        self, path: list = None, return_deepest=False
+        self, path: Optional[list] = None, return_deepest=False
     ) -> "CommandCollection":
         """
         Return the list of commands accessed by a given path for invocation
@@ -571,7 +574,7 @@ class CommandCollection(Config):
     def _get_command_collection_by_path(
         self,
         commands_list: "CommandCollection",
-        path: list = None,
+        path: Optional[list] = None,
         return_deepest=False,
     ) -> "CommandCollection":
         """
@@ -608,7 +611,9 @@ class CommandCollection(Config):
             key_index += 1
         return commands_list
 
-    def get_command_by_path(self, path: list = None, return_first_executable=False):
+    def get_command_by_path(
+        self, path: Optional[list] = None, return_first_executable=False
+    ):
         """
         Return the command accessed by a given path
 
@@ -626,7 +631,7 @@ class CommandCollection(Config):
     def _get_command_by_path(
         self,
         commands_list: "CommandCollection",
-        path: list = None,
+        path: Optional[list] = None,
         return_first_executable=False,
     ):
         """

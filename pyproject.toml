@@ -19,7 +19,8 @@ keywords = ['cli', 'flex', 'documentation', 'automation', 'local', 'command', 'c
 packages = [
     { include = "lcli", from = "src"  },
     { include = "flex_cli", from = "src"  },
-    { include = "flex_ansible", from = "src"  }
+    { include = "flex_ansible", from = "src"  },
+    { include = "flex_framework", from = "src"  }
 ]
 
 [tool.poetry.dependencies]
@@ -112,4 +113,9 @@ in-project = true
 [tool.pytest.ini_options]
 pythonpath = [
   "src"
+]
+
+[tool.mypy]
+explicit_package_bases = true
+exclude = [
 ]

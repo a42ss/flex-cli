@@ -11,6 +11,13 @@
    contributing
 
 .. toctree::
+   :caption: Architecture
+   :numbered:
+   :maxdepth: 2
+
+   architecture
+
+.. toctree::
    :maxdepth: 1
    :hidden:
 

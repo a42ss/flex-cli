@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+# flake8: noqa
+import os
+
+from flex_framework.api.application import ApplicationInterface, T
+from flex_framework.application import ApplicationBootstrap
+from flex_framework.console.otput import CliResponse
+from flex_framework.shell.proxy import SimpleShellProxy
+from etc.config import params, extend_env_variables
+
+
+class DockerCompose(SimpleShellProxy, ApplicationInterface[CliResponse]):
+    def launch(self) -> T:
+        return CliResponse(self.execute(os.path.basename(__file__)), "Done with composer")
+
+    def get_global_command_arguments(self) -> list:
+        docker_compose_files = self.env.get("DOCKER_COMPOSE_FILES")
+        if docker_compose_files is None:
+            docker_compose_files = ""
+        docker_compose_files_items = docker_compose_files.split(" ")
+        result = []
+        for file in docker_compose_files_items:
+            if len(file) > 0:
+                result.append("-f")
+                result.append(file)
+        return result
+
+
+bootstrap = ApplicationBootstrap.create(os.path.basename(__file__), extend_env_variables(params))
+application = bootstrap.create_application(DockerCompose)
+bootstrap.run(application)

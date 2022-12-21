@@ -1,4 +1,5 @@
 #!make
+$(shell touch .env)
 include .env
 
 NAME := lcli
@@ -73,7 +74,7 @@ update: $(VENV) $(POETRY) pyproject.toml
 .PHONY: test
 test: $(VENV) $(POETRY)
 	@echo POETRY: test
-	$(POETRY) run pytest --cov-report html --cov-report xml --cov-report term-missing --cov-fail-under $(COVERAGE_PERCENTAGE) --cov $(NAME)
+	$(POETRY) run pytest --cov-report html --cov-report xml --cov-report term-missing --cov-fail-under $(COVERAGE_PERCENTAGE) --cov flex_cli --cov flex_framework
 
 uninstall: $(VENV)
 	$(VENV)/bin/pip uninstall -y $(NAME)
@@ -136,7 +137,7 @@ lint: $(INSTALL_STAMP)
 	@echo POETRY: flake8
 	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src $(NAME)
 	@echo POETRY: mypy
-	$(POETRY) run mypy ./src $(NAME) --ignore-missing-imports
+	$(POETRY) run mypy ./src/$(NAME) --ignore-missing-imports
 	@echo POETRY: bandit
 	$(POETRY) run bandit -r ./src -c pyproject.toml
 	@echo POETRY: Done the lint check

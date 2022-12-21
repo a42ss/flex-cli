@@ -1,7 +1,7 @@
 import glob
 import os
 
-from lcli import __version__
+from lcli.__init__ import __version__
 from lcli.app import App
 from lcli.tools.base import BaseTool
 
