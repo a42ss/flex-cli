@@ -114,3 +114,8 @@ in-project = true
 pythonpath = [
   "src"
 ]
+
+[tool.mypy]
+explicit_package_bases = true
+exclude = [
+]
