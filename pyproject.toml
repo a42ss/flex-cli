@@ -26,7 +26,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 
-fire = { version = "^0.4" }
+fire = { version = ">=0.4,<0.6" }
 pinject = { version = "^0.14" }
 prompt-toolkit = { version = "^3.0" }
 PyYAML = { version = "^6.0" }
