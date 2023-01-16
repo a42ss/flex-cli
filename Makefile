@@ -2,7 +2,7 @@
 $(shell touch .env)
 include .env
 
-NAME := lcli
+NAME := flex_cli
 COVERAGE_PERCENTAGE := 0
 
 SYSTEM_PYTHON = $(shell command -v python3 2> /dev/null)
@@ -159,8 +159,8 @@ lint_fix: $(INSTALL_STAMP)
 
 .PHONY: format
 format: $(INSTALL_STAMP)
-	$(VENV)/bin/isort --profile=black --lines-after-imports=2 ./tests/ $(NAME) --virtual-env=$(VENV)
-	$(VENV)/bin/black ./tests/ $(NAME)
+	$(VENV)/bin/isort --profile=black --lines-after-imports=2 ./src --virtual-env=$(VENV)
+	$(VENV)/bin/black ./src
 
 .PHONY: clean
 clean:
