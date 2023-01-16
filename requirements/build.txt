@@ -76,7 +76,7 @@ trove-classifiers==2022.12.1 ; python_version >= "3.8" and python_version < "4.0
 twine==4.0.2 ; python_version >= "3.8" and python_version < "4.0"
 typing-extensions==4.4.0 ; python_version >= "3.8" and python_version < "4.0"
 urllib3==1.26.13 ; python_version >= "3.8" and python_version < "4.0"
-virtualenv==20.16.5 ; sys_platform == "win32" and python_version == "3.9"
+virtualenv==20.17.1 ; sys_platform == "win32" and python_version == "3.9"
 virtualenv==20.17.1 ; python_version >= "3.8" and python_version < "4.0" and sys_platform != "win32" or python_version >= "3.8" and python_version < "4.0" and python_version != "3.9"
 webencodings==0.5.1 ; python_version >= "3.8" and python_version < "4.0"
 xattr==0.10.1 ; python_version >= "3.8" and python_version < "4.0" and sys_platform == "darwin"
