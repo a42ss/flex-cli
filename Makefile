@@ -131,13 +131,13 @@ dependency:
 lint: $(INSTALL_STAMP)
 	@echo POETRY: Start lint check
 	@echo POETRY: isort
-	$(POETRY) run isort --profile=black --lines-after-imports=2 --check-only ./src $(NAME) --virtual-env=$(VENV)
+	$(POETRY) run isort --profile=black --lines-after-imports=2 --check-only ./src --virtual-env=$(VENV)
 	@echo POETRY: black
-	$(POETRY) run black --check ./src $(NAME) --diff
+	$(POETRY) run black --check ./src --diff
 	@echo POETRY: flake8
-	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src $(NAME)
+	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src
 	@echo POETRY: mypy
-	$(POETRY) run mypy ./src/$(NAME) --ignore-missing-imports
+	$(POETRY) run mypy ./src/ --ignore-missing-imports
 	@echo POETRY: bandit
 	$(POETRY) run bandit -r ./src -c pyproject.toml
 	@echo POETRY: Done the lint check
@@ -146,13 +146,13 @@ lint: $(INSTALL_STAMP)
 lint_fix: $(INSTALL_STAMP)
 	@echo POETRY: Start lint fix
 	@echo POETRY: isort
-	$(POETRY) run isort --profile=black --lines-after-imports=2 ./src $(NAME) --virtual-env=$(VENV)
+	$(POETRY) run isort --profile=black --lines-after-imports=2 ./src --virtual-env=$(VENV)
 	@echo POETRY: black
-	$(POETRY) run black ./src $(NAME)
+	$(POETRY) run black ./src
 	@echo POETRY: flake8
-	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src $(NAME)
+	$(POETRY) run flake8 --ignore=W503,E501,E203 ./src
 	@echo POETRY: mypy
-	$(POETRY) run mypy ./src $(NAME) --ignore-missing-imports
+	$(POETRY) run mypy ./src --ignore-missing-imports
 	@echo POETRY: bandit
 	$(POETRY) run bandit -r ./src -c pyproject.toml
 	@echo POETRY: Done the lint check

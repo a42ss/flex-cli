@@ -1,6 +1,7 @@
 import argparse
 import sys
 from argparse import Namespace
+from typing import Optional
 
 
 class Input:
@@ -10,7 +11,7 @@ class Input:
     handler: str
     processed_arguments: list[str]
 
-    def __init__(self, configuration: dict = None):
+    def __init__(self, configuration: Optional[dict] = None):
         if configuration is None:
             configuration = {}
         self.configuration = configuration

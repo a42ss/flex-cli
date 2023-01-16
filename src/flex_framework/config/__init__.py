@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from typing import Optional
 
 import pinject
 
@@ -34,7 +35,7 @@ class Config(dict):
 
     _config: dict
 
-    def __init__(self, config_data: dict = None):
+    def __init__(self, config_data: Optional[dict] = None):
         super().__init__()
         if config_data is None:
             config_data = {}

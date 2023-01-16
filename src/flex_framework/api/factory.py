@@ -1,4 +1,4 @@
-from typing import Generic, Type, TypeVar
+from typing import Generic, Optional, Type, TypeVar
 
 from pinject.object_graph import ObjectGraph
 
@@ -21,7 +21,7 @@ class Factory(Generic[T]):
             Factory.object_manager = ObjectManagerFactory.object_manager
         self.uses_object_manager = uses_object_manager
 
-    def create(self, class_name: Type[T], data: dict = None) -> T:
+    def create(self, class_name: Type[T], data: Optional[dict] = None) -> T:
         try:
             if self.uses_object_manager is True:
                 try:

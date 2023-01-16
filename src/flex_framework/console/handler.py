@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from typing import Type
+from typing import Optional, Type
 
 import pinject
 
@@ -34,7 +34,7 @@ class DebugHandler(Handler):
 
 
 class HandlerFactory(Factory[Handler]):
-    def create(self, class_name: Type[Handler], data: dict = None) -> Handler:
+    def create(self, class_name: Type[Handler], data: Optional[dict] = None) -> Handler:
         return super().create(class_name, data)
 
 

@@ -3,17 +3,17 @@ from typing import Optional
 
 from flex_framework.api.application import ApplicationInterface, T
 from flex_framework.application import ApplicationBootstrap as BaseApplicationBootstrap
+from flex_framework.config.merge import dict_merge
 from flex_framework.console.otput import CliResponse
 from flex_framework.object_manager import Factory as ObjectManagerFactory
-from flex_framework.config.merge import dict_merge
 
 
 class ApplicationBootstrap(BaseApplicationBootstrap):
     @staticmethod
     def create_with_file_name(
-            entry_point: str,
-            params=None,
-            object_manager_factory: ObjectManagerFactory = None,
+        entry_point: str,
+        params=None,
+        object_manager_factory: ObjectManagerFactory = None,
     ):
         if params is None:
             params = {}
@@ -35,7 +35,9 @@ class SimpleApplicationRuner(ApplicationInterface[CliResponse]):
     default_handler: object
     entry_point: str
 
-    def __init__(self, entry_point: str, default_handler: object, params: Optional[dict] = None):
+    def __init__(
+        self, entry_point: str, default_handler: object, params: Optional[dict] = None
+    ):
         if params is None:
             params = {}
         self.params = params
@@ -43,9 +45,10 @@ class SimpleApplicationRuner(ApplicationInterface[CliResponse]):
         self.default_handler = default_handler
 
     def run(self):
-        from .flex_cli import FlexCli
         from ..etc import extend_env_variables
         from ..etc.env import params as default_params
+        from .flex_cli import FlexCli
+
         params = dict_merge(default_params, self.params)
         self.params = extend_env_variables(params, self.default_handler)
 

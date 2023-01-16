@@ -34,7 +34,9 @@ class FilePermission:
 
 class FilePermissionFactory(Factory):
     def create(
-        self, class_name: Type[FilePermission] = FilePermission, data: dict = None
+        self,
+        class_name: Type[FilePermission] = FilePermission,
+        data: Optional[dict] = None,
     ) -> FilePermission:
         return super().create(class_name, data)
 
@@ -71,7 +73,7 @@ class FileDiscovery:
         self.file_permission_factory = file_permission_factory
 
     def get_available_files(
-        self, directories: List[str], file_checks: FileDiscoveryChecks = None
+        self, directories: List[str], file_checks: Optional[FileDiscoveryChecks] = None
     ) -> List[str]:
         result = []
 

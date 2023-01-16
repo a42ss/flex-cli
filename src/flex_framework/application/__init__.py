@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from ..api.proxy import ProxyContainer, ProxyInterface
 from ..logger import Logger, ProfilerLoggerProxy
@@ -30,7 +31,7 @@ class ApplicationBootstrap:
     def create(
         current_working_dir: str,
         params=None,
-        object_manager_factory: ObjectManagerFactory = None,
+        object_manager_factory: Optional[ObjectManagerFactory] = None,
     ):
         if params is None:
             params = {}

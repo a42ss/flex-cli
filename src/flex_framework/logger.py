@@ -1,7 +1,7 @@
 import errno
 import logging
 import os
-from typing import Dict, Type
+from typing import Dict, Optional, Type
 
 import pinject
 
@@ -29,7 +29,9 @@ class LoggerFactory(Factory):
     def __init__(self, deployment_config: Deployment):
         super().__init__()
 
-    def create(self, class_name: Type[Logger] = Logger, data: dict = None) -> Logger:
+    def create(
+        self, class_name: Type[Logger] = Logger, data: Optional[dict] = None
+    ) -> Logger:
         if data is None:
             data = Dict[str, str]()
         return self.setup_logger(data)

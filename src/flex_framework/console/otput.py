@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Optional
 
 from ..api.application import ApplicationResultInterface
 
@@ -12,14 +12,14 @@ class CliResponse(ApplicationResultInterface):
 
     class Factory:
         @staticmethod
-        def create(exit_code, content: str = None):
+        def create(exit_code, content: Optional[str] = None):
             return CliResponse(exit_code, content)
 
-    def __init__(self, exit_code: int = 0, content: str = None):
+    def __init__(self, exit_code: int = 0, content: Optional[str] = None):
         self._content = content
         self._exit_code = exit_code
 
-    def send_response(self, after_execute_callback: Callable = None):
+    def send_response(self, after_execute_callback: Optional[Callable] = None):
         if self._content is not None and len(self._content):
             print(self._content)
 
