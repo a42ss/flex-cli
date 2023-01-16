@@ -48,7 +48,6 @@ class SimpleShellProxy:
         if len(arguments):
             command += " " + " ".join(arguments)
 
-        print("Command was: " + command)
         return subprocess.call(
             command, shell=True, env=self.env, executable=self.env.get("SHELL")
         )

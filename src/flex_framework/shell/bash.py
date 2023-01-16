@@ -15,11 +15,11 @@ class BashEmulator(SimpleShellProxy):
             "/usr/bin/env bash --init-file <(echo '"
             ". $HOME/.bashrc; "
             'export PATH="' + self.env["FLEX_SHELL_PROXY_LOCAL_PATH"] + ':$PATH"; '
-            'export PS1="\[\e[m\]\[\e[0;31m\]\$(echo "[\$FLEX_SHELL_PROXY_ENV_NAME]")\[\e[m\] \w $PS1"; '
+            'export PS1="\[\e[m\]\[\e[0;31m\]\$(echo "[\$FLEX_SHELL_PROXY_ENV_NAME]")\[\e[m\] $PS1"; '
             'alias reload="envsubst < ./env/.env.template > ./env/.env; exit 115";'
             'alias switch_local="export FLEX_SHELL_PROXY_ENV_NAME=local; reload";'
             'alias switch_dev="export FLEX_SHELL_PROXY_ENV_NAME=dev; reload"'
-            "')"
+            "') -i -e"
         )
         return self.execute(bash_command_string)
 
@@ -65,6 +65,9 @@ class BashEmulatorFlexAware(BashEmulator):
         path = os.path.join(os.getcwd(), "env", self.env_name)
         env_files = []
         default_env_file = os.path.join(path, ".env")
+        base_env_file = os.path.join(os.getcwd(), "env", ".env")
+        if os.path.isfile(base_env_file):
+            env_files.append(base_env_file)
         if os.path.isfile(default_env_file):
             env_files.append(default_env_file)
 

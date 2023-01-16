@@ -1,5 +1,4 @@
 import logging
-from pydoc import locate
 
 import flex_framework.config
 import flex_framework.console.handler
@@ -44,7 +43,6 @@ params = {
             flex_framework.console.handler,
             flex_framework.config.deployment,
             flex_framework.filesystem,
-            locate("bin.debug"),
         ],
         "classes": [flex_framework.logger.Logger],
         "binding_specs": [

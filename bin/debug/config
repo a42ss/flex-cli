@@ -1,7 +1,19 @@
 #!/usr/bin/env python3
 # flake8: noqa
+import os
+from pydoc import locate
+import sys
 
 from bin.debug import ConfigDebugHandler
 from flex_cli.application import SimpleApplicationRuner
 
-SimpleApplicationRuner(__file__, ConfigDebugHandler).run()
+sys.path.append(os.path.abspath(os.path.join(__file__, '..')))
+params = {
+    "di": {
+        "modules": [
+            locate("debug")
+        ]
+    },
+}
+
+SimpleApplicationRuner(__file__, ConfigDebugHandler, params).run()
