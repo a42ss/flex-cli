@@ -33,6 +33,20 @@ class Input:
             help="Handler used to process the request",
         )
         parser.add_argument(
+            argument_type + "cwd",
+            nargs="?",
+            const="",
+            default="",
+            help="Current working directory for the application.",
+        )
+        parser.add_argument(
+            argument_type + "cex",
+            nargs="?",
+            const="",
+            default="",
+            help="Entry point for the console script. Overwrite the name of the executable script.",
+        )
+        parser.add_argument(
             "--flush-cache",
             action="store_true",
             help="Remove all layers of cache for the application.",

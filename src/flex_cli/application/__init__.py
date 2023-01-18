@@ -1,4 +1,3 @@
-import os
 from typing import Optional
 
 from flex_framework.api.application import ApplicationInterface, T
@@ -17,9 +16,10 @@ class ApplicationBootstrap(BaseApplicationBootstrap):
     ):
         if params is None:
             params = {}
-        params["entry_point"] = entry_point
-
-        current_working_dir = os.path.basename(entry_point)
+        params["entry_point"] = BaseApplicationBootstrap.process_executable_name(
+            entry_point
+        )
+        current_working_dir = BaseApplicationBootstrap.process_working_directory()
 
         return BaseApplicationBootstrap.create(
             current_working_dir, params, object_manager_factory
