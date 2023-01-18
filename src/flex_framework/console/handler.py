@@ -102,22 +102,21 @@ class HandlerRouter:
         handlers = self._deployment_config.get(HandlerInterface.Const.HANDLERS)
         if not isinstance(handlers, dict):
             raise HandlerException("Invalid handler configuration")
-        current_handler = handlers
+        current_handler: Optional[dict] = handlers
         step = 0
         path_length = len(path)
         for item in path:
             step += 1
-            if item not in current_handler:
+            if not isinstance(current_handler, dict) or item not in current_handler:
                 raise HandlerNotFoundException("Handler not found")
             handler = current_handler.get(item)
+            current_handler = handler
 
             if step == path_length:
                 break
 
             if not isinstance(handler, dict):
                 raise HandlerNotFoundException("Invalid handler configuration")
-
-            current_handler = handler
 
         if isinstance(current_handler, str):
             return current_handler
