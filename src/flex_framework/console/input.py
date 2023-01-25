@@ -11,18 +11,28 @@ class Input:
     handler: str
     processed_arguments: list[str]
 
+    def __new__(cls, configuration: Optional[dict] = None):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(Input, cls).__new__(cls)
+            cls.init(cls.instance, configuration)
+        return cls.instance
+
     def __init__(self, configuration: Optional[dict] = None):
+        pass
+
+    @staticmethod
+    def init(instance, configuration: Optional[dict] = None):
         if configuration is None:
             configuration = {}
-        self.configuration = configuration
-        self.original_argv = sys.argv
+        instance.configuration = configuration
+        instance.original_argv = sys.argv
 
         parser = argparse.ArgumentParser(
             description="Flex cli", add_help=True, prefix_chars="-"
         )
         argument_type = "-"
 
-        handler_arguments = self.configuration.get("handler_arguments")
+        handler_arguments = instance.configuration.get("handler_arguments")
         if isinstance(handler_arguments, dict) and handler_arguments.get("positional"):
             argument_type = ""
         parser.add_argument(
@@ -55,7 +65,7 @@ class Input:
             "--version", action="store_true", help="Show FlexCli version"
         )
         (namespace, processed_arguments) = parser.parse_known_args()
-        self.namespace = namespace
-        self.handler = namespace.handler
-        self.processed_arguments = processed_arguments
-        sys.argv = [self.original_argv[0]] + processed_arguments
+        instance.namespace = namespace
+        instance.handler = namespace.handler
+        instance.processed_arguments = processed_arguments
+        sys.argv = [instance.original_argv[0]] + processed_arguments

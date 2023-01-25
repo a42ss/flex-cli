@@ -12,5 +12,7 @@ class StandaloneExecutable(Handler):
         self._deployment_config = deployment_config
 
     def handle(self) -> CliResponse:
-        StandaloneExecutableClass(self._deployment_config.get("entry_point"))
+        from flex_framework.application.constants import APP_CLI_ENTRY_POINT
+
+        StandaloneExecutableClass(self._deployment_config.get(APP_CLI_ENTRY_POINT))
         return CliResponse.Factory.create(0)

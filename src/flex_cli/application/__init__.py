@@ -2,6 +2,7 @@ from typing import Optional
 
 from flex_framework.api.application import ApplicationInterface, T
 from flex_framework.application import ApplicationBootstrap as BaseApplicationBootstrap
+from flex_framework.application.constants import APP_CLI_ENTRY_POINT
 from flex_framework.config.merge import dict_merge
 from flex_framework.console.otput import CliResponse
 from flex_framework.object_manager import Factory as ObjectManagerFactory
@@ -16,9 +17,7 @@ class ApplicationBootstrap(BaseApplicationBootstrap):
     ):
         if params is None:
             params = {}
-        params["entry_point"] = BaseApplicationBootstrap.process_executable_name(
-            entry_point
-        )
+        params[APP_CLI_ENTRY_POINT] = entry_point
         current_working_dir = BaseApplicationBootstrap.process_working_directory()
 
         return BaseApplicationBootstrap.create(
