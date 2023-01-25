@@ -29,6 +29,8 @@ class ShellProxy(Handler):
 
     def handle(self) -> CliResponse:
         shell_proxy = SimpleShellProxy(self._environment)
-        entry_point = os.path.basename(self._deployment_config.get("entry_point"))
+        from flex_framework.application.constants import APP_CLI_ENTRY_POINT
+
+        entry_point = os.path.basename(self._deployment_config.get(APP_CLI_ENTRY_POINT))
         exit_code = shell_proxy.execute(entry_point)
         return CliResponse.Factory.create(exit_code)

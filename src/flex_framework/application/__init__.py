@@ -2,11 +2,13 @@ import os
 import sys
 from typing import Optional
 
+from flex_framework.console.input import Input
+
 from ..api.proxy import ProxyContainer, ProxyInterface
 from ..logger import Logger, ProfilerLoggerProxy
 from ..object_manager import Factory as ObjectManagerFactory
 from ..object_manager import ObjectManager
-from flex_framework.console.input import Input
+from .constants import APP_CLI_CWD, APP_CLI_ENTRY_POINT
 
 
 class ApplicationBootstrap:
@@ -16,17 +18,25 @@ class ApplicationBootstrap:
     _object_manager: ObjectManager
 
     def __init__(
-            self,
-            object_manager_factory: ObjectManagerFactory,
-            current_working_dir: str,
-            arguments: dict,
+        self,
+        object_manager_factory: ObjectManagerFactory,
+        current_working_dir: str,
+        arguments: dict,
     ):
         self.process_arguments(arguments)
         self._object_manager = object_manager_factory.create(arguments)
         console_input: Input = self._object_manager.provide(Input)
         cwd = console_input.namespace.cwd
+        if cwd != "":
+            current_working_dir = cwd
         cex = console_input.namespace.cex
+        if cex != "":
+            arguments[APP_CLI_ENTRY_POINT] = cex
         self._current_working_dir = current_working_dir
+        arguments[APP_CLI_CWD] = ApplicationBootstrap.process_working_directory(
+            current_working_dir
+        )
+
         self._arguments = arguments
         self._profiler = ProxyInterface[ProxyContainer[Logger], Logger](
             self._object_manager, ProfilerLoggerProxy
@@ -34,13 +44,12 @@ class ApplicationBootstrap:
 
     @staticmethod
     def create(
-            current_working_dir: str,
-            params=None,
-            object_manager_factory: Optional[ObjectManagerFactory] = None,
+        current_working_dir: str,
+        params=None,
+        object_manager_factory: Optional[ObjectManagerFactory] = None,
     ):
         if params is None:
             params = {}
-        params["current_working_dir"] = current_working_dir
 
         if object_manager_factory is None:
             object_manager_factory = ObjectManagerFactory()
@@ -89,42 +98,8 @@ class ApplicationBootstrap:
         arguments["dirs"]["cwd_cache"] = os.path.join(os.getcwd(), ".flex-cli", "cache")
 
     @staticmethod
-    def process_working_directory():
-        cwd = os.getcwd()
-
-        found_cwd = False
-        to_remove_args = []
-
-        for param in sys.argv:
-            if found_cwd:
-                to_remove_args.append(param)
-                cwd = param
-                break
-            if param == "--cwd":
-                to_remove_args.append(param)
-                found_cwd = True
-
-        for flag in to_remove_args:
-            sys.argv.remove(flag)
-
+    def process_working_directory(cwd: str = ""):
+        if cwd == "":
+            cwd = os.getcwd()
         sys.path.append(cwd)
         return cwd
-
-    @staticmethod
-    def process_executable_name(executable_name: str):
-        found_overwrite = False
-        args_to_remove = []
-
-        for param in sys.argv:
-            if found_overwrite:
-                args_to_remove.append(param)
-                executable_name = param
-                break
-            if param == "--cex":
-                args_to_remove.append(param)
-                found_overwrite = True
-
-        for flag in args_to_remove:
-            sys.argv.remove(flag)
-
-        return executable_name
