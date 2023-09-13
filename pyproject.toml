@@ -89,8 +89,12 @@ poetry2setup = "^1.1.0"
 [[tool.poetry.source]]
 name = "testpypi"
 url = "https://test.pypi.org/legacy/"
-default = false
-secondary = false
+priority = "primary"
+
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
 
 [tool.coverage.run]
 relative_files = true
