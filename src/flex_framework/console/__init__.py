@@ -5,7 +5,6 @@ from .input import Input
 
 
 class ObjectManagerSpec(pinject.bindings.BindingSpec):
-
     input: Input
     deployment_config: Deployment
 

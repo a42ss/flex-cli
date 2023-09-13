@@ -16,7 +16,6 @@ class YamlConfigReader(ConfigReader):
         super().__init__(config_path, required)
 
     def read_config(self) -> dict:
-
         schema = {}
         if os.path.exists(self._schema_file):
             with open(self._schema_file) as f:

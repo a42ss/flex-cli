@@ -73,7 +73,6 @@ class App:
     def __init__(
         self, app_path: str, cwd: str, executable_name: str, init_params: dict
     ):
-
         if "flags" in init_params:
             init_flags = init_params["flags"]
             if type(init_flags) == list:

@@ -21,7 +21,6 @@ class ParametersReader(object):
         self._params = params
 
     def read(self):
-
         if self._params is not None:
             questions = {}
             answers = {}
