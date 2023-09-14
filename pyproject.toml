@@ -94,6 +94,7 @@ priority = "primary"
 
 [[tool.poetry.source]]
 name = "PyPI"
+url = "https://pypi.org/"
 priority = "primary"
 
 [tool.coverage.run]
