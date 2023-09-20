@@ -45,12 +45,11 @@ class BashEmulatorFlexAware(BashEmulator):
         path = os.path.join(os.getcwd(), "env")
         default_env_file = os.path.join(path, ".env")
         env_vars = self.read_environment_variables(default_env_file)
+        self.env[self.Const.FLEX_SHELL_ENV_NAME] = "local"
         for key, value in env_vars.items():
             self.env[key] = value
 
-        self.env[self.Const.FLEX_SHELL_ENV_NAME] = "local"
-
-        return env_name
+        return self.env.get(self.Const.FLEX_SHELL_ENV_NAME)
 
     def emulate_bash(self):
         while True:
@@ -62,6 +61,8 @@ class BashEmulatorFlexAware(BashEmulator):
             if exit_code != 115:
                 break
 
+            if self.env[self.Const.FLEX_SHELL_ENV_NAME]:
+                self.env.pop(self.Const.FLEX_SHELL_ENV_NAME)
             print("Flex console have been triggered to force reload. (exit code 115)")
 
     def get_env_files(self) -> list:
