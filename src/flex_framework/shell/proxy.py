@@ -40,7 +40,7 @@ class SimpleShellProxy:
             command_arguments.append('"' + arg + '"')
         return command_arguments
 
-    def execute(self, command: str) -> int:
+    def execute(self, command: str, cwd: str | None = None) -> int:
         global_command_arguments = self.get_global_command_arguments()
         if len(global_command_arguments):
             command += " " + " ".join(global_command_arguments)
@@ -49,7 +49,7 @@ class SimpleShellProxy:
             command += " " + " ".join(arguments)
 
         return subprocess.call(
-            command, shell=True, env=self.env, executable=self.env.get("SHELL")
+            command, shell=True, env=self.env, executable=self.env.get("SHELL"), cwd=cwd
         )
 
     @staticmethod

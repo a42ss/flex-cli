@@ -1,5 +1,3 @@
-import os
-
 import pinject
 
 from flex_framework.config import Deployment
@@ -29,8 +27,12 @@ class ShellProxy(Handler):
 
     def handle(self) -> CliResponse:
         shell_proxy = SimpleShellProxy(self._environment)
-        from flex_framework.application.constants import APP_CLI_ENTRY_POINT
+        from flex_framework.application.constants import (
+            APP_CLI_CWD,
+            APP_CLI_ENTRY_POINT,
+        )
 
-        entry_point = os.path.basename(self._deployment_config.get(APP_CLI_ENTRY_POINT))
-        exit_code = shell_proxy.execute(entry_point)
+        entry_point = self._deployment_config.get(APP_CLI_ENTRY_POINT)
+        cwd = self._deployment_config.get(APP_CLI_CWD)
+        exit_code = shell_proxy.execute(entry_point, cwd)
         return CliResponse.Factory.create(exit_code)
