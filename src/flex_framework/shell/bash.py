@@ -48,7 +48,7 @@ class BashEmulatorFlexAware(BashEmulator):
         for key, value in env_vars.items():
             self.env[key] = value
 
-        self.env[self.Const.FLEX_SHELL_ENV_NAME] = "N/A"
+        self.env[self.Const.FLEX_SHELL_ENV_NAME] = "local"
 
         return env_name
 
