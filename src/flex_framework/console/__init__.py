@@ -13,8 +13,8 @@ class ObjectManagerSpec(pinject.bindings.BindingSpec):
         self.input = Input(
             {
                 "handler_arguments": {"positional": False},
-                "add_help": self.deployment_config.input.get('flex_add_help')
-             }
+                "add_help": self.deployment_config.input.get("flex_add_help"),
+            }
         )
 
     def configure(self, bind):

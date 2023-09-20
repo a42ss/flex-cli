@@ -11,7 +11,7 @@ from etc.config import params, extend_env_variables
 
 class DockerCompose(SimpleShellProxy, ApplicationInterface[CliResponse]):
     def launch(self) -> T:
-        return CliResponse(self.execute(os.path.basename(__file__)), "Done with composer")
+        return CliResponse(self.execute(os.path.basename(__file__)))
 
     def get_global_command_arguments(self) -> list:
         docker_compose_files = self.env.get("DOCKER_COMPOSE_FILES")

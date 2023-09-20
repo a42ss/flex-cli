@@ -26,9 +26,10 @@ class Input:
             configuration = {}
         instance.configuration = configuration
         instance.original_argv = sys.argv
-
         parser = argparse.ArgumentParser(
-            description="Flex cli", add_help=configuration.get("add_help"), prefix_chars="-"
+            description="Flex cli",
+            add_help=bool(configuration.get("add_help")),
+            prefix_chars="-",
         )
         argument_type = "-"
 
