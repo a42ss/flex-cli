@@ -55,6 +55,8 @@ class SimpleShellProxy:
                 executable=self.env.get("SHELL"),
                 cwd=cwd,
             )
+        except KeyboardInterrupt:
+            return 0
         except Exception:
             return 1
 
