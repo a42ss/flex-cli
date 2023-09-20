@@ -49,9 +49,13 @@ class SimpleShellProxy:
             command += " " + " ".join(arguments)
         try:
             return subprocess.call(
-                command, shell=True, env=self.env, executable=self.env.get("SHELL"), cwd=cwd
+                command,
+                shell=True,
+                env=self.env,
+                executable=self.env.get("SHELL"),
+                cwd=cwd,
             )
-        except Exception as e:
+        except Exception:
             return 1
 
     @staticmethod
