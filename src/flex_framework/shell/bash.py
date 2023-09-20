@@ -19,7 +19,7 @@ class BashEmulator(SimpleShellProxy):
             'alias reload="envsubst < ./env/.env.template > ./env/.env; exit 115";'
             'alias switch_local="export FLEX_SHELL_PROXY_ENV_NAME=local; reload";'
             'alias switch_dev="export FLEX_SHELL_PROXY_ENV_NAME=dev; reload"'
-            "') -i -e"
+            "') -i"
         )
         return self.execute(bash_command_string)
 
@@ -38,15 +38,18 @@ class BashEmulatorFlexAware(BashEmulator):
         self.env_name = self.get_env_name()
 
     def get_env_name(self):
+        env_name = self.env.get(self.Const.FLEX_SHELL_ENV_NAME)
+        if env_name is not None:
+            return env_name
+
         path = os.path.join(os.getcwd(), "env")
         default_env_file = os.path.join(path, ".env")
         env_vars = self.read_environment_variables(default_env_file)
         for key, value in env_vars.items():
             self.env[key] = value
 
-        env_name = self.env.get(self.Const.FLEX_SHELL_ENV_NAME)
-        if env_name is None:
-            return "dev"
+        self.env[self.Const.FLEX_SHELL_ENV_NAME] = "N/A"
+
         return env_name
 
     def emulate_bash(self):
@@ -96,6 +99,8 @@ class BashEmulatorFlexAware(BashEmulator):
         ]
 
     def read_environment_variables(self, file: str):
+        if not os.path.isfile(file):
+            return {}
         full_env_vars = subprocess.check_output(
             'env -i bash --noprofile --norc -c "set -o allexport; source '
             + file

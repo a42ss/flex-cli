@@ -47,10 +47,12 @@ class SimpleShellProxy:
         arguments = self.get_arguments()
         if len(arguments):
             command += " " + " ".join(arguments)
-
-        return subprocess.call(
-            command, shell=True, env=self.env, executable=self.env.get("SHELL"), cwd=cwd
-        )
+        try:
+            return subprocess.call(
+                command, shell=True, env=self.env, executable=self.env.get("SHELL"), cwd=cwd
+            )
+        except Exception as e:
+            return 1
 
     @staticmethod
     def get_local_path_identifier():
