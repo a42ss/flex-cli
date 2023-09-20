@@ -17,6 +17,9 @@ params = {
         "locations": ["SYS" "HOME" "CWD"],
         "path_namespaces": ["flex-cli", ".flex-cli"],
     },
+    "input": {
+        "flex_add_help": True
+    },
     HandlerInterface.Const.DEFAULT_HANDLER: get_handler(BashEmulator),
     "handlers": {
         "flex": {

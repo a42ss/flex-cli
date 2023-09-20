@@ -23,6 +23,10 @@ class Deployment(Config):
         return DiConfig(self.get("di", []))
 
     @property
+    def input(self) -> dict:
+        return self.get("input", {})
+
+    @property
     def di_classes(self) -> List[type]:
         return self.get("di/classes", [])
 

@@ -28,7 +28,7 @@ class Input:
         instance.original_argv = sys.argv
 
         parser = argparse.ArgumentParser(
-            description="Flex cli", add_help=True, prefix_chars="-"
+            description="Flex cli", add_help=configuration.get("add_help"), prefix_chars="-"
         )
         argument_type = "-"
 
