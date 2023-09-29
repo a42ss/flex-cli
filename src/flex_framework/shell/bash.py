@@ -1,6 +1,7 @@
 import glob
 import os
 import subprocess
+import json
 
 import pinject
 
@@ -11,14 +12,12 @@ from .proxy import SimpleShellProxy
 class BashEmulator(SimpleShellProxy):
     def emulate_bash(self):
         # flake8: noqa
+
         bash_command_string = (
             "/usr/bin/env bash --init-file <(echo '"
             ". $HOME/.bashrc; "
-            'export PATH="' + self.env["FLEX_SHELL_PROXY_LOCAL_PATH"] + ':$PATH"; '
-            'export PS1="\[\e[m\]\[\e[0;31m\]\$(echo "[\$FLEX_SHELL_PROXY_ENV_NAME]")\[\e[m\] $PS1"; '
-            'alias reload="envsubst < ./env/.env.template > ./env/.env; exit 115";'
-            'alias switch_local="export FLEX_SHELL_PROXY_ENV_NAME=local; reload";'
-            'alias switch_dev="export FLEX_SHELL_PROXY_ENV_NAME=dev; reload"'
+            'export PATH="' + self.env["FLEX_SHELL_PROXY_LOCAL_PATH"] + ':$PATH";'
+            '. '+ os.path.dirname(__file__) + '/.bashrc'                                                                        
             "') -i"
         )
         return self.execute(bash_command_string)
@@ -27,6 +26,9 @@ class BashEmulator(SimpleShellProxy):
 class BashEmulatorFlexAware(BashEmulator):
     class Const:
         FLEX_SHELL_ENV_NAME: str = "FLEX_SHELL_ENV_NAME"
+        FLEX_BASH_PROXY: str = "FLEX_BASH_PROXY"
+        FLEX_BASH_PROXY_META: str = "FLEX_BASH_PROXY_META"
+        FLEX_BASH_PROXY_DIR: str = os.path.join(os.getcwd(), ".flex-cli", 'cache', 'bin')
 
     env_name: str = "dev"
 
@@ -56,6 +58,7 @@ class BashEmulatorFlexAware(BashEmulator):
             self.env_name = self.get_env_name()
             self.env = os.environ.copy()
             self.init_env_variables()
+            self.init_bash_proxy_commands()
             exit_code = super().emulate_bash()
 
             if exit_code != 115:
@@ -96,6 +99,7 @@ class BashEmulatorFlexAware(BashEmulator):
     def get_local_path_entries(self) -> list:
         return [
             os.path.join(os.getcwd(), "bin"),
+            os.path.join(os.getcwd(), ".flex-cli", "cache", "bin"),
             os.path.join(os.getcwd(), "bin", "stack"),
         ]
 
@@ -130,3 +134,24 @@ class BashEmulatorFlexAware(BashEmulator):
                     full_file_env_vars_dict[key_pair[0]] = key_pair[1]
 
         return full_file_env_vars_dict
+
+    def init_bash_proxy_commands(self):
+        bash_proxy_commands = self.env.get(self.Const.FLEX_BASH_PROXY)
+        if bash_proxy_commands is None:
+            bash_proxy_commands = ""
+        try:
+            bash_proxy_meta = json.loads(self.env.get(self.Const.FLEX_BASH_PROXY_META))
+            os.system("rm -rf " + self.Const.FLEX_BASH_PROXY_DIR)
+            os.makedirs(self.Const.FLEX_BASH_PROXY_DIR)
+        except Exception as e:
+            bash_proxy_meta = {}
+            pass
+        for bash_proxy_command in bash_proxy_commands.split(":"):
+            if bash_proxy_command in bash_proxy_meta:
+                if "container" in bash_proxy_meta[bash_proxy_command]:
+                    self.env["FLEX_CONTAINER_" + bash_proxy_command.upper()] = bash_proxy_meta[bash_proxy_command]["container"]
+                    self.env["FLEX_CONTAINER_EXECUTABLE_" + bash_proxy_command.upper()] = bash_proxy_meta[bash_proxy_command]["executable"]
+                    self.execute("ln -s " + os.path.join(os.path.dirname(__file__), "bash_proxy_symlink") + " " + os.path.join(self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command) )
+                if "alias" in bash_proxy_meta[bash_proxy_command]:
+                    self.env["FLEX_ALIAS_" + bash_proxy_command.upper().replace("-", "_")] = bash_proxy_meta[bash_proxy_command]["alias"]
+                    self.execute("ln -s " + os.path.join(os.path.dirname(__file__), "bash_alias_symlink") + " " + os.path.join(self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command))
