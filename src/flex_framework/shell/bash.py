@@ -1,7 +1,7 @@
 import glob
+import json
 import os
 import subprocess
-import json
 
 import pinject
 
@@ -17,7 +17,7 @@ class BashEmulator(SimpleShellProxy):
             "/usr/bin/env bash --init-file <(echo '"
             ". $HOME/.bashrc; "
             'export PATH="' + self.env["FLEX_SHELL_PROXY_LOCAL_PATH"] + ':$PATH";'
-            '. '+ os.path.dirname(__file__) + '/.bashrc'                                                                        
+            ". " + os.path.dirname(__file__) + "/.bashrc"
             "') -i"
         )
         return self.execute(bash_command_string)
@@ -28,7 +28,9 @@ class BashEmulatorFlexAware(BashEmulator):
         FLEX_SHELL_ENV_NAME: str = "FLEX_SHELL_ENV_NAME"
         FLEX_BASH_PROXY: str = "FLEX_BASH_PROXY"
         FLEX_BASH_PROXY_META: str = "FLEX_BASH_PROXY_META"
-        FLEX_BASH_PROXY_DIR: str = os.path.join(os.getcwd(), ".flex-cli", 'cache', 'bin')
+        FLEX_BASH_PROXY_DIR: str = os.path.join(
+            os.getcwd(), ".flex-cli", "cache", "bin"
+        )
 
     env_name: str = "dev"
 
@@ -149,9 +151,29 @@ class BashEmulatorFlexAware(BashEmulator):
         for bash_proxy_command in bash_proxy_commands.split(":"):
             if bash_proxy_command in bash_proxy_meta:
                 if "container" in bash_proxy_meta[bash_proxy_command]:
-                    self.env["FLEX_CONTAINER_" + bash_proxy_command.upper()] = bash_proxy_meta[bash_proxy_command]["container"]
-                    self.env["FLEX_CONTAINER_EXECUTABLE_" + bash_proxy_command.upper()] = bash_proxy_meta[bash_proxy_command]["executable"]
-                    self.execute("ln -s " + os.path.join(os.path.dirname(__file__), "bash_proxy_symlink") + " " + os.path.join(self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command) )
+                    self.env[
+                        "FLEX_CONTAINER_" + bash_proxy_command.upper()
+                    ] = bash_proxy_meta[bash_proxy_command]["container"]
+                    self.env[
+                        "FLEX_CONTAINER_EXECUTABLE_" + bash_proxy_command.upper()
+                    ] = bash_proxy_meta[bash_proxy_command]["executable"]
+                    self.execute(
+                        "ln -s "
+                        + os.path.join(os.path.dirname(__file__), "bash_proxy_symlink")
+                        + " "
+                        + os.path.join(
+                            self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command
+                        )
+                    )
                 if "alias" in bash_proxy_meta[bash_proxy_command]:
-                    self.env["FLEX_ALIAS_" + bash_proxy_command.upper().replace("-", "_")] = bash_proxy_meta[bash_proxy_command]["alias"]
-                    self.execute("ln -s " + os.path.join(os.path.dirname(__file__), "bash_alias_symlink") + " " + os.path.join(self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command))
+                    self.env[
+                        "FLEX_ALIAS_" + bash_proxy_command.upper().replace("-", "_")
+                    ] = bash_proxy_meta[bash_proxy_command]["alias"]
+                    self.execute(
+                        "ln -s "
+                        + os.path.join(os.path.dirname(__file__), "bash_alias_symlink")
+                        + " "
+                        + os.path.join(
+                            self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command
+                        )
+                    )
