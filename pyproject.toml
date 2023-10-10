@@ -77,7 +77,7 @@ optional = true
 pytest = "*"
 pytest-cov = "*"
 mock = "*"
-coverage = {extras = ["toml"], version = "^6.4.4"}
+coverage = {extras = ["toml"], version = ">=6.4.4,<8.0.0"}
 
 [tool.poetry.group.poetry]
 optional = true
