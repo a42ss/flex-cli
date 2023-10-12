@@ -150,13 +150,14 @@ class BashEmulatorFlexAware(BashEmulator):
             pass
         for bash_proxy_command in bash_proxy_commands.split(":"):
             if bash_proxy_command in bash_proxy_meta:
+                bash_proxy_command_safe = bash_proxy_command.replace("-","_")
                 if "container" in bash_proxy_meta[bash_proxy_command]:
                     self.env[
-                        "FLEX_CONTAINER_" + bash_proxy_command.upper()
-                    ] = bash_proxy_meta[bash_proxy_command]["container"]
+                        "FLEX_CONTAINER_" + bash_proxy_command_safe.upper()
+                        ] = bash_proxy_meta[bash_proxy_command]["container"]
                     self.env[
-                        "FLEX_CONTAINER_EXECUTABLE_" + bash_proxy_command.upper()
-                    ] = bash_proxy_meta[bash_proxy_command]["executable"]
+                        "FLEX_CONTAINER_EXECUTABLE_" + bash_proxy_command_safe.upper()
+                        ] = bash_proxy_meta[bash_proxy_command]["executable"]
                     self.execute(
                         "ln -s "
                         + os.path.join(os.path.dirname(__file__), "bash_proxy_symlink")
@@ -167,8 +168,8 @@ class BashEmulatorFlexAware(BashEmulator):
                     )
                 if "alias" in bash_proxy_meta[bash_proxy_command]:
                     self.env[
-                        "FLEX_ALIAS_" + bash_proxy_command.upper().replace("-", "_")
-                    ] = bash_proxy_meta[bash_proxy_command]["alias"]
+                        "FLEX_ALIAS_" + bash_proxy_command_safe.upper()
+                        ] = bash_proxy_meta[bash_proxy_command]["alias"]
                     self.execute(
                         "ln -s "
                         + os.path.join(os.path.dirname(__file__), "bash_alias_symlink")
