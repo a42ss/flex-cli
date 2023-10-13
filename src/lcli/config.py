@@ -542,7 +542,7 @@ class CommandCollection(Config):
                     continue
                 command = commands_list.get_command(key)
                 if command.is_group() and command.name == "groups":
-                    if command.name in available_groups:
+                    if command.name in available_groups or len(available_groups) == 0:
                         sub_class_commands = self.get_first_level_commands(
                             command.commands, ignored_commands, available_groups
                         )
