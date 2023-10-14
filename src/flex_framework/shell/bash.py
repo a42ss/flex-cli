@@ -18,7 +18,7 @@ class BashEmulator(SimpleShellProxy):
             ". $HOME/.bashrc; "
             'export PATH="' + self.env["FLEX_SHELL_PROXY_LOCAL_PATH"] + ':$PATH";'
             ". " + os.path.dirname(__file__) + "/.bashrc"
-            "') -i"
+            "') -i -O expand_aliases"
         )
         return self.execute(bash_command_string)
 
