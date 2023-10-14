@@ -1,0 +1,60 @@
+@Library('a42-jenkins-general-library') _
+
+pipeline {
+    environment {
+        DOCKER_AGENT_PYTHON_IMAGE="lcli"
+    }
+
+    agent  any
+
+    stages {
+        stage ('GIT VERSION - registerEnvVariables') {
+            steps {
+                script {
+                    gitversion.registerEnvVariables(".", "./.gitversion")
+                    env.GITVERSION_REGISTERED = sh(returnStdout: true, script: "date -u +'%Y-%m-%dT%H:%M:%SZ'").trim()
+                }
+                buildName "${env.FullSemVer}"
+            }
+        }
+        stage ('Build using docker image') {
+            steps {
+                sh """
+                    docker build -t "lcli:${env.FullSemVer.replaceAll('\\+', '.')}" .
+                """
+            }
+        }
+        stage ('Build using poetry') {
+            agent {
+                docker {
+                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.FullSemVer.replaceAll('\\+', '.')}"
+                    args "${env.DOCKER_AGENT_OPTIONS}"
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    # pip3 install pipenv poetry
+                    # make poetry_build
+                '''
+            }
+        }
+        stage ('Check build version') {
+            agent {
+                docker {
+                    image "${env.DOCKER_AGENT_PYTHON_IMAGE}:${env.FullSemVer.replaceAll('\\+', '.')}"
+                    args "${env.DOCKER_AGENT_OPTIONS}"
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    id
+                    pwd
+                    python --version
+                    lcli --version
+                '''
+            }
+        }
+    }
+}
