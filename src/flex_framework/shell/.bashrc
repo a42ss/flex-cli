@@ -1,4 +1,5 @@
 before_flex_reload(){
+    lcli helper cache_clear
     lcli string -f ./env/bash_proxy_meta.json remove_new_lines  print_env -e ./env/.env.template -v FLEX_BASH_PROXY_META
 }
 
