@@ -10,6 +10,7 @@ after_flex_reload() {
 
 shopt -s expand_aliases
 
+before_flex_reload
 after_flex_reload
 
 export PS1="\[\e[m\]\[\e[0;31m\]\$(echo "[\$FLEX_SHELL_PROXY_ENV_NAME]")\[\e[m\] $PS1"

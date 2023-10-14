@@ -1,6 +1,7 @@
 import json
 import subprocess
 from string import Template
+import os
 
 import pinject
 
@@ -57,7 +58,7 @@ class CommandRunner:
 
             if self._command.type == "bash-script":
                 script = self._command.args.get("script")
-                process = subprocess.Popen(script, shell=True, cwd=cwd)
+                process = subprocess.Popen(script, shell=True, cwd=cwd, env=os.environ)
                 process.communicate()
                 return
 
@@ -65,14 +66,14 @@ class CommandRunner:
                 output_type = "list"
 
             if output_type is None or output_type == "implicit":
-                process = subprocess.Popen(command, shell=True, cwd=cwd)
+                process = subprocess.Popen(command, shell=True, cwd=cwd, env=os.environ)
                 process.communicate()
                 return
 
             if output_type == "list":
                 process = subprocess.Popen(
                     command,
-                    shell=True,
+                    shell=True, env=os.environ,
                     cwd=cwd,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.DEVNULL,
@@ -90,7 +91,7 @@ class CommandRunner:
             if output_type == "json":
                 p = subprocess.Popen(
                     command,
-                    shell=True,
+                    shell=True, env=os.environ,
                     cwd=cwd,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.DEVNULL,
