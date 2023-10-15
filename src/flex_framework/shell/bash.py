@@ -100,8 +100,8 @@ class BashEmulatorFlexAware(BashEmulator):
 
     def get_local_path_entries(self) -> list:
         return [
-            os.path.join(os.getcwd(), "bin"),
             os.path.join(os.getcwd(), ".flex-cli", "cache", "bin"),
+            os.path.join(os.getcwd(), "bin"),
             os.path.join(os.getcwd(), "bin", "stack"),
         ]
 
