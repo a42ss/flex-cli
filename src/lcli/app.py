@@ -111,7 +111,7 @@ class App:
     # <Init section
     def init(self):
         sys.path.append(self._working_directory_conf_path)
-        sys.path.append(self._working_directory_conf_path)
+        sys.path.append(self._user_home_directory_path)
         self.init_default_flags()
         self.init_logger()
         self.init_commands_configs()

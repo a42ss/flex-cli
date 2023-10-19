@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CURRENT_SCRIPT_NAME=$(basename "$0")
+CURRENT_SCRIPT_NAME=$(basename "$0" | sed -r 's/[-]+/_/g')
 CURRENT_CONTAINER_NAME_NAME="FLEX_CONTAINER_${CURRENT_SCRIPT_NAME^^}"
 COMMAND_EXECUTABLE_NAME="FLEX_CONTAINER_EXECUTABLE_${CURRENT_SCRIPT_NAME^^}"
 CURRENT_CONTAINER_NAME=${!CURRENT_CONTAINER_NAME_NAME}
@@ -10,8 +10,8 @@ FLEX_DOCKER_COMPOSE_EXE=$(which docker-compose)
 
 flex-cli -handler flex/bash/proxy \
   -cwd "${FLEX_CWD}"\
-  -cex "$FLEX_DOCKER_COMPOSE_EXE" \
+  -cex "$FLEX_DOCKER_COMPOSE_EXE" -- \
   exec \
   --workdir "$FLEX_WORK_DIR" \
   "${CURRENT_CONTAINER_NAME}" \
-  "${COMMAND_EXECUTABLE}" -- "$@"
+  "${COMMAND_EXECUTABLE}" "$@"

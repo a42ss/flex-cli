@@ -145,7 +145,8 @@ class Fire(AppModeBase):
                         group_objects.__doc__ = command.description
 
                     if key == "groups":
-                        result_commands.__update__(group_objects)
+                        for item_key in group_objects:
+                            result_commands[item_key] = group_objects[item_key]
                     else:
                         result_commands[key] = group_objects
                 else:
