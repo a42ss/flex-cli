@@ -1,6 +1,8 @@
 before_flex_reload(){
     lcli helper cache_clear
-    lcli string -f ./env/bash_proxy_meta.json remove_new_lines  print_env -e ./env/.env.template -v FLEX_BASH_PROXY_META
+    if [ -f ./env/bash_proxy_meta.json ]; then
+        lcli string -f ./env/bash_proxy_meta.json remove_new_lines  print_env -e ./env/.env.template -v FLEX_BASH_PROXY_META
+    fi
 }
 
 after_flex_reload() {
@@ -9,19 +11,24 @@ after_flex_reload() {
     lcli lproject -- --completion >> .flex-cli/cache/bin/bash_completion.d/lproject-bash-completion.sh
 }
 
+flex_reload() {
+    echo "will flex Reload $FLEX_RELOAD_FLAG"
+    before_flex_reload
+    envsubst < ./env/.env.template > ./env/.env
+    exit 115
+}
+
 shopt -s expand_aliases
 
 before_flex_reload
+if [ -n "$FLEX_RELOAD_FLAG" ]; then
+    flex_reload
+fi
 after_flex_reload
 
 export PS1="\[\e[m\]\[\e[0;31m\]\$(echo "[\$FLEX_SHELL_PROXY_ENV_NAME]")\[\e[m\] $PS1"
 export PS1="\[\e[m\]\[\e[0;31m\]\$(echo "[\$LPROJECT_NAME]")\[\e[m\] $PS1"
 
-flex_reload() {
-    before_flex_reload
-    envsubst < ./env/.env.template > ./env/.env
-    exit 115
-}
 alias switch_local="export FLEX_SHELL_PROXY_ENV_NAME=local; flex_reload"
 alias switch_dev="export FLEX_SHELL_PROXY_ENV_NAME=dev; flex_reload"
 

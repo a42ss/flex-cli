@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+BASEDIR=$(dirname "$0")
+
+if [ -f "$BASEDIR/.env" ] && [ -z ${FLEX_SHELL_PROXY_ENV_NAME+x} ]; then
+  set -a
+  source "$BASEDIR/.env"
+  set +a
+fi
 
 CURRENT_SCRIPT_NAME=$(basename "$0" | sed 's/-/_/g')
 CURRENT_CONTAINER_NAME_NAME="FLEX_ALIAS_${CURRENT_SCRIPT_NAME^^}"

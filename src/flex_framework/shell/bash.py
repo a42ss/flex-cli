@@ -2,9 +2,10 @@ import glob
 import json
 import os
 import subprocess
+import sys
 
 import pinject
-
+from dotenv import set_key as env_set_key
 from ..environment.manager import Environment as EnvironmentManager
 from .proxy import SimpleShellProxy
 
@@ -18,8 +19,12 @@ class BashEmulator(SimpleShellProxy):
             ". $HOME/.bashrc; "
             'export PATH="' + self.env["FLEX_SHELL_PROXY_LOCAL_PATH"] + ':$PATH";'
             ". " + os.path.dirname(__file__) + "/.bashrc"
-            "') -i -O expand_aliases"
+            "') -i -O expand_aliases "
         )
+        other_args = " ".join(sys.argv[1:])
+        if len(other_args) > 2:
+            bash_command_string += " -c "
+
         return self.execute(bash_command_string)
 
 
@@ -57,16 +62,22 @@ class BashEmulatorFlexAware(BashEmulator):
 
     def emulate_bash(self):
         while True:
+            self.clean_cache_directory()
             self.env_name = self.get_env_name()
             self.env = os.environ.copy()
             self.init_env_variables()
             self.init_bash_proxy_commands()
+            self.save_env_to_local_cache_file()
             exit_code = super().emulate_bash()
 
             if exit_code != 115:
                 break
+            if "FLEX_RELOAD_FLAG" in os.environ:
+                os.environ.pop("FLEX_RELOAD_FLAG")
+            if "FLEX_RELOAD_FLAG" in self.env:
+                self.env.pop("FLEX_RELOAD_FLAG")
 
-            if self.env[self.Const.FLEX_SHELL_ENV_NAME]:
+            if self.Const.FLEX_SHELL_ENV_NAME in self.env and self.env[self.Const.FLEX_SHELL_ENV_NAME]:
                 self.env.pop(self.Const.FLEX_SHELL_ENV_NAME)
             print("Flex console have been triggered to force reload. (exit code 115)")
 
@@ -137,14 +148,17 @@ class BashEmulatorFlexAware(BashEmulator):
 
         return full_file_env_vars_dict
 
+    def clean_cache_directory(self):
+        os.system("rm -rf " + self.Const.FLEX_BASH_PROXY_DIR)
+        os.makedirs(self.Const.FLEX_BASH_PROXY_DIR)
+
     def init_bash_proxy_commands(self):
+        self.clean_cache_directory()
         bash_proxy_commands = self.env.get(self.Const.FLEX_BASH_PROXY)
         if bash_proxy_commands is None:
             bash_proxy_commands = ""
         try:
             bash_proxy_meta = json.loads(self.env.get(self.Const.FLEX_BASH_PROXY_META))
-            os.system("rm -rf " + self.Const.FLEX_BASH_PROXY_DIR)
-            os.makedirs(self.Const.FLEX_BASH_PROXY_DIR)
         except Exception as e:
             bash_proxy_meta = {}
             pass
@@ -164,7 +178,8 @@ class BashEmulatorFlexAware(BashEmulator):
                         + " "
                         + os.path.join(
                             self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command
-                        )
+                        ),
+                        append_arguments=False
                     )
                 if "alias" in bash_proxy_meta[bash_proxy_command]:
                     self.env[
@@ -176,5 +191,18 @@ class BashEmulatorFlexAware(BashEmulator):
                         + " "
                         + os.path.join(
                             self.Const.FLEX_BASH_PROXY_DIR, bash_proxy_command
-                        )
+                        ),
+                        append_arguments=False
                     )
+
+    def save_env_to_local_cache_file(self):
+
+        for key in self.env:
+            save_key = False
+            if key in os.environ:
+                if os.environ[key] != self.env[key]:
+                    save_key = True
+            else:
+                save_key = True
+            if save_key:
+                env_set_key(os.path.join(self.Const.FLEX_BASH_PROXY_DIR, ".env"), key, self.env[key])

@@ -50,7 +50,7 @@ setup(
     # Scripts
     entry_points={
         'console_scripts': [
-            EXECUTABLE_NAME + ' = ' + EXECUTABLE_NAME + '.__main__:main',
+            EXECUTABLE_NAME + ' = ' + EXECUTABLE_NAME + '.__main__:main'
         ],
     },
     scripts=[

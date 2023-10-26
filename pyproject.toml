@@ -34,6 +34,7 @@ types-PyYAML = "*"
 jsonschema = { version = "^4.5" }
 pyfiglet = { version = "^0.8" }
 blessings = { version = "^1.7" }
+python-dotenv = { version = "^1.0" }
 ansible = { version = "^6.4", optional = true}
 
 [tool.poetry.extras]
