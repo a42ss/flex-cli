@@ -59,6 +59,11 @@ setup(
 
     include_package_data=True,
     package_data={
+        'flex_framework': [
+            'shell/.bashrc',
+            'shell/bash_alias_symlink',
+            'shell/bash_proxy_symlink'
+        ],
         '': [
             'config/*.yml',
             'config/*.yaml',
