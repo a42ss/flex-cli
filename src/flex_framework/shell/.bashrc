@@ -12,7 +12,6 @@ after_flex_reload() {
 }
 
 flex_reload() {
-    echo "will flex Reload $FLEX_RELOAD_FLAG"
     before_flex_reload
     envsubst < ./env/.env.template > ./env/.env
     exit 115
@@ -20,9 +19,11 @@ flex_reload() {
 
 shopt -s expand_aliases
 
-before_flex_reload
+
 if [ -n "$FLEX_RELOAD_FLAG" ]; then
     flex_reload
+else
+    before_flex_reload
 fi
 after_flex_reload
 
