@@ -1,7 +1,7 @@
 import json
+import os
 import subprocess
 from string import Template
-import os
 
 import pinject
 
@@ -73,7 +73,8 @@ class CommandRunner:
             if output_type == "list":
                 process = subprocess.Popen(
                     command,
-                    shell=True, env=os.environ,
+                    shell=True,
+                    env=os.environ,
                     cwd=cwd,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.DEVNULL,
@@ -91,7 +92,8 @@ class CommandRunner:
             if output_type == "json":
                 p = subprocess.Popen(
                     command,
-                    shell=True, env=os.environ,
+                    shell=True,
+                    env=os.environ,
                     cwd=cwd,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.DEVNULL,

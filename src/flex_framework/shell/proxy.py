@@ -40,7 +40,9 @@ class SimpleShellProxy:
             command_arguments.append('"' + arg + '"')
         return command_arguments
 
-    def execute(self, command: str, cwd: str | None = None, append_arguments: bool = True) -> int:
+    def execute(
+        self, command: str, cwd: str | None = None, append_arguments: bool = True
+    ) -> int:
         if append_arguments:
             global_command_arguments = self.get_global_command_arguments()
             if len(global_command_arguments):
