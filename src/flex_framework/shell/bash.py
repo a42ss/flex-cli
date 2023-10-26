@@ -167,7 +167,7 @@ class BashEmulatorFlexAware(BashEmulator):
             bash_proxy_meta = {}
             pass
         for bash_proxy_command in bash_proxy_commands.split(":"):
-            if bash_proxy_command in bash_proxy_meta:
+            if type(bash_proxy_meta) == dict and bash_proxy_command in bash_proxy_meta:
                 bash_proxy_command_safe = bash_proxy_command.replace("-", "_")
                 if "container" in bash_proxy_meta[bash_proxy_command]:
                     self.env[
