@@ -9,6 +9,13 @@ pipeline {
 
     stages {
         stage ('GIT VERSION - registerEnvVariables') {
+            agent {
+                docker {
+                    image "${env.DOCKER_AGENT_GIT_VERSION_IMAGE}"
+                    args "${env.DOCKER_AGENT_GIT_VERSION_OPTIONS}"
+                }
+            }
+
             steps {
                 script {
                     gitversion.registerEnvVariables(".", "./.gitversion")
