@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 BASEDIR=$(dirname "$0")
 
-if [ -f "$BASEDIR/.env" ] && [ -z ${FLEX_SHELL_PROXY_ENV_NAME+x} ]; then
-  set -a
-  source "$BASEDIR/.env"
-  set +a
+if [ -z ${FLEX_SHELL_PROXY_ENV_NAME+x} ]; then
+  echo "PATH=\"${PATH}\"" > "$BASEDIR/PATH-original.env"
+  if [ -f "$BASEDIR/PATH-flex.env" ]; then
+    set -a
+    source "$BASEDIR/PATH-flex.env"
+    set +a
+  fi
+  if [ -f "$BASEDIR/.env" ]; then
+    set -a
+    source "$BASEDIR/.env"
+    set +a
+  fi
 fi
 
 CURRENT_SCRIPT_NAME=$(basename "$0" | sed -r 's/[-]+/_/g')
@@ -14,6 +22,11 @@ CURRENT_CONTAINER_NAME=${!CURRENT_CONTAINER_NAME_NAME}
 COMMAND_EXECUTABLE=${!COMMAND_EXECUTABLE_NAME}
 FLEX_DOCKER_COMPOSE_EXE=$(which docker-compose)
 
+if [ -f "$BASEDIR/PATH-original.env" ]; then
+  set -a
+  source "$BASEDIR/PATH-original.env"
+  set +a
+fi
 
 flex-cli -handler flex/bash/proxy \
   -cwd "${FLEX_CWD}"\

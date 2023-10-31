@@ -202,6 +202,18 @@ class BashEmulatorFlexAware(BashEmulator):
     def save_env_to_local_cache_file(self):
         for key in self.env:
             save_key = False
+            if key == 'PATH':
+                env_set_key(
+                    os.path.join(self.Const.FLEX_BASH_PROXY_DIR, "PATH-flex.env"),
+                    key,
+                    self.env[key],
+                )
+                env_set_key(
+                    os.path.join(self.Const.FLEX_BASH_PROXY_DIR, "PATH-original.env"),
+                    key,
+                    os.environ[key],
+                )
+                continue
             if key in os.environ:
                 if os.environ[key] != self.env[key]:
                     save_key = True
