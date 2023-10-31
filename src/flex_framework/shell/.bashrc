@@ -7,6 +7,7 @@ before_flex_reload(){
 
 after_flex_reload() {
     mkdir -p .flex-cli/cache/bin/bash_completion.d
+    echo "PATH=\"${PATH}\"" > .flex-cli/cache/bin/PATH-original.env
     lcli -- --completion >> .flex-cli/cache/bin/bash_completion.d/lcli-bash-completion.sh
     lcli lproject -- --completion >> .flex-cli/cache/bin/bash_completion.d/lproject-bash-completion.sh
 }
