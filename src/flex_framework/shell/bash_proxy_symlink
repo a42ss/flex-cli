@@ -28,10 +28,27 @@ if [ -f "$BASEDIR/PATH-original.env" ]; then
   set +a
 fi
 
+set -o pipefail
 flex-cli -handler flex/bash/proxy \
   -cwd "${FLEX_CWD}"\
   -cex "$FLEX_DOCKER_COMPOSE_EXE" -- \
   exec \
   --workdir "$FLEX_WORK_DIR" \
   "${CURRENT_CONTAINER_NAME}" \
-  "${COMMAND_EXECUTABLE}" "$@"
+  "${COMMAND_EXECUTABLE}" "$@" 2>&1 | tee "$BASEDIR/error.log"
+STATUS_CODE=$?
+set +o pipefail
+
+MESSAGE=$(cat "$BASEDIR/error.log")
+if [ "$STATUS_CODE" != 0 ]; then
+  echo "$MESSAGE" | grep "no such file or directory" -q
+  MISSING_DIRECTORY=$?
+  if [ $MISSING_DIRECTORY == 0 ]; then
+    flex-cli -handler flex/bash/proxy \
+      -cwd "${FLEX_CWD}"\
+      -cex "$FLEX_DOCKER_COMPOSE_EXE" -- \
+      exec \
+      "${CURRENT_CONTAINER_NAME}" \
+      "${COMMAND_EXECUTABLE}" "$@"
+  fi
+fi
