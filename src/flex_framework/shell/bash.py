@@ -27,10 +27,9 @@ class BashEmulator(SimpleShellProxy):
             bash_command_string += " -c "
 
         return self.execute(bash_command_string)
+
     def run_bash(self):
-        bash_command_string = (
-            "/usr/bin/env bash -i"
-        )
+        bash_command_string = "/usr/bin/env bash -i"
         other_args = " ".join(sys.argv[1:])
         if len(other_args) > 2:
             bash_command_string += " -c "
