@@ -27,6 +27,15 @@ class BashEmulator(SimpleShellProxy):
             bash_command_string += " -c "
 
         return self.execute(bash_command_string)
+    def run_bash(self):
+        bash_command_string = (
+            "/usr/bin/env bash -i"
+        )
+        other_args = " ".join(sys.argv[1:])
+        if len(other_args) > 2:
+            bash_command_string += " -c "
+
+        return self.execute(bash_command_string)
 
 
 class BashEmulatorFlexAware(BashEmulator):
@@ -53,8 +62,11 @@ class BashEmulatorFlexAware(BashEmulator):
             return env_name
 
         path = os.path.join(os.getcwd(), "env")
+        default__root_env_file = os.path.join(os.getcwd(), ".env")
         default_env_file = os.path.join(path, ".env")
+        env_vars_root = self.read_environment_variables(default__root_env_file)
         env_vars = self.read_environment_variables(default_env_file)
+        env_vars.update(env_vars_root)
         self.env[self.Const.FLEX_SHELL_ENV_NAME] = "local"
         for key, value in env_vars.items():
             self.env[key] = value
@@ -65,6 +77,9 @@ class BashEmulatorFlexAware(BashEmulator):
         while True:
             self.clean_cache_directory()
             self.env_name = self.get_env_name()
+            if not "FLEX_CLI" in self.env:
+                self.run_bash()
+                return
             self.env = os.environ.copy()
             self.init_env_variables()
             self.init_bash_proxy_commands()
@@ -153,6 +168,9 @@ class BashEmulatorFlexAware(BashEmulator):
         return full_file_env_vars_dict
 
     def clean_cache_directory(self):
+        if not "FLEX_CLI" in self.env:
+            return
+
         os.system("rm -rf " + self.Const.FLEX_BASH_PROXY_DIR)
         os.makedirs(self.Const.FLEX_BASH_PROXY_DIR)
 
