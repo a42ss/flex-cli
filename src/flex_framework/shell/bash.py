@@ -167,14 +167,11 @@ class BashEmulatorFlexAware(BashEmulator):
         return full_file_env_vars_dict
 
     def clean_cache_directory(self):
-        if not "FLEX_CLI" in self.env:
-            return
-
         os.system("rm -rf " + self.Const.FLEX_BASH_PROXY_DIR)
-        os.makedirs(self.Const.FLEX_BASH_PROXY_DIR)
 
     def init_bash_proxy_commands(self):
         self.clean_cache_directory()
+        os.makedirs(self.Const.FLEX_BASH_PROXY_DIR)
         bash_proxy_commands = self.env.get(self.Const.FLEX_BASH_PROXY)
         if bash_proxy_commands is None:
             bash_proxy_commands = ""
