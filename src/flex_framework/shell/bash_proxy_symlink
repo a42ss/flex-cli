@@ -31,11 +31,11 @@ fi
 set -o pipefail
 flex-cli -handler flex/bash/proxy \
   -cwd "${FLEX_CWD}"\
-  -cex "$FLEX_DOCKER_COMPOSE_EXE" -- \
+  -cex "$FLEX_DOCKER_COMPOSE_EXE" \
   exec \
   --workdir "$FLEX_WORK_DIR" \
   "${CURRENT_CONTAINER_NAME}" \
-  "${COMMAND_EXECUTABLE}" "$@" 2>&1 | tee "$BASEDIR/error.log"
+  "${COMMAND_EXECUTABLE}" "$@" 2>"$BASEDIR/error.log"
 STATUS_CODE=$?
 set +o pipefail
 
@@ -46,7 +46,7 @@ if [ "$STATUS_CODE" != 0 ]; then
   if [ $MISSING_DIRECTORY == 0 ]; then
     flex-cli -handler flex/bash/proxy \
       -cwd "${FLEX_CWD}"\
-      -cex "$FLEX_DOCKER_COMPOSE_EXE" -- \
+      -cex "$FLEX_DOCKER_COMPOSE_EXE" \
       exec \
       "${CURRENT_CONTAINER_NAME}" \
       "${COMMAND_EXECUTABLE}" "$@"
