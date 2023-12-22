@@ -51,4 +51,10 @@ if [ "$STATUS_CODE" != 0 ]; then
       "${CURRENT_CONTAINER_NAME}" \
       "${COMMAND_EXECUTABLE}" "$@"
   fi
+else
+  RED='\033[0;31m'
+  NC='\033[0m' # No Color
+  # shellcheck disable=SC2059
+  printf "${RED}Errors:${NC}\n"
+  echo "${MESSAGE}"
 fi
