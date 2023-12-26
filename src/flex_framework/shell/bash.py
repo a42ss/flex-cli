@@ -39,6 +39,7 @@ class BashEmulator(SimpleShellProxy):
 
 class BashEmulatorFlexAware(BashEmulator):
     class Const:
+        FLEX_RELOAD_FLAG: str = "FLEX_RELOAD_FLAG"
         FLEX_SHELL_ENV_NAME: str = "FLEX_SHELL_ENV_NAME"
         FLEX_BASH_PROXY: str = "FLEX_BASH_PROXY"
         FLEX_BASH_PROXY_META: str = "FLEX_BASH_PROXY_META"
@@ -47,6 +48,7 @@ class BashEmulatorFlexAware(BashEmulator):
         )
 
     env_name: str = "dev"
+    force_reload: bool = False
 
     @pinject.copy_args_to_internal_fields
     def __init__(self, environment: EnvironmentManager, env_path_to_remove=None):
@@ -178,6 +180,7 @@ class BashEmulatorFlexAware(BashEmulator):
         try:
             bash_proxy_meta = json.loads(self.env.get(self.Const.FLEX_BASH_PROXY_META))
         except Exception as e:
+            self.env[self.Const.FLEX_RELOAD_FLAG] = "True"
             bash_proxy_meta = {}
             pass
         for bash_proxy_command in bash_proxy_commands.split(":"):
