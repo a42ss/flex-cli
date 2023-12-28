@@ -93,6 +93,10 @@ class BashEmulatorFlexAware(BashEmulator):
                 os.environ.pop("FLEX_RELOAD_FLAG")
             if "FLEX_RELOAD_FLAG" in self.env:
                 self.env.pop("FLEX_RELOAD_FLAG")
+            if "FLEX_FIRST_COMMAND" in os.environ:
+                os.environ.pop("FLEX_FIRST_COMMAND")
+            if "FLEX_FIRST_COMMAND" in self.env:
+                self.env.pop("FLEX_FIRST_COMMAND")
 
             if (
                 self.Const.FLEX_SHELL_ENV_NAME in self.env

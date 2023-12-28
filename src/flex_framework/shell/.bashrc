@@ -13,13 +13,33 @@ after_flex_reload() {
 }
 
 flex_reload() {
+    EXIT_CODE="$1"
     before_flex_reload
     envsubst < ./env/.env.template > ./env/.env
-    exit 115
+    if [ -n "${EXIT_CODE}" ]; then
+        exit ${EXIT_CODE}
+    else
+        exit 115
+    fi
+}
+switch_env() {
+    ENVIRONMENT="$1"
+    EXIT_CODE="$2"
+    if [ -n "${ENVIRONMENT}" ]; then
+        echo "Switching to $ENVIRONMENT ..."
+        export FLEX_SHELL_PROXY_ENV_NAME="$ENVIRONMENT"
+        export FLEX_RELOAD_FLAG="True"
+        flex_reload 0
+    fi
 }
 
-shopt -s expand_aliases
+if [ -n "$FLEX_FIRST_COMMAND" ]; then
+    eval "${FLEX_FIRST_COMMAND}"
+    unset FLEX_FIRST_COMMAND
+fi
 
+shopt -s expand_aliases
+export FLEX_CLI=true
 
 if [ -n "$FLEX_RELOAD_FLAG" ]; then
     flex_reload
