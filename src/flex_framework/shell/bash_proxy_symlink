@@ -27,6 +27,9 @@ if [ -f "$BASEDIR/PATH-original.env" ]; then
   source "$BASEDIR/PATH-original.env"
   set +a
 fi
+if [[ $FLEX_WORK_DIR =~ "CWD" ]]; then
+   FLEX_WORK_DIR=$PWD
+fi
 
 set -o pipefail
 flex-cli -handler flex/bash/proxy \
